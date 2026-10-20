@@ -198,10 +198,44 @@ td .sub{display:block;color:var(--muted);font-size:12px}
 .modal textarea{width:100%;height:280px;font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--sunk);color:var(--ink)}
 .modal .btns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 
+/* Habitants et sonnerie */
+.host-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.host-row .btn{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.res-form{padding:12px 14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px;background:var(--sunk);border-top:1px solid var(--line)}
+.res-form input,.res-form select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);width:100%;min-width:0}
+.ring-box{max-width:460px!important}
+.ring-status{display:flex;align-items:center;gap:12px;border-radius:12px;padding:14px;font-weight:700;font-size:16px}
+.ring-status.pending{background:var(--accent-soft);color:var(--accent)}
+.ring-status.accepted{background:var(--ok-soft);color:var(--ok)}
+.ring-status.refused{background:var(--crit-soft);color:var(--crit)}
+.ring-dot{width:14px;height:14px;border-radius:50%;background:currentColor;flex:none}
+.ring-status.pending .ring-dot{animation:ringpulse 1.2s ease-in-out infinite}
+@keyframes ringpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+.ring-links{display:flex;gap:8px;flex-wrap:wrap}
+.ring-links a{text-decoration:none;color:var(--ink)}
+.ring-links a.wa{background:#1F9D55;border-color:#1F9D55;color:#fff}
+.ring-sim{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.ring-sim p{margin:0;font-size:13px;color:var(--muted)}
+
+/* Version application (compte connecté) : plus de maquette de téléphone ; sur ordinateur, trois colonnes de travail */
+body.app-mode .explain{display:none!important}
+body.app-mode .guard{display:block;padding-block:16px 32px}
+body.app-mode .phone{max-width:none;height:auto;min-height:calc(100vh - 140px);border:1px solid var(--line);border-radius:14px;box-shadow:none}
+@media (min-width: 1000px){
+  body.app-mode .phone{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,.8fr);grid-template-rows:auto minmax(0,1fr)}
+  body.app-mode .ph-status{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;padding:14px 20px}
+  body.app-mode .ph-status .row{gap:16px}
+  body.app-mode .ph-screen{max-height:calc(100vh - 230px);border-right:1px solid var(--line);padding:18px}
+  body.app-mode .ph-screen:last-of-type{border-right:0}
+  body.app-mode .ph-nav{display:none}
+  body.app-mode .ph-toast{left:auto;right:16px;bottom:16px;width:380px}
+}
+
 @media (max-width: 940px){
   .guard{grid-template-columns:1fr;gap:28px}
   .grid2{grid-template-columns:1fr}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .res-form{grid-template-columns:1fr 1fr}
 }
 @media (max-width: 460px){
   .phone{border-width:0;border-radius:16px;height:740px;box-shadow:none;border:1px solid var(--line)}
@@ -298,7 +332,10 @@ td .sub{display:block;color:var(--muted);font-size:12px}
         </div>
         <div class="fld"><label for="f-motif">Motif</label>
           <select id="f-motif"><option>Visite personnelle</option><option>Rendez-vous professionnel</option><option>Livraison</option><option>Prestataire / technicien</option><option>Client hôtel</option></select></div>
-        <div class="fld"><label for="f-host">Personne ou bureau visité</label><input id="f-host" placeholder="Ex. Cabinet Lukusa, 4e étage"></div>
+        <div class="fld"><label for="f-host">Habitant ou bureau visité</label>
+          <div class="host-row"><input id="f-host" list="res-list" autocomplete="off" placeholder="Choisir ou écrire un nom"><button class="btn" type="button" id="f-ring" title="Prévenir l'habitant qu'un visiteur l'attend"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Sonner</button></div>
+          <datalist id="res-list"></datalist>
+        </div>
         <fieldset id="f-hotel" hidden>
           <legend>Fiche de police</legend>
           <div class="two">
@@ -387,6 +424,24 @@ td .sub{display:block;color:var(--muted);font-size:12px}
 
   <div class="panel">
     <header>
+      <h2>Habitants et bureaux</h2>
+      <div class="filters"><select id="r-site-filter" aria-label="Filtrer les habitants par site"><option value="">Tous les sites</option></select><span class="eyebrow" id="r-count"></span></div>
+    </header>
+    <div class="scroll"><table>
+      <thead><tr><th>Nom</th><th>Logement / bureau</th><th>Téléphone</th><th>Site</th><th></th></tr></thead>
+      <tbody id="a-residents"></tbody>
+    </table></div>
+    <form class="res-form" id="r-form">
+      <select id="r-site" aria-label="Site"></select>
+      <input id="r-name" placeholder="Nom de l'habitant ou du bureau" aria-label="Nom">
+      <input id="r-unit" placeholder="Appartement, étage, chambre" aria-label="Logement">
+      <input id="r-phone" inputmode="tel" placeholder="Téléphone (WhatsApp)" aria-label="Téléphone">
+      <button class="btn primary" type="submit">Ajouter</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <header>
       <h2>Journal des passages</h2>
       <div class="filters">
         <select id="j-site" aria-label="Filtrer par site"><option value="">Tous les sites</option></select>
@@ -404,6 +459,19 @@ td .sub{display:block;color:var(--muted);font-size:12px}
 </main>
 
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="ring-modal" hidden>
+  <div class="box ring-box" role="dialog" aria-modal="true" aria-labelledby="ring-title">
+    <h2 id="ring-title" style="font-size:19px">Sonner l'habitant</h2>
+    <div class="ring-status pending" id="ring-status"><span class="ring-dot"></span><span id="ring-status-txt">En attente de réponse…</span></div>
+    <p id="ring-help" style="margin:0;color:var(--muted);font-size:13.5px"></p>
+    <div class="ring-links" id="ring-links"></div>
+    <div class="ring-sim" id="ring-sim" hidden>
+      <p>Démonstration : simulez la réponse de l'habitant.</p>
+      <div class="ring-links"><button class="btn" type="button" data-sim="accepted">L'habitant accepte</button><button class="btn" type="button" data-sim="refused">L'habitant refuse</button></div>
+    </div>
+    <div class="btns"><button class="btn" type="button" id="ring-close">Fermer</button><button class="btn primary" type="button" id="ring-enter" hidden>Enregistrer l'entrée</button></div>
+  </div>
+</div>
 <div class="modal" id="csv-modal" hidden>
   <div class="box" role="dialog" aria-modal="true" aria-labelledby="csv-title">
     <h2 id="csv-title" style="font-size:18px">Export du journal</h2>
@@ -447,7 +515,7 @@ const DEMO_PEOPLE = [
 ];
 
 /* D = ce que le serveur connaît. QUEUE = saisies du téléphone pas encore envoyées (gardées même si on ferme la page). */
-const D = {entries:new Map(), alerts:new Map(), watch:new Map(), sites:new Map()};
+const D = {entries:new Map(), alerts:new Map(), watch:new Map(), sites:new Map(), residents:new Map()};
 const G = {site: lsGet('mk-site') || 'kiyo', tab:'reg', simOnline:true, demoIdx:0, pendingHit:null, mode:'loading', db:null, canEdit:false, clearArmed:false};
 if (!SITES.some(s => s.id === G.site)) G.site = 'kiyo';
 /* Hors de Claude, deux registres séparés dans le navigateur : 'demo' (exemples) et 'local' (mode test, vide au départ). */
@@ -534,7 +602,10 @@ function derivedAlerts(){
   }
   return out;
 }
-function detail(e){ return e.motif === 'Client hôtel' ? `Chambre ${e.room || '?'} · ${e.nights || 1} nuit(s)${e.origin ? ' · ' + e.origin : ''}` : `${e.motif || ''}${e.host ? ' → ' + e.host : ''}`; }
+function detail(e){
+  const base = e.motif === 'Client hôtel' ? `Chambre ${e.room || '?'} · ${e.nights || 1} nuit(s)${e.origin ? ' · ' + e.origin : ''}` : `${e.motif || ''}${e.host ? ' → ' + e.host : ''}`;
+  return base + (e.ring === 'accepted' ? ' · accepté par l\'habitant' : '');
+}
 
 /* ---------- Téléphone ---------- */
 function renderPhone(){
@@ -573,13 +644,22 @@ function renderPhone(){
       <button class="btn primary" data-scan="${i}" type="button">Scanner</button></div>`;
   }).join('');
 
-  for (const id of ['reg','form','round']) $('#s-' + id).hidden = G.tab !== id;
+  renderResidentPicker();
+  const wide = isWide();
+  for (const id of ['reg','form','round']) $('#s-' + id).hidden = !wide && G.tab !== id;
   document.querySelectorAll('.ph-nav button').forEach(b => b.setAttribute('aria-current', String(b.dataset.tab === G.tab)));
 }
 
 let phT; function phToast(msg){ const t = $('#ph-toast'); t.textContent = msg; t.hidden = false; clearTimeout(phT); phT = setTimeout(() => t.hidden = true, 2800); }
 let gT; function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(gT); gT = setTimeout(() => t.hidden = true, 3200); }
-function setTab(tab){ G.tab = tab; renderPhone(); const sc = $('#phone .ph-screen:not([hidden])'); if (sc) sc.scrollTop = 0; }
+// Version ordinateur d'un compte connecté : registre, formulaire et rondes côte à côte.
+const isWide = () => document.body.classList.contains('app-mode') && matchMedia('(min-width: 1000px)').matches;
+matchMedia('(min-width: 1000px)').addEventListener('change', () => renderPhone());
+function setTab(tab){
+  G.tab = tab; renderPhone();
+  if (isWide()) { if (tab === 'form') F('name').focus(); return; }
+  const sc = $('#phone .ph-screen:not([hidden])'); if (sc) sc.scrollTop = 0;
+}
 
 $('#phone').addEventListener('click', async e => {
   const b = e.target.closest('button'); if (!b) return;
@@ -641,8 +721,10 @@ function watchHit(name){
 async function commit(d){
   const s = site(G.site), now = Date.now();
   if (!SITES.length) { $('#f-err').textContent = "Aucun site : le gérant doit d'abord créer un site."; $('#f-err').hidden = false; return; }
-  const r = await write('entries', uid(), {...d, site:s.id, by:G.user?.name || s.guard, in:now, out:null}, true);
+  const rung = RING.cur && RING.cur.visitor === d.name ? {ring: RING.cur.status, resident: RING.cur.resident} : {};
+  const r = await write('entries', uid(), {...d, ...rung, site:s.id, by:G.user?.name || s.guard, in:now, out:null}, true);
   if (r === 'error') return;
+  RING.cur = null;
   resetForm(); G.tab = 'reg';
   phToast(`Entrée enregistrée à ${T(now)}` + (r === 'queued' ? ' · envoi au retour du réseau' : ''));
   renderAll();
@@ -671,6 +753,102 @@ $('#f-force').addEventListener('click', async () => {
   await raiseAlert(`Personne signalée admise : ${d.name}`);
   commit(d);
 });
+
+/* ---------- Habitants : annuaire par site ---------- */
+const intlDigits = p => { let d = String(p || '').replace(/\D/g, ''); if (d.startsWith('00')) d = d.slice(2); if (d.startsWith('0')) d = '243' + d.slice(1); if (d.length === 9) d = '243' + d; return d.length >= 11 ? d : ''; };
+const residentLabel = r => r.unit ? `${r.name} — ${r.unit}` : r.name;
+const residentsOf = sid => [...D.residents.values()].filter(r => r.site === sid).sort((a, b) => String(a.unit || a.name).localeCompare(String(b.unit || b.name), 'fr', {numeric:true}));
+function matchResident(text){
+  const t = norm(text); if (!t) return null;
+  const list = residentsOf(G.site);
+  return list.find(r => norm(residentLabel(r)) === t) || list.find(r => norm(r.name) === t) || list.find(r => r.unit && norm(r.unit) === t) || null;
+}
+let resSig = '';
+function renderResidentPicker(){
+  const list = residentsOf(G.site), sig = G.site + '|' + list.map(r => r.id + residentLabel(r)).join('|');
+  if (sig === resSig) return; resSig = sig;
+  $('#res-list').innerHTML = list.map(r => `<option value="${esc(residentLabel(r))}"></option>`).join('');
+}
+function renderResidents(){
+  const f = $('#r-site-filter'), cur = f.value;
+  const opts = SITES.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  if (f.dataset.sig !== opts) { f.innerHTML = '<option value="">Tous les sites</option>' + opts; f.value = SITES.some(s => s.id === cur) ? cur : ''; f.dataset.sig = opts; }
+  const rs = $('#r-site'), rcur = rs.value;
+  if (rs.dataset.sig !== opts) { rs.innerHTML = opts || '<option value="">Aucun site</option>'; rs.value = SITES.some(s => s.id === rcur) ? rcur : (SITES[0]?.id || ''); rs.dataset.sig = opts; }
+  const all = [...D.residents.values()].filter(r => !f.value || r.site === f.value)
+    .sort((a, b) => site(a.site).name.localeCompare(site(b.site).name) || String(a.unit || '').localeCompare(String(b.unit || ''), 'fr', {numeric:true}));
+  $('#r-count').textContent = `${all.length} contact${all.length > 1 ? 's' : ''}`;
+  $('#a-residents').innerHTML = all.length ? all.map(r => `<tr><td><b>${esc(r.name)}</b></td><td>${esc(r.unit || '—')}</td><td class="mono nw">${esc(r.phone || '—')}</td><td class="nw">${esc(site(r.site).name)}</td>
+    <td><button class="btn" type="button" data-delres="${esc(r.id)}">Retirer</button></td></tr>`).join('')
+    : '<tr><td colspan="5" class="empty">Aucun habitant enregistré. Ajoutez les habitants ou bureaux de chaque site : le gardien pourra les sonner à l\'arrivée d\'un visiteur.</td></tr>';
+}
+$('#r-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = $('#r-name').value.trim(), siteId = $('#r-site').value;
+  if (!name || !siteId) { toast(siteId ? "Indiquez le nom de l'habitant." : "Créez d'abord un site."); return; }
+  const r = await write('residents', uid(), {site:siteId, name, unit:$('#r-unit').value.trim(), phone:$('#r-phone').value.trim(), added:Date.now()});
+  if (r === 'ok') { ['#r-name', '#r-unit', '#r-phone'].forEach(s => $(s).value = ''); $('#r-name').focus(); toast(`${name} ajouté(e) à ${site(siteId).name}`); }
+});
+$('#r-site-filter').addEventListener('change', renderResidents);
+$('#a-residents').addEventListener('click', async e => {
+  const b = e.target.closest('[data-delres]'); if (!b) return;
+  if (b.dataset.armed !== '1') { b.dataset.armed = '1'; b.textContent = 'Confirmer'; b.classList.add('danger'); return; }
+  if (await write('residents', b.dataset.delres, null) === 'ok') toast('Habitant retiré');
+});
+
+/* ---------- Sonner l'habitant ---------- */
+// Avec un compte : le gardien envoie à l'habitant un lien (WhatsApp ou SMS) ; l'habitant répond sur ce lien
+// et la réponse s'affiche en direct au poste. En démo et en test, la réponse est simulée.
+const RING = {cur: null, stop: null};
+const ringId = () => Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('');
+function startRing(){
+  const visitor = F('name').value.trim(), res = matchResident(F('host').value);
+  if (!visitor) { $('#f-err').textContent = "Indiquez d'abord le nom du visiteur."; $('#f-err').hidden = false; F('name').focus(); return; }
+  if (!res) { $('#f-err').textContent = residentsOf(G.site).length ? "Choisissez l'habitant dans la liste proposée." : "Aucun habitant enregistré pour ce site : ajoutez-les dans le tableau de bord (Habitants et bureaux)."; $('#f-err').hidden = false; F('host').focus(); return; }
+  $('#f-err').hidden = true;
+  if (RING.stop) { RING.stop(); RING.stop = null; }
+  const s = site(G.site);
+  RING.cur = {id: ringId(), orgId: G.org?.id || '', site: s.id, siteName: s.name, resident: res.name, unit: res.unit || '', phone: res.phone || '',
+    visitor, by: G.user?.name || s.guard, status: 'pending', createdAt: Date.now()};
+  if (G.mode === 'cloud') {
+    const {phone, ...pub} = RING.cur;   // le numéro de l'habitant ne part pas dans la sonnerie publique
+    MK.cloud.ring(pub);
+    RING.stop = MK.cloud.watchRing(RING.cur.id, data => { if (RING.cur && data.status !== RING.cur.status) { RING.cur = {...RING.cur, status: data.status}; renderRing(); } });
+  }
+  $('#ring-modal').hidden = false;
+  renderRing();
+}
+function renderRing(){
+  const c = RING.cur; if (!c) return;
+  const cloud = G.mode === 'cloud';
+  $('#ring-title').textContent = `Sonner ${c.resident}${c.unit ? ' · ' + c.unit : ''}`;
+  const st = $('#ring-status');
+  st.className = 'ring-status ' + c.status;
+  $('#ring-status-txt').textContent = c.status === 'accepted' ? `${c.resident} accepte la visite de ${c.visitor}.` : c.status === 'refused' ? `${c.resident} refuse la visite. Ne laissez pas entrer.` : `En attente de la réponse de ${c.resident}…`;
+  const link = `${location.origin}${location.pathname}#reponse-${c.id}`;
+  const text = `Mokengeli · ${c.siteName} : ${c.visitor} est à l'entrée et demande à vous voir${c.unit ? ' (' + c.unit + ')' : ''}.` + (cloud ? ` Répondez ici : ${link}` : ' Répondez OUI ou NON.');
+  const d = intlDigits(c.phone);
+  $('#ring-help').textContent = c.status !== 'pending' ? '' : d
+    ? (cloud ? "Envoyez la sonnerie par WhatsApp ou SMS : l'habitant touche le lien et répond. Sa réponse s'affiche ici." : 'Prévenez l\'habitant par WhatsApp, SMS ou appel.')
+    : "Pas de numéro enregistré pour cet habitant : ajoutez-le dans le tableau de bord pour pouvoir le sonner par WhatsApp ou SMS.";
+  $('#ring-links').innerHTML = c.status === 'pending' && d ? `
+    <a class="btn wa" href="https://wa.me/${d}?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn" href="sms:+${d}?body=${encodeURIComponent(text)}">SMS</a>
+    <a class="btn" href="tel:+${d}">Appeler</a>` : '';
+  $('#ring-sim').hidden = cloud || c.status !== 'pending';
+  $('#ring-enter').hidden = c.status !== 'accepted';
+  $('#ring-close').textContent = c.status === 'refused' ? 'Fermer et annuler la visite' : 'Fermer';
+}
+$('#f-ring').addEventListener('click', startRing);
+$('#ring-modal').addEventListener('click', e => {
+  const b = e.target.closest('[data-sim]'); if (!b || !RING.cur) return;
+  RING.cur.status = b.dataset.sim; renderRing();
+});
+$('#ring-close').addEventListener('click', () => {
+  $('#ring-modal').hidden = true;
+  if (RING.cur?.status === 'refused') { RING.stop?.(); RING.stop = null; RING.cur = null; resetForm(); setTab('reg'); phToast('Visite refusée par l\'habitant.'); }
+});
+$('#ring-enter').addEventListener('click', () => { $('#ring-modal').hidden = true; RING.stop?.(); RING.stop = null; $('#entry-form').requestSubmit(); });
 
 /* ---------- Tableau de bord ---------- */
 function renderAdmin(){
@@ -717,6 +895,7 @@ function renderAdmin(){
     : G.mode === 'local' ? (G.clearArmed ? 'Confirmer : tout effacer' : 'Vider mon registre')
     : G.clearArmed ? `Confirmer : effacer ${demoCount} donnée(s) d'exemple` : "Effacer les données d'exemple";
   clr.classList.toggle('danger', G.clearArmed);
+  renderResidents();
   renderJournal();
 }
 function journalRows(){
@@ -790,6 +969,7 @@ $('#m-guard').addEventListener('click', () => setMode('guard'));
 $('#m-admin').addEventListener('click', () => setMode('admin'));
 function renderAll(){
   const tag = $('#mode-tag'), cloud = G.mode === 'cloud';
+  document.body.classList.toggle('app-mode', cloud);
   tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : cloud ? `Connecté · ${G.org?.name || 'ma société'}` : G.mode === 'demo' ? 'Mode démo : exemples' : G.mode === 'local' ? 'Mode test : vos données sur cet appareil' : 'Connexion…';
   tag.className = 'pill ' + (G.mode === 'live' || cloud ? 'ok' : G.mode === 'demo' ? 'warn' : 'info');
   const guardOnly = cloud && G.user?.role === 'gardien';
@@ -817,6 +997,7 @@ function loadDemo(){
   const saved = lsGet(storeKey());
   if (saved && typeof saved === 'object') {
     for (const c of Object.keys(D)) for (const x of (saved[c] || [])) if (x && x.id) D[c].set(x.id, x);
+    if (G.mode === 'demo' && !saved.residents) { seedDemoResidents(); saveDemo(); }   // démos enregistrées avant l'annuaire des habitants
     return;
   }
   if (G.mode === 'local') return;
@@ -831,7 +1012,13 @@ function loadDemo(){
   put('entries', {site:'mwinda', by:site('mwinda').guard, name:'Gédéon Mutombo', idType:CE, idNum:'0233 6610 9054', motif:'Client hôtel', room:'12', nights:'2', nat:'Congolaise', origin:'Kikwit', in:ago(300), out:null});
   put('watch', {name:'Serge Mbala Nkosi', reason:'Accès interdit : vol de câbles signalé le 2 octobre'});
   D.sites.set('kiyo', {id:'kiyo', cps:{'Portail principal':ago(35), 'Parking sous-sol':ago(95), 'Toit et groupe électrogène':ago(150)}, scans:[ago(150), ago(95), ago(35)]});
+  seedDemoResidents();
   saveDemo();
+}
+function seedDemoResidents(){
+  [['kiyo','Aimée Kalonji','Appartement 6B','+243 81 220 4410'], ['kiyo','Cabinet Lukusa','4e étage','+243 99 104 7721'], ['kiyo','Bureau ONG Mwinda Plus','2e étage',''],
+   ['kiyo','Famille Tshimanga','Appartement 3A','+243 84 551 0932'], ['mwinda','Gédéon Mutombo','Chambre 12','+243 97 300 2288'], ['bandal','Famille Nsimba','Villa 3','+243 82 776 1405']]
+   .forEach(([s, name, unit, phone]) => { const id = uid(); D.residents.set(id, {site:s, name, unit, phone, id, demo:true}); });
 }
 
 function setStandalone(mode, announce = true){
@@ -855,7 +1042,7 @@ async function init(){
   G.mode = 'live'; G.db = db;
   const subs = [
     ['entries', db.collection('entries').where('in', '>=', Date.now() - 7 * 864e5).orderBy('in', 'desc').limit(1000)],
-    ['alerts', db.collection('alerts')], ['watch', db.collection('watch')], ['sites', db.collection('sites')],
+    ['alerts', db.collection('alerts')], ['watch', db.collection('watch')], ['sites', db.collection('sites')], ['residents', db.collection('residents')],
   ];
   for (const [c, q] of subs) q.onSnapshot(snap => { D[c] = new Map(snap.docs.map(d => [d.id, {...d.data(), id:d.id}])); renderAll(); },
     () => toast('Connexion aux données perdue. Rechargez la page.'));

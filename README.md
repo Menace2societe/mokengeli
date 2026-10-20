@@ -20,6 +20,15 @@ Registre numérique des visiteurs et des rondes pour les sociétés de gardienna
 - Journal des passages avec recherche et export pour Excel.
 - Liste de surveillance partagée avec tous les postes.
 
+**Habitants et sonnerie**
+- Annuaire des habitants et bureaux de chaque site (nom, logement, téléphone), géré depuis le tableau de bord.
+- « Sonner » depuis le formulaire d'entrée : le gardien envoie à l'habitant un lien par WhatsApp ou SMS (ou l'appelle).
+- L'habitant répond « Laisser entrer » ou « Refuser » sur ce lien, sans compte ; la réponse s'affiche en direct au poste et l'entrée est marquée « accepté par l'habitant ».
+- Le lien est secret, ne sert qu'une fois et expire au bout de 30 minutes. Le numéro de l'habitant n'y figure pas.
+
+**Version ordinateur**
+- Connecté à un compte, le poste de garde n'est plus une maquette de téléphone : sur ordinateur, registre, formulaire et rondes s'affichent côte à côte ; sur téléphone, l'application occupe tout l'écran.
+
 **Comptes**
 - Le gérant crée sa société (e-mail ou numéro de téléphone + mot de passe) et son premier site.
 - Il invite ses gardiens avec un code ou un lien `…/#rejoindre-CODE` à envoyer par WhatsApp.

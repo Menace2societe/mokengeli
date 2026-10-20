@@ -75,6 +75,25 @@ service cloud.firestore {
         allow read, create: if member(org);
         allow update, delete: if manager(org);
       }
+      // Annuaire des habitants : les gardiens peuvent en ajouter à l'accueil, seul le gérant retire.
+      match /residents/{id} {
+        allow read: if member(org);
+        allow create, update: if member(org) && str(request.resource.data.name, 120) && request.resource.data.site is string;
+        allow delete: if manager(org);
+      }
+    }
+
+    // Sonnerie : l'habitant n'a pas de compte ; il ouvre le lien secret (32 caractères) et répond une seule fois,
+    // dans les 30 minutes. Le numéro de l'habitant n'est jamais stocké ici.
+    match /rings/{id} {
+      allow get: if true;
+      allow create: if hasProfile() && request.resource.data.orgId == me().orgId
+        && request.resource.data.status == 'pending' && request.resource.data.createdAt is number
+        && !('phone' in request.resource.data) && id.size() == 32;
+      allow update: if resource.data.status == 'pending'
+        && request.time.toMillis() - resource.data.createdAt < 30 * 60 * 1000
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'answeredAt'])
+        && request.resource.data.status in ['accepted', 'refused'];
     }
   }
 }

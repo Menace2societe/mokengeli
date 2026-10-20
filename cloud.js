@@ -193,7 +193,12 @@ $('#acct-btn').addEventListener('click', () => S.profile ? openMe() : openAuth('
 $('#me-close').addEventListener('click', () => $('#me-modal').hidden = true);
 $('#me-logout').addEventListener('click', async () => { $('#me-modal').hidden = true; await signOut(auth); MK.toast('Vous êtes déconnecté.'); });
 
+// Bouton « Gérer les sites » dans le tableau de bord, pour le gérant connecté.
+document.querySelector('#a-sites').closest('.panel').querySelector('header').insertAdjacentHTML('beforeend', '<button class="btn primary" type="button" id="a-manage-sites" hidden>Ajouter ou gérer les sites</button>');
+$('#a-manage-sites').addEventListener('click', () => { openMe(); setTimeout(() => $('#ms-name')?.scrollIntoView({block: 'center'}), 300); });
+
 MK.onRender = () => {
+  $('#a-manage-sites').hidden = S.profile?.role !== 'gerant';
   const btn = $('#acct-btn');
   btn.textContent = S.profile ? `Mon compte · ${S.profile.name.split(' ')[0]}` : 'Se connecter';
   btn.classList.toggle('primary', !S.profile);
@@ -305,6 +310,7 @@ function subscribe(orgId){
     onSnapshot(col('alerts'), meta, into('alerts'), fail),
     onSnapshot(col('watch'), meta, into('watch'), fail),
     onSnapshot(col('sites'), meta, into('sites'), fail),
+    onSnapshot(col('residents'), meta, into('residents'), fail),
     onSnapshot(col('siteconf'), snap => {
       MK.setSites(snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)));
       if (!$('#me-modal').hidden) renderMe();
@@ -330,7 +336,46 @@ MK.cloud = {
     return Promise.resolve();
   },
   setNetwork(on){ return on ? enableNetwork(db) : disableNetwork(db); },
+  // Sonnerie : document public lisible par l'habitant grâce à son identifiant secret (dans le lien envoyé).
+  ring(data){ setDoc(doc(db, 'rings', data.id), data).catch(err => MK.toast(errText(err))); },
+  watchRing(id, cb){ return onSnapshot(doc(db, 'rings', id), s => { if (s.exists()) cb(s.data()); }, err => MK.toast(errText(err))); },
 };
+
+/* ---------- Page de réponse de l'habitant : …/#reponse-<identifiant> ---------- */
+async function showRingAnswer(id){
+  document.body.insertAdjacentHTML('beforeend', `<div id="ring-answer" style="position:fixed;inset:0;z-index:200;background:var(--bg);overflow:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))">
+    <div style="max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:16px;padding-top:24px">
+      <div style="display:flex;align-items:center;gap:10px"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M10 9h14v16H10zM13 9v16" fill="none" stroke="var(--on-accent)" stroke-width="2"/></svg><b style="font-family:var(--f-display);font-size:20px">Mokengeli</b></div>
+      <div id="ra-body" class="panel" style="padding:20px;display:flex;flex-direction:column;gap:14px"><p style="margin:0">Chargement…</p></div>
+    </div></div>`);
+  const body = $('#ra-body');
+  const paint = r => {
+    const fresh = Date.now() - (r.createdAt || 0) < 30 * 60000;
+    const head = `<span class="eyebrow">${esc(r.siteName)}${r.unit ? ' · ' + esc(r.unit) : ''}</span>
+      <h1 style="font-size:26px">${esc(r.visitor)} est à l'entrée</h1>
+      <p style="margin:0;color:var(--muted)">Bonjour ${esc(r.resident)}, le gardien ${esc(r.by || '')} vous demande si vous acceptez cette visite.</p>`;
+    if (r.status === 'accepted') body.innerHTML = head + '<div class="ring-status accepted"><span class="ring-dot"></span>Vous avez accepté. Le gardien laisse entrer votre visiteur.</div>';
+    else if (r.status === 'refused') body.innerHTML = head + '<div class="ring-status refused"><span class="ring-dot"></span>Vous avez refusé. Le gardien ne laissera pas entrer.</div>';
+    else if (!fresh) body.innerHTML = head + '<div class="ring-status refused"><span class="ring-dot"></span>Cette demande a expiré. Appelez le poste de garde si besoin.</div>';
+    else body.innerHTML = head + `<div style="display:grid;gap:10px">
+        <button class="big-btn" type="button" data-answer="accepted" style="background:var(--ok)">Laisser entrer</button>
+        <button class="big-btn" type="button" data-answer="refused" style="background:var(--crit)">Refuser</button></div>`;
+  };
+  try {
+    const ref = doc(db, 'rings', id);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) { body.innerHTML = '<p style="margin:0">Ce lien n\'est plus valable.</p>'; return; }
+    let r = snap.data(); paint(r);
+    body.addEventListener('click', async e => {
+      const b = e.target.closest('[data-answer]'); if (!b) return;
+      body.querySelectorAll('button').forEach(x => x.disabled = true);
+      try { await updateDoc(ref, {status: b.dataset.answer, answeredAt: Date.now()}); r = {...r, status: b.dataset.answer}; paint(r); }
+      catch (err) { body.insertAdjacentHTML('beforeend', `<div class="acct-msg err">${esc(errText(err))}</div>`); body.querySelectorAll('button').forEach(x => x.disabled = false); }
+    });
+  } catch (err) { body.innerHTML = `<p style="margin:0">${esc(errText(err))}</p>`; }
+}
+const ringHash = location.hash.match(/^#reponse-([a-f0-9]{32})$/);
+if (ringHash) showRingAnswer(ringHash[1]);
 
 onAuthStateChanged(auth, async user => {
   if (!user) {
