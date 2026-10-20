@@ -221,6 +221,7 @@ td .sub{display:block;color:var(--muted);font-size:12px}
       <button id="m-admin" aria-pressed="false">Tableau de bord gérant</button>
     </div>
     <span class="pill info" id="mode-tag">Connexion…</span>
+    <button class="btn" id="mode-switch" type="button" hidden></button>
   </div>
 </header>
 
@@ -246,6 +247,7 @@ td .sub{display:block;color:var(--muted);font-size:12px}
         <li><span class="n">2</span><span>Touchez le bouton <b>En ligne</b> pour simuler une coupure. Les saisies restent sur le téléphone, même si on ferme la page, et partent dès que le réseau revient.</span></li>
         <li><span class="n">3</span><span>Saisissez un nom de la liste de surveillance (par exemple <code>Serge Mbala</code>) pour voir l'alerte.</span></li>
         <li><span class="n">4</span><span>Ouvrez <b>Tableau de bord gérant</b> sur un autre appareil : les saisies y arrivent en direct.</span></li>
+        <li><span class="n">5</span><span>Touchez <b>Passer en mode test</b>, en haut, pour repartir d'un registre vide et enregistrer vos propres visiteurs.</span></li>
       </ol>
     </div>
   </div>
@@ -446,8 +448,12 @@ const DEMO_PEOPLE = [
 const D = {entries:new Map(), alerts:new Map(), watch:new Map(), sites:new Map()};
 const G = {site: lsGet('mk-site') || 'kiyo', tab:'reg', simOnline:true, demoIdx:0, pendingHit:null, mode:'loading', db:null, canEdit:false, clearArmed:false};
 if (!SITES.some(s => s.id === G.site)) G.site = 'kiyo';
+/* Hors de Claude, deux registres séparés dans le navigateur : 'demo' (exemples) et 'local' (mode test, vide au départ). */
+const standalone = () => G.mode === 'demo' || G.mode === 'local';
+const qKey = () => G.mode === 'local' ? 'mk-queue-local' : 'mk-queue';
+const storeKey = () => G.mode === 'local' ? 'mk-local' : 'mk-demo';
 let QUEUE = Array.isArray(lsGet('mk-queue')) ? lsGet('mk-queue') : [];
-const saveQueue = () => lsSet('mk-queue', QUEUE);
+const saveQueue = () => lsSet(qKey(), QUEUE);
 const online = () => G.simOnline && navigator.onLine !== false;
 
 function view(coll){
@@ -696,8 +702,9 @@ function renderAdmin(){
 
   const demoCount = ['entries','alerts','watch','sites'].reduce((n, c) => n + [...D[c].values()].filter(x => x.demo).length, 0);
   const clr = $('#a-clear');
-  clr.hidden = !(G.mode === 'demo' || (G.mode === 'live' && G.canEdit && demoCount));
+  clr.hidden = !(standalone() || (G.mode === 'live' && G.canEdit && demoCount));
   clr.textContent = G.mode === 'demo' ? (G.clearArmed ? 'Confirmer : remettre la démo à zéro' : 'Remettre la démo à zéro')
+    : G.mode === 'local' ? (G.clearArmed ? 'Confirmer : tout effacer' : 'Vider mon registre')
     : G.clearArmed ? `Confirmer : effacer ${demoCount} donnée(s) d'exemple` : "Effacer les données d'exemple";
   clr.classList.toggle('danger', G.clearArmed);
   renderJournal();
@@ -727,10 +734,10 @@ $('#w-form').addEventListener('submit', async e => {
 $('#a-clear').addEventListener('click', async () => {
   if (!G.clearArmed) { G.clearArmed = true; renderAdmin(); return; }
   G.clearArmed = false;
-  if (G.mode === 'demo') {
-    try { localStorage.removeItem('mk-demo'); localStorage.removeItem('mk-queue'); } catch {}
+  if (standalone()) {
+    try { localStorage.removeItem(storeKey()); localStorage.removeItem(qKey()); } catch {}
     QUEUE = []; for (const c of Object.keys(D)) D[c].clear();
-    loadDemo(); toast('Démo remise à zéro'); renderAll(); return;
+    loadDemo(); toast(G.mode === 'local' ? 'Registre vidé' : 'Démo remise à zéro'); renderAll(); return;
   }
   const ops = [];
   for (const c of ['entries','alerts','watch','sites']) for (const x of D[c].values()) if (x.demo) ops.push({coll:c, id:x.id, data:null});
@@ -760,22 +767,28 @@ $('#m-guard').addEventListener('click', () => setMode('guard'));
 $('#m-admin').addEventListener('click', () => setMode('admin'));
 function renderAll(){
   const tag = $('#mode-tag');
-  tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : G.mode === 'demo' ? 'Mode démo : données sur cet appareil' : 'Connexion…';
+  tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : G.mode === 'demo' ? 'Mode démo : exemples' : G.mode === 'local' ? 'Mode test : vos données sur cet appareil' : 'Connexion…';
   tag.className = 'pill ' + (G.mode === 'live' ? 'ok' : G.mode === 'demo' ? 'warn' : 'info');
+  const sw = $('#mode-switch');
+  sw.hidden = !standalone();
+  sw.textContent = G.mode === 'local' ? 'Revenir à la démo' : 'Passer en mode test';
   $('#mode-note').innerHTML = G.mode === 'demo'
-    ? "<b>Démonstration :</b> essayez librement, vos saisies restent dans ce navigateur. Dans la version pilote, elles sont partagées en direct entre le poste de garde et le gérant."
+    ? "<b>Démonstration :</b> le registre contient des exemples. Pour essayer avec vos propres visiteurs, touchez « Passer en mode test » en haut de la page."
+    : G.mode === 'local'
+    ? "<b>Mode test :</b> le registre est vide au départ. Enregistrez vos vrais visiteurs et vos rondes ; tout reste dans ce navigateur, même après avoir fermé la page."
     : "<b>Version pilote :</b> les saisies sont partagées en direct. Ouvrez ce lien sur le téléphone du poste et sur l'ordinateur du gérant : chaque entrée apparaît des deux côtés.";
   renderPhone(); renderAdmin();
 }
 
 /* Mode démo (page ouverte hors de claude.ai) : exemples locaux, gardés dans ce navigateur, rien n'est partagé. */
-function saveDemo(){ if (G.mode === 'demo') lsSet('mk-demo', Object.fromEntries(Object.entries(D).map(([c, m]) => [c, [...m.values()]]))); }
+function saveDemo(){ if (standalone()) lsSet(storeKey(), Object.fromEntries(Object.entries(D).map(([c, m]) => [c, [...m.values()]]))); }
 function loadDemo(){
-  const saved = lsGet('mk-demo');
+  const saved = lsGet(storeKey());
   if (saved && typeof saved === 'object') {
     for (const c of Object.keys(D)) for (const x of (saved[c] || [])) if (x && x.id) D[c].set(x.id, x);
     return;
   }
+  if (G.mode === 'local') return;
   const ago = m => Date.now() - m * 60000, put = (c, o) => { const id = uid(); D[c].set(id, {...o, id, demo:true}); };
   [['kiyo','Patrick Mukendi',CE,'0412 8836 5521','Rendez-vous professionnel','Cabinet Lukusa, 4e étage',212,150],
    ['kiyo','Didier Mfumu',PC,'KIN-PC-480271','Prestataire / technicien','Groupe électrogène',140,null],
@@ -790,11 +803,23 @@ function loadDemo(){
   saveDemo();
 }
 
+function setStandalone(mode, announce = true){
+  G.mode = mode; G.clearArmed = false; lsSet('mk-standalone', mode);
+  for (const c of Object.keys(D)) D[c].clear();
+  QUEUE = Array.isArray(lsGet(qKey())) ? lsGet(qKey()) : [];
+  loadDemo(); resetForm(); G.tab = 'reg'; renderAll(); flush();
+  if (announce) toast(mode === 'local' ? 'Mode test : registre vide, vos saisies restent sur cet appareil' : 'Retour à la démo');
+}
+$('#mode-switch').addEventListener('click', () => setStandalone(G.mode === 'local' ? 'demo' : 'local'));
+
 async function init(){
   renderAll();
   let db = null;
   try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch { db = null; }
-  if (!db) { G.mode = 'demo'; loadDemo(); renderAll(); flush(); return; }
+  if (!db) {
+    G.mode = location.hash === '#test' || lsGet('mk-standalone') === 'local' ? 'local' : 'demo';
+    setStandalone(G.mode, false); return;
+  }
   G.mode = 'live'; G.db = db;
   const subs = [
     ['entries', db.collection('entries').where('in', '>=', Date.now() - 7 * 864e5).orderBy('in', 'desc').limit(1000)],
