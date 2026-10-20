@@ -1,4 +1,4 @@
-// Construit site/index.html : la page Mokengeli en document HTML complet, prête pour Netlify.
+// Construit site/ : la page Mokengeli en document HTML complet, plus cloud.js (comptes Firebase), prête pour Netlify.
 // Utilisation : node build.js
 const fs = require('fs');
 const path = require('path');
@@ -20,6 +20,8 @@ img{max-width:100%}
 </head>
 <body>
 `;
-fs.mkdirSync(path.join(__dirname, 'site'), {recursive: true});
-fs.writeFileSync(path.join(__dirname, 'site', 'index.html'), head + page + '\n</body>\n</html>\n');
-console.log('site/index.html généré');
+const out = path.join(__dirname, 'site');
+fs.mkdirSync(out, {recursive: true});
+fs.writeFileSync(path.join(out, 'index.html'), head + page + '\n<script type="module" src="cloud.js"></script>\n</body>\n</html>\n');
+fs.copyFileSync(path.join(__dirname, 'cloud.js'), path.join(out, 'cloud.js'));
+console.log('site/index.html et site/cloud.js générés');

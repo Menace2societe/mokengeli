@@ -20,17 +20,34 @@ Registre numérique des visiteurs et des rondes pour les sociétés de gardienna
 - Journal des passages avec recherche et export pour Excel.
 - Liste de surveillance partagée avec tous les postes.
 
+**Comptes**
+- Le gérant crée sa société (e-mail ou numéro de téléphone + mot de passe) et son premier site.
+- Il invite ses gardiens avec un code ou un lien `…/#rejoindre-CODE` à envoyer par WhatsApp.
+- Le gardien n'a pas besoin d'e-mail : son numéro +243 lui sert d'identifiant.
+- Mon compte : nom, changement de mot de passe, mot de passe oublié (comptes e-mail), sites et points de ronde, code d'invitation, équipe (retirer un gardien), déconnexion.
+
+## Trois façons de l'ouvrir
+
+| Mode | Comment | Données |
+|---|---|---|
+| Démo | page d'accueil | exemples, dans le navigateur |
+| Test | bouton « Passer en mode test » ou `…/#test` | registre vide, dans le navigateur |
+| Compte | « Créer ma société » ou « Se connecter » | Firebase, partagées en direct entre gardiens et gérant, gardées hors ligne |
+
 ## Fichiers
 
-- `mokengeli.html` : l'application (une seule page, sans dépendance).
-- `build.js` : génère `site/index.html`, la version autonome pour l'hébergement.
+- `mokengeli.html` : l'application (une seule page).
+- `cloud.js` : comptes et base partagée (Firebase Auth + Firestore), chargé uniquement sur la version hébergée.
+- `firestore.rules` : règles de sécurité (chaque société ne voit que ses données ; un gardien ne peut ni supprimer ni modifier la liste de surveillance).
+- `build.js` : génère `site/` pour l'hébergement.
 - `site/` : ce qui est mis en ligne sur Netlify.
 
-## Mettre à jour la démo
+## Mettre à jour
 
 ```bash
 node build.js
 netlify deploy --prod --no-build --dir site
+firebase deploy --only firestore:rules
 ```
 
-Hors de Claude, l'application tourne en mode démo : les données restent dans le navigateur de chaque visiteur. Le partage en direct entre le gardien et le gérant fonctionne dans la version pilote ; pour le rendre disponible partout, il faudra une base de données externe (par exemple Supabase).
+Projet Firebase : `mokengeli-15ffi` (connexion par e-mail/mot de passe activée dans Authentication).

@@ -343,7 +343,7 @@ td .sub{display:block;color:var(--muted);font-size:12px}
   <div class="ahead">
     <div>
       <span class="eyebrow" id="a-date"></span>
-      <h1>Votre société de gardiennage · 4 sites à Kinshasa</h1>
+      <h1 id="a-title">Votre société de gardiennage · 4 sites à Kinshasa</h1>
     </div>
     <button class="btn" id="a-clear" type="button" hidden>Effacer les données d'exemple</button>
   </div>
@@ -427,15 +427,17 @@ const lsGet = k => { try { return JSON.parse(localStorage.getItem(k)); } catch {
 const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 const strip = o => { const {id, _pending, ...rest} = o || {}; return rest; };
 
-/* Configuration des sites (fixe). Ce qui bouge (entrées, rondes, alertes) vit dans la base partagée. */
-const SITES = [
+/* Sites d'exemple (démo, test, pilote Claude). Une fois connecté à un compte, les sites viennent de la société. */
+const DEMO_SITES = [
   {id:'kiyo', name:'Immeuble Kiyo', commune:'Gombe', type:'immeuble', guard:'Jean-Paul Ilunga', cps:['Portail principal','Parking sous-sol','Toit et groupe électrogène','Couloir 4e étage','Issue de secours']},
   {id:'mwinda', name:'Hôtel Mwinda', commune:'Limete', type:'hotel', guard:'Bahati Amani', cps:['Réception','Parking','Couloir 1er étage','Arrière-cour']},
   {id:'kingabwa', name:'Entrepôt Kingabwa', commune:'Limete', type:'entrepot', guard:'Héritier Kalala', cps:['Portail camions','Quai 1','Quai 2','Parking arrière']},
   {id:'bandal', name:'Résidence Bandal', commune:'Bandalungwa', type:'residence', guard:'Moïse Tshibangu', cps:['Portail','Jardin','Arrière des villas']},
 ];
+let SITES = DEMO_SITES;
+const NO_SITE = {id:'aucun', name:'Aucun site', commune:'à créer par le gérant', type:'immeuble', guard:'', cps:[]};
 const ROUNDS_PER_DAY = 12, ROUND_EVERY = 120;
-const site = id => SITES.find(s => s.id === id) || SITES[0];
+const site = id => SITES.find(s => s.id === id) || SITES[0] || NO_SITE;
 const CE = "Carte d'électeur", PP = 'Passeport', PC = 'Permis de conduire';
 const DEMO_PEOPLE = [
   {name:'Christelle Nsimba Mavungu', idType:CE, idNum:'0213 7754 1098', phone:'+243 99 812 4471', nat:'Congolaise', origin:'Matadi'},
@@ -470,6 +472,8 @@ function rawWrite(op){
     if (G.mode === 'live') {
       const ref = G.db.collection(op.coll).doc(op.id);
       if (op.data) await ref.set(op.data); else await ref.delete();
+    } else if (G.mode === 'cloud') {
+      await MK.cloud.write(op);
     } else {
       if (op.data) D[op.coll].set(op.id, {...op.data, id:op.id}); else D[op.coll].delete(op.id);
       saveDemo();
@@ -486,7 +490,7 @@ function errMsg(e){
 }
 async function write(coll, id, data, queueable = false){
   const op = {coll, id, data};
-  if (queueable && !online()) {
+  if (queueable && !online() && G.mode !== 'cloud') {
     QUEUE = QUEUE.filter(q => !(q.coll === coll && q.id === id)); QUEUE.push(op); saveQueue(); renderAll(); return 'queued';
   }
   try { await rawWrite(op); renderAll(); return 'ok'; }
@@ -536,9 +540,10 @@ function detail(e){ return e.motif === 'Client hôtel' ? `Chambre ${e.room || '?
 function renderPhone(){
   const s = site(G.site);
   $('#ph-site').textContent = `${s.name} · ${s.commune}`;
-  $('#ph-guard').textContent = `Gardien : ${s.guard}`;
+  $('#ph-guard').textContent = `Gardien : ${G.user?.name || s.guard}`;
   $('#ph-clock').textContent = T(Date.now());
-  const pend = QUEUE.length, net = $('#ph-net');
+  const pend = G.mode === 'cloud' ? Object.values(D).reduce((n, m) => n + [...m.values()].filter(x => x._pending).length, 0) : QUEUE.length;
+  const net = $('#ph-net');
   net.classList.toggle('off', !online());
   net.querySelector('span').textContent = online() ? (pend ? `Envoi… ${pend}` : 'En ligne') : `${navigator.onLine === false ? 'Pas de réseau' : 'Hors ligne'} · ${pend} en attente`;
   $('#f-hotel').hidden = s.type !== 'hotel';
@@ -556,6 +561,7 @@ function renderPhone(){
     <div class="who"><b>${esc(e.name)}</b><span>${esc(detail(e))}</span>${e._pending ? '<span class="pill warn">en attente d\'envoi</span>' : ''}</div>
     <div class="act">${act}</div></div>`;
   $('#reg-present').innerHTML = G.mode === 'loading' ? '<div class="empty">Chargement du registre…</div>'
+    : !SITES.length ? `<div class="empty">Aucun site n'est encore créé. ${G.user?.role === 'gerant' ? 'Ajoutez votre premier site dans « Mon compte ».' : 'Le gérant doit ajouter les sites dans son compte.'}</div>`
     : present.length ? present.map(e => row(e, `<button class="btn" data-out="${esc(e.id)}" type="button">Sortie</button>`)).join('')
     : `<div class="empty">${q ? 'Aucun nom ne correspond.' : 'Personne sur le site. Touchez « Nouvelle entrée » pour enregistrer le premier visiteur.'}</div>`;
   $('#reg-out').innerHTML = out.length ? out.map(e => row(e, '')).join('') : '<div class="empty">Aucune sortie enregistrée aujourd\'hui.</div>';
@@ -592,7 +598,10 @@ $('#phone').addEventListener('click', async e => {
 });
 $('#ph-net').addEventListener('click', async () => {
   G.simOnline = !G.simOnline;
-  if (online()) { const n = await flush(); phToast(n ? `Réseau revenu : ${n} enregistrement(s) envoyé(s)` : 'Réseau revenu'); }
+  if (G.mode === 'cloud') {
+    await MK.cloud.setNetwork(G.simOnline);
+    phToast(G.simOnline ? 'Réseau revenu : les saisies en attente partent' : 'Hors ligne : les saisies restent sur ce téléphone');
+  } else if (online()) { const n = await flush(); phToast(n ? `Réseau revenu : ${n} enregistrement(s) envoyé(s)` : 'Réseau revenu'); }
   else phToast('Hors ligne : les saisies restent sur ce téléphone');
   renderAll();
 });
@@ -631,7 +640,8 @@ function watchHit(name){
 }
 async function commit(d){
   const s = site(G.site), now = Date.now();
-  const r = await write('entries', uid(), {...d, site:s.id, by:s.guard, in:now, out:null}, true);
+  if (!SITES.length) { $('#f-err').textContent = "Aucun site : le gérant doit d'abord créer un site."; $('#f-err').hidden = false; return; }
+  const r = await write('entries', uid(), {...d, site:s.id, by:G.user?.name || s.guard, in:now, out:null}, true);
   if (r === 'error') return;
   resetForm(); G.tab = 'reg';
   phToast(`Entrée enregistrée à ${T(now)}` + (r === 'queued' ? ' · envoi au retour du réseau' : ''));
@@ -722,7 +732,20 @@ function renderJournal(){
     <td class="nw">${esc(site(e.site).name)}</td><td class="nw">${esc(e.by)}</td></tr>`).join('')
     : `<tr><td colspan="7" class="empty">${G.mode === 'loading' ? 'Chargement…' : D.entries.size ? 'Aucun passage ne correspond.' : 'Aucun passage enregistré. Les entrées saisies au poste de garde apparaîtront ici en direct.'}</td></tr>`;
 }
-$('#j-site').innerHTML += SITES.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+/* Listes de sites (téléphone et journal), reconstruites seulement quand les sites changent. */
+let sitesSig = '';
+function renderSiteOptions(){
+  const sig = SITES.map(s => s.id + ':' + s.name + ':' + s.commune + ':' + s.type).join('|');
+  if (sig === sitesSig) return;
+  sitesSig = sig;
+  const typeLabel = {hotel:'fiche de police', immeuble:'bureaux', entrepot:'entrepôt', residence:'résidence'};
+  $('#site-pick').innerHTML = SITES.length ? SITES.map(s => `<option value="${esc(s.id)}">${esc(s.name)} · ${esc(s.commune)}${typeLabel[s.type] ? ' (' + typeLabel[s.type] + ')' : ''}</option>`).join('') : '<option value="">Aucun site</option>';
+  if (!SITES.some(s => s.id === G.site) && SITES.length) G.site = SITES[0].id;
+  $('#site-pick').value = G.site;
+  const js = $('#j-site'), cur = js.value;
+  js.innerHTML = '<option value="">Tous les sites</option>' + SITES.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  js.value = SITES.some(s => s.id === cur) ? cur : '';
+}
 ['#j-site','#j-q','#j-in'].forEach(s => $(s).addEventListener('input', renderJournal));
 $('#a-alerts').addEventListener('click', async e => { const b = e.target.closest('[data-done]'); if (!b) return; if (await write('alerts', b.dataset.done, null) === 'ok') toast('Alerte marquée comme traitée'); });
 $('#a-watch').addEventListener('click', async e => { const b = e.target.closest('[data-unwatch]'); if (!b) return; if (await write('watch', b.dataset.unwatch, null) === 'ok') toast('Retiré de la liste de surveillance'); });
@@ -766,9 +789,14 @@ function setMode(m){
 $('#m-guard').addEventListener('click', () => setMode('guard'));
 $('#m-admin').addEventListener('click', () => setMode('admin'));
 function renderAll(){
-  const tag = $('#mode-tag');
-  tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : G.mode === 'demo' ? 'Mode démo : exemples' : G.mode === 'local' ? 'Mode test : vos données sur cet appareil' : 'Connexion…';
-  tag.className = 'pill ' + (G.mode === 'live' ? 'ok' : G.mode === 'demo' ? 'warn' : 'info');
+  const tag = $('#mode-tag'), cloud = G.mode === 'cloud';
+  tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : cloud ? `Connecté · ${G.org?.name || 'ma société'}` : G.mode === 'demo' ? 'Mode démo : exemples' : G.mode === 'local' ? 'Mode test : vos données sur cet appareil' : 'Connexion…';
+  tag.className = 'pill ' + (G.mode === 'live' || cloud ? 'ok' : G.mode === 'demo' ? 'warn' : 'info');
+  const guardOnly = cloud && G.user?.role === 'gardien';
+  $('#m-admin').hidden = guardOnly;
+  if (guardOnly && !$('#v-admin').hidden) { $('#v-admin').hidden = true; $('#v-guard').hidden = false; $('#m-guard').setAttribute('aria-pressed', 'true'); }
+  $('#a-title').textContent = cloud ? `${G.org?.name || 'Ma société'} · ${SITES.length} site${SITES.length > 1 ? 's' : ''}` : 'Votre société de gardiennage · 4 sites à Kinshasa';
+  renderSiteOptions();
   const sw = $('#mode-switch');
   sw.hidden = !standalone();
   sw.textContent = G.mode === 'local' ? 'Revenir à la démo' : 'Passer en mode test';
@@ -776,8 +804,11 @@ function renderAll(){
     ? "<b>Démonstration :</b> le registre contient des exemples. Pour essayer avec vos propres visiteurs, touchez « Passer en mode test » en haut de la page."
     : G.mode === 'local'
     ? "<b>Mode test :</b> le registre est vide au départ. Enregistrez vos vrais visiteurs et vos rondes ; tout reste dans ce navigateur, même après avoir fermé la page."
+    : cloud
+    ? `<b>${esc(G.org?.name || 'Votre société')} :</b> les saisies sont partagées en direct entre les téléphones des gardiens et le tableau de bord du gérant, et gardées même sans réseau.`
     : "<b>Version pilote :</b> les saisies sont partagées en direct. Ouvrez ce lien sur le téléphone du poste et sur l'ordinateur du gérant : chaque entrée apparaît des deux côtés.";
   renderPhone(); renderAdmin();
+  window.MK?.onRender?.();
 }
 
 /* Mode démo (page ouverte hors de claude.ai) : exemples locaux, gardés dans ce navigateur, rien n'est partagé. */
@@ -805,6 +836,7 @@ function loadDemo(){
 
 function setStandalone(mode, announce = true){
   G.mode = mode; G.clearArmed = false; lsSet('mk-standalone', mode);
+  SITES = DEMO_SITES; G.user = null; G.org = null;
   for (const c of Object.keys(D)) D[c].clear();
   QUEUE = Array.isArray(lsGet(qKey())) ? lsGet(qKey()) : [];
   loadDemo(); resetForm(); G.tab = 'reg'; renderAll(); flush();
@@ -830,10 +862,24 @@ async function init(){
   try { const u = await window.claude.use('user'); G.canEdit = !!(u && await u.canEdit()); } catch {}
   renderAll(); flush();
 }
+/* Point d'accroche pour cloud.js (comptes et base Firebase), chargé seulement sur la version hébergée. */
+window.MK = {
+  G, D, renderAll, toast, setMode, setStandalone, resetForm,
+  setSites(list){ SITES = list; renderAll(); },
+  sites(){ return SITES; },
+  enterCloud(user, org){
+    G.mode = 'cloud'; G.user = user; G.org = org; G.clearArmed = false;
+    for (const c of Object.keys(D)) D[c].clear();
+    QUEUE = []; SITES = []; G.simOnline = true; G.tab = 'reg';
+    resetForm(); setMode(user.role === 'gerant' ? 'admin' : 'guard');
+  },
+  cloud: null, onRender: null,
+};
 if (location.hash === '#gerant') setMode('admin');
 init();
 setInterval(() => { renderAll(); flush(); }, 60000);
 </script>
 
+<script type="module" src="cloud.js"></script>
 </body>
 </html>

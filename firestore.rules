@@ -1,0 +1,80 @@
+rules_version = '2';
+
+// Mokengeli : chaque société (org) ne voit que ses données.
+// users/{uid}        profil : société, rôle (gerant | gardien), nom
+// orgs/{org}         la société ; sous-collections : siteconf, sites, entries, alerts, watch
+// joinCodes/{code}   code d'invitation qui permet à un gardien de rejoindre une société
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function signedIn() { return request.auth != null; }
+    function profilePath() { return /databases/$(db)/documents/users/$(request.auth.uid); }
+    function hasProfile() { return signedIn() && exists(profilePath()); }
+    function me() { return get(profilePath()).data; }
+    function member(org) { return hasProfile() && me().orgId == org; }
+    function manager(org) { return member(org) && me().role == 'gerant'; }
+    function str(v, max) { return v is string && v.size() > 0 && v.size() <= max; }
+
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || (hasProfile() && resource.data.orgId == me().orgId));
+
+      // Gérant : crée sa société, son profil et le code d'invitation dans un même lot.
+      // Gardien : rejoint une société avec un code d'invitation valide.
+      allow create: if signedIn() && request.auth.uid == uid
+        && str(request.resource.data.name, 80)
+        && (
+          (request.resource.data.role == 'gerant'
+            && getAfter(/databases/$(db)/documents/orgs/$(request.resource.data.orgId)).data.ownerUid == uid)
+          || (request.resource.data.role == 'gardien'
+            && str(request.resource.data.joinCode, 20)
+            && get(/databases/$(db)/documents/joinCodes/$(request.resource.data.joinCode)).data.orgId == request.resource.data.orgId)
+        );
+
+      // Chacun modifie son nom ; le rôle et la société ne changent pas.
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.orgId == resource.data.orgId
+        && request.resource.data.role == resource.data.role
+        && str(request.resource.data.name, 80);
+
+      // Le gérant retire un gardien de sa société.
+      allow delete: if resource.data.role == 'gardien' && manager(resource.data.orgId);
+    }
+
+    match /joinCodes/{code} {
+      allow get: if signedIn();
+      allow create: if signedIn()
+        && getAfter(/databases/$(db)/documents/orgs/$(request.resource.data.orgId)).data.ownerUid == request.auth.uid
+        && (!exists(profilePath()) || manager(request.resource.data.orgId));
+      allow delete: if manager(resource.data.orgId);
+    }
+
+    match /orgs/{org} {
+      allow read: if member(org);
+      allow create: if signedIn() && request.resource.data.ownerUid == request.auth.uid && str(request.resource.data.name, 120);
+      allow update: if manager(org) && request.resource.data.ownerUid == resource.data.ownerUid;
+
+      // Configuration des sites et liste de surveillance : le gérant écrit, tout le monde lit.
+      match /siteconf/{id} {
+        allow read: if member(org);
+        allow write: if manager(org);
+      }
+      match /watch/{id} {
+        allow read: if member(org);
+        allow write: if manager(org);
+      }
+      // Registre, rondes, alertes : les gardiens écrivent, seul le gérant supprime.
+      match /entries/{id} {
+        allow read: if member(org);
+        allow create, update: if member(org) && request.resource.data.site is string && request.resource.data.in is number;
+        allow delete: if manager(org);
+      }
+      match /sites/{id} {
+        allow read, create, update: if member(org);
+        allow delete: if manager(org);
+      }
+      match /alerts/{id} {
+        allow read, create: if member(org);
+        allow update, delete: if manager(org);
+      }
+    }
+  }
+}
