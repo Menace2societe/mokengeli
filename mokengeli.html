@@ -1,0 +1,796 @@
+<title>Mokengeli Registre</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : barre de mode en haut ; vue "Poste de garde" = explication + téléphone ; vue "Gérant" = tableau de bord en grille */
+:root{
+  --bg:#EDF0F3; --surface:#FFFFFF; --sunk:#F4F6F8; --ink:#15212C; --muted:#5B6976; --line:#D6DDE4;
+  --accent:#1D46C8; --accent-soft:#E3E9FB; --on-accent:#FFFFFF;
+  --ok:#1C7A4C; --ok-soft:#DDF1E6; --warn:#985A00; --warn-soft:#FBEED6; --crit:#BF2A2A; --crit-soft:#FBE2E0;
+  --margin:#E07272; --frame:#0E161D; --shadow:0 18px 40px rgba(16,30,44,.16);
+  --f-display:'Archivo', 'Arial Narrow', Arial, sans-serif;
+  --f-body:'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0D1318; --surface:#151E27; --sunk:#111920; --ink:#E5EBF1; --muted:#93A1AE; --line:#26323D;
+  --accent:#7E9DFF; --accent-soft:#1D2A4D; --on-accent:#0D1318;
+  --ok:#4CC38A; --ok-soft:#153325; --warn:#F0AA40; --warn-soft:#3A2A10; --crit:#FF6F6A; --crit-soft:#401A1A;
+  --margin:#B45858; --frame:#2A3743; --shadow:0 18px 40px rgba(0,0,0,.45); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0D1318; --surface:#151E27; --sunk:#111920; --ink:#E5EBF1; --muted:#93A1AE; --line:#26323D;
+  --accent:#7E9DFF; --accent-soft:#1D2A4D; --on-accent:#0D1318;
+  --ok:#4CC38A; --ok-soft:#153325; --warn:#F0AA40; --warn-soft:#3A2A10; --crit:#FF6F6A; --crit-soft:#401A1A;
+  --margin:#B45858; --frame:#2A3743; --shadow:0 18px 40px rgba(0,0,0,.45); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+
+/* Barre du haut */
+.top{position:sticky;top:env(safe-area-inset-top, 0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand svg{flex:none}
+.brand b{font-family:var(--f-display);font-size:19px;font-weight:800;letter-spacing:-.01em}
+.brand small{display:block;color:var(--muted);font-size:12px;line-height:1.2}
+.seg{display:flex;background:var(--sunk);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:999px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.demo-tag{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:6px;padding:3px 8px}
+
+/* Vue gardien */
+.guard{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:48px;padding-block:36px 56px;align-items:start}
+.explain{display:flex;flex-direction:column;gap:20px;max-width:560px}
+.explain h1{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.02em}
+.explain p{margin:0;color:var(--muted);max-width:60ch}
+.try{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.try li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.try .n{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700;font-family:var(--f-mono);font-size:13px}
+.try code{font-family:var(--f-mono);font-size:13px;background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+.field-inline{display:flex;flex-direction:column;gap:6px}
+.field-inline select{max-width:340px}
+
+.phone{width:100%;max-width:400px;justify-self:center;height:780px;border:11px solid var(--frame);border-radius:40px;background:var(--bg);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.ph-status{background:var(--accent);color:var(--on-accent);padding:12px 16px 12px;display:flex;flex-direction:column;gap:6px}
+.ph-status .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ph-status b{font-family:var(--f-display);font-size:17px;font-weight:700}
+.ph-status small{opacity:.85;font-size:12.5px}
+.net{border:1px solid currentColor;background:transparent;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.net i{width:8px;height:8px;border-radius:50%;background:#59E39A;display:inline-block}
+.net.off i{background:#FFB547}
+.ph-screen{flex:1;overflow-y:auto;padding:14px 14px 18px;display:flex;flex-direction:column;gap:14px}
+.ph-nav{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);background:var(--surface)}
+.ph-nav button{border:0;background:none;padding:9px 4px 11px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:700;color:var(--muted)}
+.ph-nav button[aria-current="true"]{color:var(--accent)}
+.ph-nav svg{width:22px;height:22px}
+
+.counts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.count{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.count b{display:block;font-family:var(--f-display);font-size:28px;line-height:1.1}
+.count span{font-size:12.5px;color:var(--muted)}
+.big-btn{width:100%;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:17px;padding:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.search{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+
+/* Le cahier : marge rouge comme dans un cahier d'écolier */
+.ledger{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.ledger h3{font-size:13px;font-family:var(--f-body);font-weight:700;padding:9px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.lrow{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:0}
+.lrow .t{align-self:stretch;padding:10px 6px 10px 10px;border-right:2px solid var(--margin);font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
+.lrow .t small{display:block;color:var(--muted);font-size:11px}
+.lrow .who{padding:9px 10px;min-width:0}
+.lrow .who b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrow .who span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrow .act{padding-right:10px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;font-weight:700;font-size:13.5px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.danger{background:var(--crit);border-color:var(--crit);color:#fff}
+.empty{padding:14px 12px;color:var(--muted);font-size:13.5px}
+details.ledger summary{padding:9px 12px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;cursor:pointer}
+details.ledger[open] summary{border-bottom:1px solid var(--line)}
+
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.crit{background:var(--crit-soft);color:var(--crit)}
+.pill.info{background:var(--accent-soft);color:var(--accent)}
+
+/* Formulaire */
+form.entry{display:flex;flex-direction:column;gap:12px}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld label{font-size:13px;font-weight:700}
+.fld input,.fld select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.photo{border:1.5px dashed var(--line);border-radius:var(--r);background:var(--surface);padding:12px;display:flex;gap:12px;align-items:center}
+.photo .thumb{width:84px;height:56px;border-radius:6px;background:var(--sunk);border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;flex:none;color:var(--muted)}
+.photo .thumb img{width:100%;height:100%;object-fit:cover}
+.photo .pa{display:flex;flex-direction:column;gap:6px;min-width:0}
+.photo input[type=file]{font-size:12px;max-width:100%}
+fieldset{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px 12px;margin:0;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+legend{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);padding:0 4px}
+.err{color:var(--crit);font-size:13px;font-weight:700}
+.warnbox{background:var(--crit-soft);border:1.5px solid var(--crit);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
+.warnbox b{color:var(--crit);font-family:var(--f-display);font-size:16px}
+.warnbox p{margin:0;font-size:13.5px}
+.warnbox .btns{display:flex;gap:8px;flex-wrap:wrap}
+
+.cp{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
+.cp:last-child{border-bottom:0}
+.cp b{display:block}
+.cp span{font-size:12.5px;color:var(--muted)}
+.ph-toast{position:absolute;left:12px;right:12px;bottom:70px;background:var(--ink);color:var(--bg);border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:700;transition:opacity .2s}
+
+/* Vue gérant */
+.admin{display:flex;flex-direction:column;gap:22px;padding-block:28px 56px}
+.ahead{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between}
+.ahead h1{font-size:clamp(24px,3.4vw,32px);font-weight:800;letter-spacing:-.02em}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.kpi b{font-family:var(--f-display);font-size:34px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:13px}
+.kpi.alert b{color:var(--crit)}
+.grid2{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;min-width:0}
+.panel>header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line)}
+.panel>header h2{font-size:16px;font-weight:700}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--sunk)}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.nw{white-space:nowrap}
+td .sub{display:block;color:var(--muted);font-size:12px}
+.alerts{list-style:none;margin:0;padding:0}
+.alerts li{display:grid;grid-template-columns:4px minmax(0,1fr) auto;gap:12px;padding:11px 14px 11px 0;border-bottom:1px solid var(--line);align-items:start}
+.alerts li:last-child{border-bottom:0}
+.alerts .stripe{align-self:stretch;border-radius:0 3px 3px 0}
+.alerts .crit .stripe{background:var(--crit)}
+.alerts .warn .stripe{background:var(--warn)}
+.alerts b{display:block;font-size:14px}
+.alerts span{font-size:12.5px;color:var(--muted)}
+.chart{padding:16px 14px 12px}
+.bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;align-items:end;height:150px;border-bottom:1px solid var(--line);background-image:linear-gradient(var(--line) 1px, transparent 1px);background-size:100% 50px;background-position:0 -1px}
+.bar{background:var(--accent);border-radius:4px 4px 0 0;position:relative;min-height:2px}
+.bar em{position:absolute;top:-19px;left:0;right:0;text-align:center;font-style:normal;font-size:11.5px;font-family:var(--f-mono);color:var(--ink)}
+.bar.zero{background:var(--line)}
+.bar.now{background:var(--ok)}
+.blabels{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;margin-top:5px}
+.blabels span{text-align:center;font-size:11px;color:var(--muted);font-family:var(--f-mono)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters input[type=search],.filters select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:13.5px}
+.filters label{font-size:13px;display:flex;gap:5px;align-items:center}
+.wl{display:flex;flex-direction:column}
+.wl .it{padding:10px 14px;border-bottom:1px solid var(--line)}
+.wl .it b{display:block}
+.wl .it span{font-size:12.5px;color:var(--muted)}
+.wl form{padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--sunk)}
+.wl form input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);width:100%}
+.side{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:700;font-size:14px;z-index:50;max-width:calc(100% - 32px)}
+.modal{position:fixed;inset:0;background:rgba(10,18,26,.55);display:grid;place-items:center;z-index:60;padding:16px}
+.modal .box{background:var(--surface);border-radius:12px;max-width:720px;width:100%;padding:18px;display:flex;flex-direction:column;gap:12px}
+.modal textarea{width:100%;height:280px;font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--sunk);color:var(--ink)}
+.modal .btns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+
+@media (max-width: 940px){
+  .guard{grid-template-columns:1fr;gap:28px}
+  .grid2{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 460px){
+  .phone{border-width:0;border-radius:16px;height:740px;box-shadow:none;border:1px solid var(--line)}
+  .demo-tag{display:none}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M10 9h14v16H10z" fill="none" stroke="var(--on-accent)" stroke-width="2"/><path d="M13 9v16" stroke="var(--on-accent)" stroke-width="2"/><path d="M16 14h5M16 18h5M16 22h3" stroke="var(--on-accent)" stroke-width="1.6"/></svg>
+      <div><b>Mokengeli</b><small>Registre des entrées et rondes</small></div>
+    </div>
+    <div class="seg" role="group" aria-label="Choisir la vue">
+      <button id="m-guard" aria-pressed="true">Poste de garde</button>
+      <button id="m-admin" aria-pressed="false">Tableau de bord gérant</button>
+    </div>
+    <span class="pill info" id="mode-tag">Connexion…</span>
+  </div>
+</header>
+
+<main>
+<!-- ============ VUE GARDIEN ============ -->
+<section id="v-guard" class="wrap guard">
+  <div class="explain">
+    <span class="eyebrow">Au poste de garde · téléphone Android</span>
+    <h1>Le cahier de passage, sur le téléphone du gardien</h1>
+    <p id="mode-note"></p>
+    <p>Le gardien enregistre chaque visiteur en moins de 30 secondes, photographie la pièce d'identité, marque les sorties et scanne les points de ronde. Tout fonctionne sans réseau et se synchronise dès que la connexion revient.</p>
+    <div class="field-inline">
+      <label class="eyebrow" for="site-pick">Site affiché dans le téléphone</label>
+      <select id="site-pick" class="search">
+        <option value="kiyo">Immeuble Kiyo · Gombe (bureaux)</option>
+        <option value="mwinda">Hôtel Mwinda · Limete (fiche de police)</option>
+      </select>
+    </div>
+    <div>
+      <span class="eyebrow">À essayer</span>
+      <ol class="try" style="margin-top:10px">
+        <li><span class="n">1</span><span>Touchez <b>Nouvelle entrée</b>, puis <b>Lire la pièce</b> pour remplir le formulaire automatiquement.</span></li>
+        <li><span class="n">2</span><span>Touchez le bouton <b>En ligne</b> pour simuler une coupure. Les saisies restent sur le téléphone, même si on ferme la page, et partent dès que le réseau revient.</span></li>
+        <li><span class="n">3</span><span>Saisissez un nom de la liste de surveillance (par exemple <code>Serge Mbala</code>) pour voir l'alerte.</span></li>
+        <li><span class="n">4</span><span>Ouvrez <b>Tableau de bord gérant</b> sur un autre appareil : les saisies y arrivent en direct.</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="phone" id="phone">
+    <div class="ph-status">
+      <div class="row"><b id="ph-site">Immeuble Kiyo</b><button class="net" id="ph-net" type="button"><i></i><span>En ligne</span></button></div>
+      <div class="row"><small id="ph-guard">Gardien</small><small id="ph-clock" class="mono"></small></div>
+    </div>
+
+    <div class="ph-screen" id="s-reg">
+      <div class="counts">
+        <div class="count"><b id="c-in">0</b><span>sur le site</span></div>
+        <div class="count"><b id="c-day">0</b><span>entrées aujourd'hui</span></div>
+      </div>
+      <button class="big-btn" data-tab="form" type="button"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Nouvelle entrée</button>
+      <input type="search" id="reg-q" class="search" placeholder="Chercher un nom…" aria-label="Chercher un nom">
+      <div class="ledger">
+        <h3><span>Présents sur le site</span><span id="reg-pcount"></span></h3>
+        <div id="reg-present"></div>
+      </div>
+      <details class="ledger" id="reg-out-wrap">
+        <summary>Sortis aujourd'hui (<span id="reg-ocount">0</span>)</summary>
+        <div id="reg-out"></div>
+      </details>
+    </div>
+
+    <div class="ph-screen" id="s-form" hidden>
+      <h2 style="font-size:20px">Nouvelle entrée</h2>
+      <form class="entry" id="entry-form" novalidate>
+        <div class="photo">
+          <div class="thumb" id="ph-thumb"><svg width="28" height="20" viewBox="0 0 28 20" aria-hidden="true"><rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M14 7h9M14 11h9M5 15h18" stroke="currentColor" stroke-width="1.5"/></svg></div>
+          <div class="pa">
+            <label for="f-photo" style="font-size:13px;font-weight:700">Photo de la pièce</label>
+            <input type="file" id="f-photo" accept="image/*" capture="environment">
+            <button type="button" class="btn primary" id="f-read">Lire la pièce (démo)</button>
+          </div>
+        </div>
+        <div class="fld"><label for="f-name">Nom complet *</label><input id="f-name" autocomplete="off" placeholder="Ex. Christelle Nsimba Mavungu"></div>
+        <div class="two">
+          <div class="fld"><label for="f-idtype">Pièce</label>
+            <select id="f-idtype"><option>Carte d'électeur</option><option>Passeport</option><option>Permis de conduire</option><option>Carte de service</option><option>Carte d'étudiant</option></select></div>
+          <div class="fld"><label for="f-idnum">N° de pièce *</label><input id="f-idnum" autocomplete="off"></div>
+        </div>
+        <div class="two">
+          <div class="fld"><label for="f-phone">Téléphone</label><input id="f-phone" inputmode="tel" placeholder="+243 …"></div>
+          <div class="fld"><label for="f-plate">Plaque véhicule</label><input id="f-plate" placeholder="Facultatif"></div>
+        </div>
+        <div class="fld"><label for="f-motif">Motif</label>
+          <select id="f-motif"><option>Visite personnelle</option><option>Rendez-vous professionnel</option><option>Livraison</option><option>Prestataire / technicien</option><option>Client hôtel</option></select></div>
+        <div class="fld"><label for="f-host">Personne ou bureau visité</label><input id="f-host" placeholder="Ex. Cabinet Lukusa, 4e étage"></div>
+        <fieldset id="f-hotel" hidden>
+          <legend>Fiche de police</legend>
+          <div class="two">
+            <div class="fld"><label for="f-room">Chambre</label><input id="f-room" inputmode="numeric"></div>
+            <div class="fld"><label for="f-nights">Nuitées</label><input id="f-nights" inputmode="numeric" value="1"></div>
+          </div>
+          <div class="two">
+            <div class="fld"><label for="f-nat">Nationalité</label><input id="f-nat" value="Congolaise"></div>
+            <div class="fld"><label for="f-origin">Provenance</label><input id="f-origin" placeholder="Ville"></div>
+          </div>
+        </fieldset>
+        <div class="err" id="f-err" hidden></div>
+        <div class="warnbox" id="f-warn" hidden>
+          <b>Personne signalée</b>
+          <p id="f-warn-txt"></p>
+          <p>Ne laissez pas entrer sans l'accord du superviseur.</p>
+          <div class="btns"><button type="button" class="btn danger" id="f-refuse">Refuser l'entrée</button><button type="button" class="btn" id="f-force">Enregistrer quand même</button></div>
+        </div>
+        <button class="big-btn" type="submit">Enregistrer l'entrée</button>
+        <button class="btn" type="button" data-tab="reg">Annuler</button>
+      </form>
+    </div>
+
+    <div class="ph-screen" id="s-round" hidden>
+      <h2 style="font-size:20px">Rondes</h2>
+      <p style="margin:0;color:var(--muted);font-size:13.5px">Un QR code est collé à chaque point. Le gardien le scanne en passant ; le gérant voit l'heure exacte. Une ronde est due toutes les 2 heures.</p>
+      <div class="ledger" id="round-list"></div>
+    </div>
+
+    <div class="ph-toast" id="ph-toast" hidden></div>
+
+    <nav class="ph-nav" aria-label="Navigation du téléphone">
+      <button data-tab="reg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h12a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.8"/></svg>Registre</button>
+      <button data-tab="form" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.8"/></svg>Entrée</button>
+      <button data-tab="round" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM18 14h2M14 20h2" stroke="currentColor" stroke-width="1.8"/></svg>Rondes</button>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ VUE GÉRANT ============ -->
+<section id="v-admin" class="wrap admin" hidden>
+  <div class="ahead">
+    <div>
+      <span class="eyebrow" id="a-date"></span>
+      <h1>Votre société de gardiennage · 4 sites à Kinshasa</h1>
+    </div>
+    <button class="btn" id="a-clear" type="button" hidden>Effacer les données d'exemple</button>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><b id="k-day">0</b><span>entrées aujourd'hui</span></div>
+    <div class="kpi"><b id="k-in">0</b><span>visiteurs encore sur site</span></div>
+    <div class="kpi"><b id="k-round">0</b><span>points de ronde scannés / prévus</span></div>
+    <div class="kpi alert"><b id="k-alert">0</b><span>alertes à traiter</span></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <header><h2>Sites</h2><span class="eyebrow">Mis à jour en direct</span></header>
+      <div class="scroll"><table>
+        <thead><tr><th>Site</th><th>Gardien</th><th>Sur site</th><th>Rondes</th><th>Dernière activité</th><th>État</th></tr></thead>
+        <tbody id="a-sites"></tbody>
+      </table></div>
+    </div>
+    <div class="panel">
+      <header><h2>Alertes</h2><span class="pill crit" id="a-acount"></span></header>
+      <ul class="alerts" id="a-alerts"></ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <header><h2>Entrées par heure</h2><span class="eyebrow">12 dernières heures, tous sites</span></header>
+      <div class="chart"><div class="bars" id="a-bars"></div><div class="blabels" id="a-blabels"></div></div>
+    </div>
+    <div class="panel wl">
+      <header><h2>Liste de surveillance</h2><span class="eyebrow">Alerte le gardien à la saisie</span></header>
+      <div id="a-watch"></div>
+      <form id="w-form">
+        <input id="w-name" placeholder="Nom de la personne" aria-label="Nom de la personne">
+        <input id="w-reason" placeholder="Motif (ex. accès interdit)" aria-label="Motif">
+        <button class="btn primary" type="submit">Ajouter à la liste</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel">
+    <header>
+      <h2>Journal des passages</h2>
+      <div class="filters">
+        <select id="j-site" aria-label="Filtrer par site"><option value="">Tous les sites</option></select>
+        <input type="search" id="j-q" placeholder="Nom, pièce, plaque…" aria-label="Rechercher dans le journal">
+        <label><input type="checkbox" id="j-in"> Sur site seulement</label>
+        <button class="btn" id="j-csv" type="button">Exporter (CSV)</button>
+      </div>
+    </header>
+    <div class="scroll"><table>
+      <thead><tr><th>Entrée</th><th>Sortie</th><th>Nom</th><th>Pièce</th><th>Motif / destination</th><th>Site</th><th>Saisi par</th></tr></thead>
+      <tbody id="a-journal"></tbody>
+    </table></div>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast" hidden></div>
+<div class="modal" id="csv-modal" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="csv-title">
+    <h2 id="csv-title" style="font-size:18px">Export du journal</h2>
+    <p style="margin:0;color:var(--muted);font-size:13.5px">Copiez ce texte et collez-le dans Excel. Plus tard, ce bouton générera directement un fichier Excel ou PDF pour la police, la DGM ou le client.</p>
+    <textarea id="csv-text" readonly aria-label="Contenu CSV"></textarea>
+    <div class="btns"><button class="btn" id="csv-close" type="button">Fermer</button><button class="btn primary" id="csv-copy" type="button">Copier</button></div>
+  </div>
+</div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dayStart = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return +d; };
+const T = t => t ? new Date(t).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '—';
+const TT = t => !t ? '—' : t >= dayStart() ? T(t) : new Date(t).toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit'}) + ' ' + T(t);
+const minsSince = t => Math.round((Date.now() - t) / 60000);
+const since = t => { if (!t) return 'jamais'; const m = minsSince(t); return m < 1 ? "à l'instant" : m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.floor(m/60)} h ${String(m%60).padStart(2,'0')}` : `le ${TT(t)}`; };
+const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const lsGet = k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+const strip = o => { const {id, _pending, ...rest} = o || {}; return rest; };
+
+/* Configuration des sites (fixe). Ce qui bouge (entrées, rondes, alertes) vit dans la base partagée. */
+const SITES = [
+  {id:'kiyo', name:'Immeuble Kiyo', commune:'Gombe', type:'immeuble', guard:'Jean-Paul Ilunga', cps:['Portail principal','Parking sous-sol','Toit et groupe électrogène','Couloir 4e étage','Issue de secours']},
+  {id:'mwinda', name:'Hôtel Mwinda', commune:'Limete', type:'hotel', guard:'Bahati Amani', cps:['Réception','Parking','Couloir 1er étage','Arrière-cour']},
+  {id:'kingabwa', name:'Entrepôt Kingabwa', commune:'Limete', type:'entrepot', guard:'Héritier Kalala', cps:['Portail camions','Quai 1','Quai 2','Parking arrière']},
+  {id:'bandal', name:'Résidence Bandal', commune:'Bandalungwa', type:'residence', guard:'Moïse Tshibangu', cps:['Portail','Jardin','Arrière des villas']},
+];
+const ROUNDS_PER_DAY = 12, ROUND_EVERY = 120;
+const site = id => SITES.find(s => s.id === id) || SITES[0];
+const CE = "Carte d'électeur", PP = 'Passeport', PC = 'Permis de conduire';
+const DEMO_PEOPLE = [
+  {name:'Christelle Nsimba Mavungu', idType:CE, idNum:'0213 7754 1098', phone:'+243 99 812 4471', nat:'Congolaise', origin:'Matadi'},
+  {name:'Olivier Kabongo Tshimanga', idType:PP, idNum:'OP0458821', phone:'+243 82 300 1187', nat:'Congolaise', origin:'Mbuji-Mayi'},
+  {name:'Esther Mwamba Kasongo', idType:PC, idNum:'KIN-PC-551203', phone:'+243 97 440 9032', nat:'Congolaise', origin:'Lubumbashi'},
+  {name:'Jean-Claude Habimana', idType:PP, idNum:'PC772910', phone:'+250 788 214 330', nat:'Rwandaise', origin:'Kigali'},
+];
+
+/* D = ce que le serveur connaît. QUEUE = saisies du téléphone pas encore envoyées (gardées même si on ferme la page). */
+const D = {entries:new Map(), alerts:new Map(), watch:new Map(), sites:new Map()};
+const G = {site: lsGet('mk-site') || 'kiyo', tab:'reg', simOnline:true, demoIdx:0, pendingHit:null, mode:'loading', db:null, canEdit:false, clearArmed:false};
+if (!SITES.some(s => s.id === G.site)) G.site = 'kiyo';
+let QUEUE = Array.isArray(lsGet('mk-queue')) ? lsGet('mk-queue') : [];
+const saveQueue = () => lsSet('mk-queue', QUEUE);
+const online = () => G.simOnline && navigator.onLine !== false;
+
+function view(coll){
+  const m = new Map(D[coll]);
+  for (const q of QUEUE) if (q.coll === coll) { if (q.data) m.set(q.id, {...q.data, id:q.id, _pending:true}); else m.delete(q.id); }
+  return m;
+}
+
+/* ---------- Écritures ---------- */
+const chains = new Map();
+function rawWrite(op){
+  const key = op.coll + '/' + op.id;
+  const run = async () => {
+    if (G.mode === 'live') {
+      const ref = G.db.collection(op.coll).doc(op.id);
+      if (op.data) await ref.set(op.data); else await ref.delete();
+    } else {
+      if (op.data) D[op.coll].set(op.id, {...op.data, id:op.id}); else D[op.coll].delete(op.id);
+      saveDemo();
+    }
+  };
+  const p = (chains.get(key) || Promise.resolve()).catch(() => {}).then(run);
+  chains.set(key, p);
+  return p;
+}
+function errMsg(e){
+  if (e?.code === 'invalid_argument') return "Enregistrement refusé : ce compte n'a pas le droit d'écrire. Demandez l'accès Contributeur au gérant.";
+  if (e?.code === 'quota_exceeded') return 'La base est pleine : archivez les anciens passages.';
+  return "L'enregistrement n'a pas pu être envoyé.";
+}
+async function write(coll, id, data, queueable = false){
+  const op = {coll, id, data};
+  if (queueable && !online()) {
+    QUEUE = QUEUE.filter(q => !(q.coll === coll && q.id === id)); QUEUE.push(op); saveQueue(); renderAll(); return 'queued';
+  }
+  try { await rawWrite(op); renderAll(); return 'ok'; }
+  catch (e) {
+    if (queueable && (!e?.code || e.code === 'unavailable')) { QUEUE.push(op); saveQueue(); renderAll(); return 'queued'; }
+    toast(errMsg(e)); return 'error';
+  }
+}
+let flushing = false;
+async function flush(){
+  if (flushing || !online() || !QUEUE.length || G.mode === 'loading') return 0;
+  flushing = true; let n = 0;
+  while (QUEUE.length && online()) {
+    try { await rawWrite(QUEUE[0]); QUEUE.shift(); saveQueue(); n++; }
+    catch (e) { if (!e?.code || e.code === 'unavailable') break; QUEUE.shift(); saveQueue(); toast(errMsg(e)); }
+  }
+  flushing = false; renderAll();
+  return n;
+}
+
+/* ---------- Données dérivées ---------- */
+function siteState(sid, src){
+  const s = site(sid), doc = src.get(sid) || {};
+  const cps = s.cps.map(name => ({name, last: (doc.cps || {})[name] || null}));
+  const scans = (doc.scans || []).filter(t => t >= dayStart());
+  return {s, cps, scans, planned: s.cps.length * ROUNDS_PER_DAY};
+}
+function lastActivity(sid){
+  let t = 0;
+  for (const e of D.entries.values()) if (e.site === sid) t = Math.max(t, e.in || 0, e.out || 0);
+  for (const x of (D.sites.get(sid)?.scans || [])) t = Math.max(t, x);
+  return t || null;
+}
+function derivedAlerts(){
+  const out = [];
+  for (const s of SITES) {
+    const la = lastActivity(s.id);
+    if (la && la >= dayStart() && minsSince(la) > 120) out.push({level:'warn', text:`Aucune activité au poste depuis ${since(la).replace('il y a ', '')}`, site:s.id, time:la, auto:true});
+    const late = siteState(s.id, D.sites).cps.filter(c => c.last && minsSince(c.last) > ROUND_EVERY);
+    if (late.length) out.push({level:'warn', text:`Ronde en retard : ${late.map(c => c.name).join(', ')}`, site:s.id, time:Math.min(...late.map(c => c.last)) + ROUND_EVERY * 60000, auto:true});
+  }
+  return out;
+}
+function detail(e){ return e.motif === 'Client hôtel' ? `Chambre ${e.room || '?'} · ${e.nights || 1} nuit(s)${e.origin ? ' · ' + e.origin : ''}` : `${e.motif || ''}${e.host ? ' → ' + e.host : ''}`; }
+
+/* ---------- Téléphone ---------- */
+function renderPhone(){
+  const s = site(G.site);
+  $('#ph-site').textContent = `${s.name} · ${s.commune}`;
+  $('#ph-guard').textContent = `Gardien : ${s.guard}`;
+  $('#ph-clock').textContent = T(Date.now());
+  const pend = QUEUE.length, net = $('#ph-net');
+  net.classList.toggle('off', !online());
+  net.querySelector('span').textContent = online() ? (pend ? `Envoi… ${pend}` : 'En ligne') : `${navigator.onLine === false ? 'Pas de réseau' : 'Hors ligne'} · ${pend} en attente`;
+  $('#f-hotel').hidden = s.type !== 'hotel';
+
+  const q = norm($('#reg-q').value);
+  const mine = [...view('entries').values()].filter(e => e.site === s.id).sort((a, b) => b.in - a.in);
+  const match = e => !q || norm(e.name + ' ' + e.idNum).includes(q);
+  const presentAll = mine.filter(e => !e.out), outToday = mine.filter(e => e.out && e.out >= dayStart());
+  const present = presentAll.filter(match), out = outToday.filter(match);
+  $('#c-in').textContent = presentAll.length;
+  $('#c-day').textContent = mine.filter(e => e.in >= dayStart()).length;
+  $('#reg-pcount').textContent = present.length;
+  $('#reg-ocount').textContent = out.length;
+  const row = (e, act) => `<div class="lrow"><div class="t">${TT(e.in)}${e.out ? `<small>→ ${T(e.out)}</small>` : ''}</div>
+    <div class="who"><b>${esc(e.name)}</b><span>${esc(detail(e))}</span>${e._pending ? '<span class="pill warn">en attente d\'envoi</span>' : ''}</div>
+    <div class="act">${act}</div></div>`;
+  $('#reg-present').innerHTML = G.mode === 'loading' ? '<div class="empty">Chargement du registre…</div>'
+    : present.length ? present.map(e => row(e, `<button class="btn" data-out="${esc(e.id)}" type="button">Sortie</button>`)).join('')
+    : `<div class="empty">${q ? 'Aucun nom ne correspond.' : 'Personne sur le site. Touchez « Nouvelle entrée » pour enregistrer le premier visiteur.'}</div>`;
+  $('#reg-out').innerHTML = out.length ? out.map(e => row(e, '')).join('') : '<div class="empty">Aucune sortie enregistrée aujourd\'hui.</div>';
+
+  const st = siteState(s.id, view('sites'));
+  $('#round-list').innerHTML = st.cps.map((c, i) => {
+    const pill = !c.last ? '<span class="pill info">Pas encore scanné</span>' : minsSince(c.last) > ROUND_EVERY ? '<span class="pill warn">En retard</span>' : '<span class="pill ok">À jour</span>';
+    return `<div class="cp"><div><b>${esc(c.name)}</b><span>Dernier passage : ${c.last ? TT(c.last) + ' · ' + since(c.last) : 'aucun'} </span>${pill}</div>
+      <button class="btn primary" data-scan="${i}" type="button">Scanner</button></div>`;
+  }).join('');
+
+  for (const id of ['reg','form','round']) $('#s-' + id).hidden = G.tab !== id;
+  document.querySelectorAll('.ph-nav button').forEach(b => b.setAttribute('aria-current', String(b.dataset.tab === G.tab)));
+}
+
+let phT; function phToast(msg){ const t = $('#ph-toast'); t.textContent = msg; t.hidden = false; clearTimeout(phT); phT = setTimeout(() => t.hidden = true, 2800); }
+let gT; function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(gT); gT = setTimeout(() => t.hidden = true, 3200); }
+function setTab(tab){ G.tab = tab; renderPhone(); const sc = $('#phone .ph-screen:not([hidden])'); if (sc) sc.scrollTop = 0; }
+
+$('#phone').addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.tab) { if (b.dataset.tab === 'form') resetForm(); setTab(b.dataset.tab); }
+  if (b.dataset.out) {
+    const en = view('entries').get(b.dataset.out); if (!en) return;
+    const r = await write('entries', en.id, {...strip(en), out:Date.now()}, true);
+    if (r !== 'error') phToast(`Sortie de ${en.name} à ${T(Date.now())}` + (r === 'queued' ? ' · envoi au retour du réseau' : ''));
+  }
+  if (b.dataset.scan) {
+    const st = siteState(G.site, view('sites')), c = st.cps[+b.dataset.scan], now = Date.now();
+    const cps = Object.fromEntries(st.cps.filter(x => x.last).map(x => [x.name, x.last])); cps[c.name] = now;
+    const r = await write('sites', G.site, {cps, scans:[...st.scans, now]}, true);
+    if (r !== 'error') phToast(`Point « ${c.name} » scanné à ${T(now)}`);
+  }
+});
+$('#ph-net').addEventListener('click', async () => {
+  G.simOnline = !G.simOnline;
+  if (online()) { const n = await flush(); phToast(n ? `Réseau revenu : ${n} enregistrement(s) envoyé(s)` : 'Réseau revenu'); }
+  else phToast('Hors ligne : les saisies restent sur ce téléphone');
+  renderAll();
+});
+window.addEventListener('online', () => { flush(); renderAll(); });
+window.addEventListener('offline', renderAll);
+$('#reg-q').addEventListener('input', renderPhone);
+$('#site-pick').value = G.site;
+$('#site-pick').addEventListener('change', e => { G.site = e.target.value; lsSet('mk-site', G.site); resetForm(); G.tab = 'reg'; renderPhone(); });
+
+/* Formulaire */
+const F = id => $('#f-' + id);
+function resetForm(){
+  $('#entry-form').reset(); $('#f-err').hidden = true; $('#f-warn').hidden = true; G.pendingHit = null;
+  $('#ph-thumb').innerHTML = '<svg width="28" height="20" viewBox="0 0 28 20" aria-hidden="true"><rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M14 7h9M14 11h9M5 15h18" stroke="currentColor" stroke-width="1.5"/></svg>';
+  if (site(G.site).type === 'hotel') F('motif').value = 'Client hôtel';
+}
+F('photo').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader(); r.onload = () => { $('#ph-thumb').innerHTML = `<img alt="Pièce photographiée" src="${r.result}">`; }; r.readAsDataURL(f);
+});
+F('read').addEventListener('click', () => {
+  const p = DEMO_PEOPLE[G.demoIdx++ % DEMO_PEOPLE.length];
+  F('name').value = p.name; F('idtype').value = p.idType; F('idnum').value = p.idNum; F('phone').value = p.phone;
+  F('nat').value = p.nat; F('origin').value = p.origin;
+  phToast('Champs remplis à partir de la photo (simulation)');
+});
+function readForm(){
+  const d = {name:F('name').value.trim(), idType:F('idtype').value, idNum:F('idnum').value.trim(), phone:F('phone').value.trim(), plate:F('plate').value.trim(),
+    motif:F('motif').value, host:F('host').value.trim()};
+  if (site(G.site).type === 'hotel') Object.assign(d, {room:F('room').value.trim(), nights:F('nights').value.trim(), nat:F('nat').value.trim(), origin:F('origin').value.trim()});
+  return d;
+}
+function watchHit(name){
+  const a = norm(name).split(/\s+/).filter(Boolean);
+  return [...D.watch.values()].find(w => { const b = norm(w.name).split(/\s+/).filter(Boolean); return b.length && a.filter(t => b.includes(t)).length >= Math.min(2, b.length); });
+}
+async function commit(d){
+  const s = site(G.site), now = Date.now();
+  const r = await write('entries', uid(), {...d, site:s.id, by:s.guard, in:now, out:null}, true);
+  if (r === 'error') return;
+  resetForm(); G.tab = 'reg';
+  phToast(`Entrée enregistrée à ${T(now)}` + (r === 'queued' ? ' · envoi au retour du réseau' : ''));
+  renderAll();
+}
+const raiseAlert = text => write('alerts', uid(), {level:'crit', text, site:G.site, time:Date.now()}, true);
+$('#entry-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = readForm();
+  if (!d.name || !d.idNum) { $('#f-err').textContent = 'Le nom et le numéro de pièce sont obligatoires.'; $('#f-err').hidden = false; return; }
+  $('#f-err').hidden = true;
+  const hit = watchHit(d.name);
+  if (hit) {
+    G.pendingHit = {d, hit};
+    $('#f-warn-txt').textContent = `« ${hit.name} » est sur la liste de surveillance. Motif : ${hit.reason}.`;
+    $('#f-warn').hidden = false; $('#f-warn').scrollIntoView({block:'nearest'}); return;
+  }
+  commit(d);
+});
+$('#f-refuse').addEventListener('click', async () => {
+  const {d} = G.pendingHit;
+  await raiseAlert(`Entrée refusée : ${d.name} (liste de surveillance)`);
+  resetForm(); G.tab = 'reg'; phToast('Entrée refusée. Le gérant est prévenu.'); renderAll();
+});
+$('#f-force').addEventListener('click', async () => {
+  const {d} = G.pendingHit;
+  await raiseAlert(`Personne signalée admise : ${d.name}`);
+  commit(d);
+});
+
+/* ---------- Tableau de bord ---------- */
+function renderAdmin(){
+  const V = [...D.entries.values()], today = dayStart();
+  $('#a-date').textContent = new Date().toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) + ' · ' + T(Date.now());
+  $('#k-day').textContent = V.filter(e => e.in >= today).length;
+  $('#k-in').textContent = V.filter(e => !e.out).length;
+  const rd = SITES.reduce((a, s) => { const st = siteState(s.id, D.sites); return [a[0] + st.scans.length, a[1] + st.planned]; }, [0, 0]);
+  $('#k-round').textContent = `${rd[0]}/${rd[1]}`;
+  const stored = [...D.alerts.values()].sort((a, b) => b.time - a.time), auto = derivedAlerts(), all = [...stored, ...auto];
+  $('#k-alert').textContent = all.length;
+  $('#a-acount').textContent = all.length ? `${all.length} ouverte(s)` : 'Aucune';
+
+  $('#a-sites').innerHTML = SITES.map(s => {
+    const al = all.filter(a => a.site === s.id), st = siteState(s.id, D.sites), la = lastActivity(s.id);
+    const state = al.some(a => a.level === 'crit') ? ['crit','Problème'] : al.length ? ['warn','À surveiller'] : ['ok','Normal'];
+    return `<tr><td><b>${esc(s.name)}</b><span class="sub">${esc(s.commune)}</span></td><td>${esc(s.guard)}</td>
+      <td class="mono">${V.filter(e => e.site === s.id && !e.out).length}</td>
+      <td class="mono nw">${st.scans.length}/${st.planned}</td>
+      <td class="nw">${esc(since(la))}</td>
+      <td><span class="pill ${state[0]}">${state[1]}</span></td></tr>`;
+  }).join('');
+
+  $('#a-alerts').innerHTML = all.length ? all.map(a => `<li class="${a.level}"><span class="stripe"></span>
+    <div><b>${esc(a.text)}</b><span>${esc(site(a.site).name)} · ${TT(a.time)}${a.auto ? ' · détectée automatiquement' : ''}</span></div>
+    ${a.auto ? '<span></span>' : `<button class="btn" data-done="${esc(a.id)}" type="button">Traité</button>`}</li>`).join('')
+    : '<li><span></span><div class="empty" style="padding:4px 0">Aucune alerte ouverte.</div><span></span></li>';
+
+  const nowH = new Date(); nowH.setMinutes(0, 0, 0);
+  const buckets = Array.from({length:12}, (_, i) => +nowH - (11 - i) * 3600000);
+  const counts = buckets.map(b => V.filter(e => e.in >= b && e.in < b + 3600000).length);
+  const max = Math.max(4, ...counts);
+  $('#a-bars').innerHTML = counts.map((c, i) => `<div class="bar ${c ? '' : 'zero'} ${i === 11 ? 'now' : ''}" style="height:${c ? Math.max(4, c / max * 100) : 1}%" title="${c} entrée(s)">${c ? `<em>${c}</em>` : ''}</div>`).join('');
+  $('#a-blabels').innerHTML = buckets.map(b => `<span>${String(new Date(b).getHours()).padStart(2,'0')}h</span>`).join('');
+
+  const W = [...D.watch.values()];
+  $('#a-watch').innerHTML = W.length ? W.map(w => `<div class="it" style="display:flex;gap:10px;justify-content:space-between;align-items:start"><div><b>${esc(w.name)}</b><span>${esc(w.reason)}</span></div><button class="btn" data-unwatch="${esc(w.id)}" type="button">Retirer</button></div>`).join('')
+    : '<div class="empty" style="padding:12px 14px">Personne sur la liste. Ajoutez un nom ci-dessous : chaque poste sera prévenu à la saisie.</div>';
+
+  const demoCount = ['entries','alerts','watch','sites'].reduce((n, c) => n + [...D[c].values()].filter(x => x.demo).length, 0);
+  const clr = $('#a-clear');
+  clr.hidden = !(G.mode === 'demo' || (G.mode === 'live' && G.canEdit && demoCount));
+  clr.textContent = G.mode === 'demo' ? (G.clearArmed ? 'Confirmer : remettre la démo à zéro' : 'Remettre la démo à zéro')
+    : G.clearArmed ? `Confirmer : effacer ${demoCount} donnée(s) d'exemple` : "Effacer les données d'exemple";
+  clr.classList.toggle('danger', G.clearArmed);
+  renderJournal();
+}
+function journalRows(){
+  const sid = $('#j-site').value, q = norm($('#j-q').value), onlyIn = $('#j-in').checked;
+  return [...D.entries.values()].filter(e => (!sid || e.site === sid) && (!onlyIn || !e.out) && (!q || norm([e.name, e.idNum, e.plate, e.host, e.room].join(' ')).includes(q))).sort((a, b) => b.in - a.in);
+}
+function renderJournal(){
+  const R = journalRows();
+  $('#a-journal').innerHTML = R.length ? R.map(e => `<tr><td class="mono nw">${TT(e.in)}</td><td class="mono nw">${e.out ? TT(e.out) : '<span class="pill info">sur site</span>'}</td>
+    <td><b>${esc(e.name)}</b>${e.phone ? `<span class="sub mono">${esc(e.phone)}</span>` : ''}</td>
+    <td>${esc(e.idType)}<span class="sub mono">${esc(e.idNum)}</span></td>
+    <td>${esc(detail(e))}${e.plate ? `<span class="sub mono">Véhicule ${esc(e.plate)}</span>` : ''}</td>
+    <td class="nw">${esc(site(e.site).name)}</td><td class="nw">${esc(e.by)}</td></tr>`).join('')
+    : `<tr><td colspan="7" class="empty">${G.mode === 'loading' ? 'Chargement…' : D.entries.size ? 'Aucun passage ne correspond.' : 'Aucun passage enregistré. Les entrées saisies au poste de garde apparaîtront ici en direct.'}</td></tr>`;
+}
+$('#j-site').innerHTML += SITES.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+['#j-site','#j-q','#j-in'].forEach(s => $(s).addEventListener('input', renderJournal));
+$('#a-alerts').addEventListener('click', async e => { const b = e.target.closest('[data-done]'); if (!b) return; if (await write('alerts', b.dataset.done, null) === 'ok') toast('Alerte marquée comme traitée'); });
+$('#a-watch').addEventListener('click', async e => { const b = e.target.closest('[data-unwatch]'); if (!b) return; if (await write('watch', b.dataset.unwatch, null) === 'ok') toast('Retiré de la liste de surveillance'); });
+$('#w-form').addEventListener('submit', async e => {
+  e.preventDefault(); const n = $('#w-name').value.trim(); if (!n) return;
+  const r = await write('watch', uid(), {name:n, reason:$('#w-reason').value.trim() || 'Signalé par le gérant', added:Date.now()});
+  if (r === 'ok') { e.target.reset(); toast(`${n} ajouté(e) : tous les postes seront prévenus`); }
+});
+$('#a-clear').addEventListener('click', async () => {
+  if (!G.clearArmed) { G.clearArmed = true; renderAdmin(); return; }
+  G.clearArmed = false;
+  if (G.mode === 'demo') {
+    try { localStorage.removeItem('mk-demo'); localStorage.removeItem('mk-queue'); } catch {}
+    QUEUE = []; for (const c of Object.keys(D)) D[c].clear();
+    loadDemo(); toast('Démo remise à zéro'); renderAll(); return;
+  }
+  const ops = [];
+  for (const c of ['entries','alerts','watch','sites']) for (const x of D[c].values()) if (x.demo) ops.push({coll:c, id:x.id, data:null});
+  let n = 0; for (const op of ops) { try { await rawWrite(op); n++; } catch (err) { toast(errMsg(err)); break; } }
+  toast(`${n} donnée(s) d'exemple effacée(s)`); renderAll();
+});
+$('#j-csv').addEventListener('click', () => {
+  const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const head = ['Entrée','Sortie','Nom','Pièce','N° pièce','Téléphone','Motif','Destination','Chambre','Nuitées','Nationalité','Provenance','Plaque','Site','Saisi par'];
+  const lines = journalRows().map(e => [TT(e.in), e.out ? TT(e.out) : '', e.name, e.idType, e.idNum, e.phone, e.motif, e.host, e.room, e.nights, e.nat, e.origin, e.plate, site(e.site).name, e.by].map(q).join(';'));
+  $('#csv-text').value = [head.map(q).join(';'), ...lines].join('\n');
+  $('#csv-modal').hidden = false;
+});
+$('#csv-close').addEventListener('click', () => $('#csv-modal').hidden = true);
+$('#csv-copy').addEventListener('click', () => {
+  const ta = $('#csv-text');
+  navigator.clipboard.writeText(ta.value).then(() => toast('Journal copié'), () => { ta.focus(); ta.select(); toast('Sélectionné : faites Ctrl+C'); });
+});
+
+/* ---------- Modes ---------- */
+function setMode(m){
+  $('#v-guard').hidden = m !== 'guard'; $('#v-admin').hidden = m !== 'admin';
+  $('#m-guard').setAttribute('aria-pressed', String(m === 'guard')); $('#m-admin').setAttribute('aria-pressed', String(m === 'admin'));
+  renderAll(); window.scrollTo(0, 0);
+}
+$('#m-guard').addEventListener('click', () => setMode('guard'));
+$('#m-admin').addEventListener('click', () => setMode('admin'));
+function renderAll(){
+  const tag = $('#mode-tag');
+  tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : G.mode === 'demo' ? 'Mode démo : données sur cet appareil' : 'Connexion…';
+  tag.className = 'pill ' + (G.mode === 'live' ? 'ok' : G.mode === 'demo' ? 'warn' : 'info');
+  $('#mode-note').innerHTML = G.mode === 'demo'
+    ? "<b>Démonstration :</b> essayez librement, vos saisies restent dans ce navigateur. Dans la version pilote, elles sont partagées en direct entre le poste de garde et le gérant."
+    : "<b>Version pilote :</b> les saisies sont partagées en direct. Ouvrez ce lien sur le téléphone du poste et sur l'ordinateur du gérant : chaque entrée apparaît des deux côtés.";
+  renderPhone(); renderAdmin();
+}
+
+/* Mode démo (page ouverte hors de claude.ai) : exemples locaux, gardés dans ce navigateur, rien n'est partagé. */
+function saveDemo(){ if (G.mode === 'demo') lsSet('mk-demo', Object.fromEntries(Object.entries(D).map(([c, m]) => [c, [...m.values()]]))); }
+function loadDemo(){
+  const saved = lsGet('mk-demo');
+  if (saved && typeof saved === 'object') {
+    for (const c of Object.keys(D)) for (const x of (saved[c] || [])) if (x && x.id) D[c].set(x.id, x);
+    return;
+  }
+  const ago = m => Date.now() - m * 60000, put = (c, o) => { const id = uid(); D[c].set(id, {...o, id, demo:true}); };
+  [['kiyo','Patrick Mukendi',CE,'0412 8836 5521','Rendez-vous professionnel','Cabinet Lukusa, 4e étage',212,150],
+   ['kiyo','Didier Mfumu',PC,'KIN-PC-480271','Prestataire / technicien','Groupe électrogène',140,null],
+   ['kiyo','Aimée Kalonji',CE,'0551 2094 7783','Visite personnelle','Appartement 6B',95,null],
+   ['mwinda','Junior Lokwa',CE,'0620 1185 3307','Visite personnelle','Client chambre 12',70,35],
+   ['kingabwa','Albert Kasongo',CE,'0488 9921 0036','Prestataire / technicien','Inventaire',160,null],
+   ['bandal','Rebecca Nsimba',CE,'0302 5567 1249','Visite personnelle','Villa 3',175,90]]
+   .forEach(([s, name, idType, idNum, motif, host, i, o]) => put('entries', {site:s, by:site(s).guard, name, idType, idNum, motif, host, in:ago(i), out:o ? ago(o) : null}));
+  put('entries', {site:'mwinda', by:site('mwinda').guard, name:'Gédéon Mutombo', idType:CE, idNum:'0233 6610 9054', motif:'Client hôtel', room:'12', nights:'2', nat:'Congolaise', origin:'Kikwit', in:ago(300), out:null});
+  put('watch', {name:'Serge Mbala Nkosi', reason:'Accès interdit : vol de câbles signalé le 2 octobre'});
+  D.sites.set('kiyo', {id:'kiyo', cps:{'Portail principal':ago(35), 'Parking sous-sol':ago(95), 'Toit et groupe électrogène':ago(150)}, scans:[ago(150), ago(95), ago(35)]});
+  saveDemo();
+}
+
+async function init(){
+  renderAll();
+  let db = null;
+  try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch { db = null; }
+  if (!db) { G.mode = 'demo'; loadDemo(); renderAll(); flush(); return; }
+  G.mode = 'live'; G.db = db;
+  const subs = [
+    ['entries', db.collection('entries').where('in', '>=', Date.now() - 7 * 864e5).orderBy('in', 'desc').limit(1000)],
+    ['alerts', db.collection('alerts')], ['watch', db.collection('watch')], ['sites', db.collection('sites')],
+  ];
+  for (const [c, q] of subs) q.onSnapshot(snap => { D[c] = new Map(snap.docs.map(d => [d.id, {...d.data(), id:d.id}])); renderAll(); },
+    () => toast('Connexion aux données perdue. Rechargez la page.'));
+  try { const u = await window.claude.use('user'); G.canEdit = !!(u && await u.canEdit()); } catch {}
+  renderAll(); flush();
+}
+if (location.hash === '#gerant') setMode('admin');
+init();
+setInterval(() => { renderAll(); flush(); }, 60000);
+</script>
