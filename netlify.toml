@@ -1,4 +1,0 @@
-# Netlify reconstruit site/ à chaque push sur main.
-[build]
-  command = "node build.js"
-  publish = "site"

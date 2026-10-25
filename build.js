@@ -1,4 +1,4 @@
-// Construit site/ : la page Mokengeli en document HTML complet, plus cloud.js (comptes Firebase), prête pour Netlify.
+// Construit site/ : la page Mokengeli en document HTML complet, plus cloud.js (comptes Firebase), prête pour Vercel (vercel.json).
 // Utilisation : node build.js
 const fs = require('fs');
 const path = require('path');

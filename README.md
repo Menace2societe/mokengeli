@@ -2,7 +2,7 @@
 
 Registre numérique des visiteurs et des rondes pour les sociétés de gardiennage, les immeubles et les hôtels en RDC. Il remplace le cahier de passage tenu à la main au poste de garde.
 
-**Démo en ligne : https://mokengeli-demo.netlify.app**
+**Démo en ligne : https://mokengeli-demo.vercel.app**
 
 ## Ce que fait l'application
 
@@ -49,13 +49,12 @@ Registre numérique des visiteurs et des rondes pour les sociétés de gardienna
 - `cloud.js` : comptes et base partagée (Firebase Auth + Firestore), chargé uniquement sur la version hébergée.
 - `firestore.rules` : règles de sécurité (chaque société ne voit que ses données ; un gardien ne peut ni supprimer ni modifier la liste de surveillance).
 - `build.js` : génère `site/` pour l'hébergement.
-- `site/` : ce qui est mis en ligne sur Netlify.
+- `site/` : ce qui est mis en ligne sur Vercel (`vercel.json` : `node build.js`, dossier `site`).
 
 ## Mettre à jour
 
 ```bash
-node build.js
-netlify deploy --prod --no-build --dir site
+git push                      # Vercel exécute node build.js et publie site/ à chaque push sur main
 firebase deploy --only firestore:rules
 ```
 
