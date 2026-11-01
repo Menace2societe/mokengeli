@@ -354,6 +354,134 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 /* - */
 
 /* ===== Lot 3 : tableau de bord du gérant ===== */
+/* Même mur que le poste de garde, en version bureau dense : panneaux papier sous filet d'encre, chiffres au pochoir,
+   N° de passage du gardien repris dans le journal. Rouge seulement pour le danger, ocre pour ce qui demande un coup d'œil. */
+.u-mur.admin{--saisie:#8E9087; --gris-sorti:#6E7068;
+  background:var(--mur);max-width:none;gap:20px;padding-block:24px 64px;
+  padding-left:max(16px, calc((100vw - 1320px)/2));padding-right:max(16px, calc((100vw - 1320px)/2))}
+body:has(#v-admin.u-mur:not([hidden])){background:var(--mur)}
+.u-mur.admin h1,.u-mur.admin h2,.u-mur#csv-modal h2{font-family:var(--f-texte);letter-spacing:0;color:var(--encre)}
+.u-mur.admin .mono,.u-mur.admin td,.u-mur.admin th{font-variant-numeric:tabular-nums}
+
+/* En-tête : bandeau vert portail et soubassement ocre, comme le téléphone du gardien */
+.u-mur.admin .ahead{align-items:center;gap:12px 20px;padding:18px 20px;color:#FFFFFF;
+  background-color:var(--portail);background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.12) 0 2px,transparent 2px 22px);
+  border-bottom:10px solid var(--ocre)}
+.u-mur.admin .ahead h1{font-size:clamp(23px,2.6vw,30px);font-weight:700;letter-spacing:-.01em;color:#FFFFFF}
+.u-mur.admin .a-date{margin:4px 0 0;font-size:16px;color:#E4EDE7}
+.u-mur.admin #a-clear{border-color:#FFFFFF}
+.u-mur.admin #a-clear.danger{background:var(--danger);border-color:#FFFFFF;color:#FFFFFF}
+
+/* Indicateurs : une seule bande, chiffres au pochoir, filets d'encre entre les cases */
+.u-mur.admin .kpis{gap:0;background:var(--papier);border-top:3px solid var(--encre)}
+.u-mur.admin .kpi{background:none;border:0;border-radius:0;padding:14px 20px 16px;gap:4px}
+.u-mur.admin .kpi + .kpi{box-shadow:inset 1px 0 0 var(--filet)}
+.u-mur.admin .kpi b{font-family:var(--f-pochoir);font-weight:400;font-size:56px;line-height:.95;letter-spacing:.02em;color:var(--encre)}
+.u-mur.admin .kpi span{font-size:15px;font-weight:700;color:var(--encre)}
+.u-mur.admin .kpi.is-ok b{color:var(--portail)}
+.u-mur.admin .kpi.is-warn b{color:var(--ocre-encre)}
+.u-mur.admin .kpi.is-crit b{color:var(--danger)}
+
+/* Panneaux : papier blanc, filet d'encre en haut, pas d'ombre ni d'arrondi */
+.u-mur.admin .grid2{gap:20px}
+.u-mur.admin .panel{background:var(--papier);border:0;border-top:3px solid var(--encre);border-radius:0}
+.u-mur.admin .panel>header{min-height:60px;padding:10px 16px;border-bottom:1px solid var(--filet);gap:8px 16px}
+.u-mur.admin .panel>header h2{font-size:19px;font-weight:700;margin-right:auto}
+.u-mur.admin .meta{font-size:15px;color:var(--encre-2)}
+.u-mur.admin .empty{font-size:15px;color:var(--encre-2);padding:16px}
+/* Bouton ajouté par cloud.js (compte gérant) : bouton contour, la plaque noire reste à « Ajouter à la liste » */
+.u-mur.admin #a-manage-sites{background:var(--papier);border-color:var(--encre);color:var(--encre)}
+.u-mur.admin #a-manage-sites:hover{background:var(--mur)}
+
+/* Tableaux */
+.u-mur.admin table{font-size:15px}
+.u-mur.admin th{font-size:15px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--encre);background:var(--papier);padding:10px 14px;border-bottom:2px solid var(--encre)}
+.u-mur.admin td{padding:10px 14px;border-bottom:1px solid var(--filet);vertical-align:middle;color:var(--encre)}
+.u-mur.admin tbody tr:hover td{background:#F6F6F2}
+.u-mur.admin td .sub{font-size:15px;color:var(--encre-2)}
+.u-mur.admin td.empty{padding:16px 14px}
+.u-mur.admin .scroll{scrollbar-color:var(--encre-2) var(--mur-creux)}
+.u-mur.admin .pill{font-weight:700}
+.u-mur.admin .pill.ok{background:var(--portail-clair);color:var(--portail)}
+.u-mur.admin .pill.warn{background:var(--ocre-clair);color:var(--ocre-encre)}
+.u-mur.admin .pill.crit{background:var(--danger);color:#FFFFFF}
+
+/* Alertes : la gravité se lit sur une plaque peinte devant le texte, pas sur une bordure */
+.u-mur.admin .alerts li{grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:12px 16px;border-bottom:1px solid var(--filet);align-items:center}
+.u-mur.admin .alerts li.crit{background:#FBEFED}
+.u-mur.admin .alerts li.none{display:block;padding:0}
+.u-mur.admin .alerts .grav{display:inline-block;margin:0 0 4px;padding:1px 8px;border-radius:4px;font-size:15px;font-weight:700;line-height:1.4}
+.u-mur.admin .alerts .crit .grav{background:var(--danger);color:#FFFFFF}
+.u-mur.admin .alerts .warn .grav{background:var(--ocre);color:var(--encre)}
+.u-mur.admin .alerts b{font-size:16px;color:var(--encre)}
+.u-mur.admin .alerts span:not(.grav){display:block;font-size:15px;color:var(--encre-2)}
+
+/* Graphique : barres d'encre, l'heure en cours en vert portail */
+.u-mur.admin .chart{padding:28px 16px 14px}
+.u-mur.admin .bars{height:180px;gap:8px;border-bottom:2px solid var(--encre);
+  background-image:linear-gradient(var(--mur-creux) 1px, transparent 1px);background-size:100% 45px;background-position:0 -1px}
+.u-mur.admin .bar{background:var(--encre);border-radius:0}
+.u-mur.admin .bar.zero{background:var(--filet)}
+.u-mur.admin .bar.now{background:var(--portail)}
+.u-mur.admin .bar em{top:-22px;font-family:var(--f-texte);font-size:15px;font-weight:700;color:var(--encre)}
+.u-mur.admin .bar.now em{color:var(--portail)}
+.u-mur.admin .blabels{gap:8px;margin-top:6px}
+.u-mur.admin .blabels span{font-family:var(--f-texte);font-size:15px;color:var(--encre-2)}
+.u-mur.admin .blabels span:last-child{color:var(--portail);font-weight:700}
+
+/* Champs de saisie du gérant (même trait que la recherche du gardien) */
+.u-mur.admin .wl form input,.u-mur.admin .res-form input,.u-mur.admin .res-form select,
+.u-mur.admin .filters input[type=search],.u-mur.admin .filters select{min-height:48px;border:2px solid var(--saisie);border-radius:8px;background:var(--papier);padding:8px 12px;font-size:16px;color:var(--encre)}
+.u-mur.admin input::placeholder{color:#5D5F56}
+.u-mur.admin .wl form input:focus,.u-mur.admin .res-form :is(input,select):focus,.u-mur.admin .filters :is(input,select):focus{border-color:var(--encre);outline:none}
+.u-mur.admin .filters{gap:8px 10px}
+.u-mur.admin .filters label{min-height:48px;font-size:15px;font-weight:700;gap:8px;cursor:pointer}
+.u-mur.admin .filters input[type=checkbox]{width:20px;height:20px;accent-color:var(--portail)}
+
+/* Liste de surveillance : le rouge du danger, réservé à ce panneau et aux alertes graves */
+.u-mur.admin .wl{border-top-color:var(--danger)}
+.u-mur.admin .wl .it{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--filet)}
+.u-mur.admin .wl .it b{font-size:16px;color:var(--danger)}
+.u-mur.admin .wl .it span{font-size:15px;color:var(--encre-2)}
+.u-mur.admin .wl form{padding:14px 16px 16px;gap:10px;background:var(--mur-creux)}
+.u-mur.admin .wl form .btn{align-self:flex-start}
+
+/* Habitants et bureaux */
+.u-mur.admin .res-form{padding:14px 16px 16px;gap:10px;background:var(--mur-creux);border-top:1px solid var(--filet)}
+
+/* Journal : le N° de passage au pochoir, le même que sur le téléphone du gardien */
+.u-mur.admin #a-journal .no{font-family:var(--f-pochoir);font-size:19px;color:var(--portail);white-space:nowrap}
+.u-mur.admin #a-journal tr:not(.here) td,.u-mur.admin #a-journal tr:not(.here) .no{color:var(--gris-sorti)}
+.u-mur.admin #a-journal tr:not(.here) td b{color:var(--encre)}
+
+/* Modale d'export */
+.u-mur#csv-modal{background:rgba(22,22,22,.62)}
+.u-mur#csv-modal .box{border-radius:0;border:2px solid var(--encre);border-top:10px solid var(--portail);padding:20px;gap:14px;background:var(--papier)}
+.u-mur#csv-modal h2{font-size:21px;font-weight:700}
+.u-mur#csv-modal p{margin:0;font-size:15px;color:var(--encre-2);max-width:65ch}
+.u-mur#csv-modal textarea{font-family:var(--f-texte);font-size:15px;line-height:1.45;border:2px solid var(--saisie);border-radius:8px;background:var(--mur);color:var(--encre)}
+.u-mur#csv-modal textarea:focus{border-color:var(--encre);outline:none}
+
+@media (max-width: 940px){
+  .u-mur.admin .kpi:nth-child(3){box-shadow:inset 0 1px 0 var(--filet)}
+  .u-mur.admin .kpi:nth-child(4){box-shadow:inset 1px 0 0 var(--filet),inset 0 1px 0 var(--filet)}
+}
+@media (max-width: 600px){
+  .u-mur.admin{gap:16px;padding-block:0 48px;padding-left:0;padding-right:0}
+  .u-mur.admin .ahead{padding:16px}
+  .u-mur.admin .kpi{padding:12px 16px 14px}
+  .u-mur.admin .kpi b{font-size:46px}
+  .u-mur.admin .bars,.u-mur.admin .blabels{gap:3px}
+  .u-mur.admin .blabels span:nth-child(odd){visibility:hidden}
+  .u-mur.admin .res-form{grid-template-columns:1fr}
+  .u-mur.admin .filters{width:100%}
+  .u-mur.admin .filters select,.u-mur.admin .filters input[type=search]{flex:1 1 100%}
+  .u-mur.admin .wl .it{align-items:flex-start}
+  /* Sur téléphone, les tableaux gardent leurs colonnes et défilent de côté au lieu de s'écraser */
+  .u-mur.admin .scroll table{min-width:640px}
+  .u-mur.admin .scroll:has(#a-journal) table{min-width:1040px}
+  .u-mur.admin th,.u-mur.admin td{padding:10px 12px}
+}
 /* (fin de la zone) */
 /* - */
 /* - */
@@ -491,11 +619,11 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 </section>
 
 <!-- ============ VUE GÉRANT ============ -->
-<section id="v-admin" class="wrap admin" hidden>
+<section id="v-admin" class="wrap admin u-mur" hidden>
   <div class="ahead">
     <div>
-      <span class="eyebrow" id="a-date"></span>
       <h1 id="a-title">Votre société de gardiennage · 4 sites à Kinshasa</h1>
+      <p class="a-date" id="a-date"></p>
     </div>
     <button class="btn" id="a-clear" type="button" hidden>Effacer les données d'exemple</button>
   </div>
@@ -509,7 +637,7 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 
   <div class="grid2">
     <div class="panel">
-      <header><h2>Sites</h2><span class="eyebrow">Mis à jour en direct</span></header>
+      <header><h2>Sites</h2><span class="meta">Mis à jour en direct</span></header>
       <div class="scroll"><table>
         <thead><tr><th>Site</th><th>Gardien</th><th>Sur site</th><th>Rondes</th><th>Dernière activité</th><th>État</th></tr></thead>
         <tbody id="a-sites"></tbody>
@@ -523,11 +651,11 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 
   <div class="grid2">
     <div class="panel">
-      <header><h2>Entrées par heure</h2><span class="eyebrow">12 dernières heures, tous sites</span></header>
+      <header><h2>Entrées par heure</h2><span class="meta">12 dernières heures, tous sites. En vert : l'heure en cours.</span></header>
       <div class="chart"><div class="bars" id="a-bars"></div><div class="blabels" id="a-blabels"></div></div>
     </div>
     <div class="panel wl">
-      <header><h2>Liste de surveillance</h2><span class="eyebrow">Alerte le gardien à la saisie</span></header>
+      <header><h2>Liste de surveillance</h2><span class="meta">Le gardien est alerté dès qu'il saisit un de ces noms</span></header>
       <div id="a-watch"></div>
       <form id="w-form">
         <input id="w-name" placeholder="Nom de la personne" aria-label="Nom de la personne">
@@ -540,7 +668,7 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
   <div class="panel">
     <header>
       <h2>Habitants et bureaux</h2>
-      <div class="filters"><select id="r-site-filter" aria-label="Filtrer les habitants par site"><option value="">Tous les sites</option></select><span class="eyebrow" id="r-count"></span></div>
+      <div class="filters"><select id="r-site-filter" aria-label="Filtrer les habitants par site"><option value="">Tous les sites</option></select><span class="meta" id="r-count"></span></div>
     </header>
     <div class="scroll"><table>
       <thead><tr><th>Nom</th><th>Logement / bureau</th><th>Téléphone</th><th>Site</th><th></th></tr></thead>
@@ -551,7 +679,7 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
       <input id="r-name" placeholder="Nom de l'habitant ou du bureau" aria-label="Nom">
       <input id="r-unit" placeholder="Appartement, étage, chambre" aria-label="Logement">
       <input id="r-phone" inputmode="tel" placeholder="Téléphone (WhatsApp)" aria-label="Téléphone">
-      <button class="btn primary" type="submit">Ajouter</button>
+      <button class="btn" type="submit">Ajouter</button>
     </form>
   </div>
 
@@ -566,7 +694,7 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
       </div>
     </header>
     <div class="scroll"><table>
-      <thead><tr><th>Entrée</th><th>Sortie</th><th>Nom</th><th>Pièce</th><th>Motif / destination</th><th>Site</th><th>Saisi par</th></tr></thead>
+      <thead><tr><th>Entrée</th><th>N°</th><th>Sortie</th><th>Nom</th><th>Pièce</th><th>Motif / destination</th><th>Site</th><th>Saisi par</th></tr></thead>
       <tbody id="a-journal"></tbody>
     </table></div>
   </div>
@@ -587,10 +715,10 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
     <div class="btns"><button class="btn" type="button" id="ring-close">Fermer</button><button class="btn primary" type="button" id="ring-enter" hidden>Enregistrer l'entrée</button></div>
   </div>
 </div>
-<div class="modal" id="csv-modal" hidden>
+<div class="modal u-mur" id="csv-modal" hidden>
   <div class="box" role="dialog" aria-modal="true" aria-labelledby="csv-title">
-    <h2 id="csv-title" style="font-size:18px">Export du journal</h2>
-    <p style="margin:0;color:var(--muted);font-size:13.5px">Copiez ce texte et collez-le dans Excel. Plus tard, ce bouton générera directement un fichier Excel ou PDF pour la police, la DGM ou le client.</p>
+    <h2 id="csv-title">Export du journal</h2>
+    <p>Copiez ce texte et collez-le dans Excel. Plus tard, ce bouton générera directement un fichier Excel ou PDF pour la police, la DGM ou le client.</p>
     <textarea id="csv-text" readonly aria-label="Contenu CSV"></textarea>
     <div class="btns"><button class="btn" id="csv-close" type="button">Fermer</button><button class="btn primary" id="csv-copy" type="button">Copier</button></div>
   </div>
@@ -972,7 +1100,7 @@ $('#ring-enter').addEventListener('click', () => { $('#ring-modal').hidden = tru
 /* ---------- Tableau de bord ---------- */
 function renderAdmin(){
   const V = [...D.entries.values()], today = dayStart();
-  $('#a-date').textContent = new Date().toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) + ' · ' + T(Date.now());
+  $('#a-date').textContent = new Date().toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'}).replace(/^./, c => c.toUpperCase()) + ' · ' + T(Date.now());
   $('#k-day').textContent = V.filter(e => e.in >= today).length;
   $('#k-in').textContent = V.filter(e => !e.out).length;
   const rd = SITES.reduce((a, s) => { const st = siteState(s.id, D.sites); return [a[0] + st.scans.length, a[1] + st.planned]; }, [0, 0]);
@@ -980,6 +1108,10 @@ function renderAdmin(){
   const stored = [...D.alerts.values()].sort((a, b) => b.time - a.time), auto = derivedAlerts(), all = [...stored, ...auto];
   $('#k-alert').textContent = all.length;
   $('#a-acount').textContent = all.length ? `${all.length} ouverte(s)` : 'Aucune';
+  // Gravité affichée : rouge seulement s'il y a une alerte grave, ocre pour les alertes à vérifier
+  const grav = all.some(a => a.level === 'crit') ? 'crit' : all.length ? 'warn' : 'ok';
+  $('#a-acount').className = 'pill ' + grav;
+  $('#k-alert').parentElement.classList.remove('is-crit', 'is-warn', 'is-ok'); $('#k-alert').parentElement.classList.add('is-' + grav);
 
   $('#a-sites').innerHTML = SITES.map(s => {
     const al = all.filter(a => a.site === s.id), st = siteState(s.id, D.sites), la = lastActivity(s.id);
@@ -991,10 +1123,10 @@ function renderAdmin(){
       <td><span class="pill ${state[0]}">${state[1]}</span></td></tr>`;
   }).join('');
 
-  $('#a-alerts').innerHTML = all.length ? all.map(a => `<li class="${a.level}"><span class="stripe"></span>
-    <div><b>${esc(a.text)}</b><span>${esc(site(a.site).name)} · ${TT(a.time)}${a.auto ? ' · détectée automatiquement' : ''}</span></div>
+  $('#a-alerts').innerHTML = all.length ? all.map(a => `<li class="${a.level}">
+    <div><span class="grav">${a.level === 'crit' ? 'Grave' : 'À vérifier'}</span><b>${esc(a.text)}</b><span>${esc(site(a.site).name)} · ${TT(a.time)}${a.auto ? ' · détectée automatiquement' : ''}</span></div>
     ${a.auto ? '<span></span>' : `<button class="btn" data-done="${esc(a.id)}" type="button">Traité</button>`}</li>`).join('')
-    : '<li><span></span><div class="empty" style="padding:4px 0">Aucune alerte ouverte.</div><span></span></li>';
+    : '<li class="none"><div class="empty">Aucune alerte ouverte. Les postes inactifs et les rondes en retard s’afficheront ici.</div></li>';
 
   const nowH = new Date(); nowH.setMinutes(0, 0, 0);
   const buckets = Array.from({length:12}, (_, i) => +nowH - (11 - i) * 3600000);
@@ -1004,8 +1136,8 @@ function renderAdmin(){
   $('#a-blabels').innerHTML = buckets.map(b => `<span>${String(new Date(b).getHours()).padStart(2,'0')}h</span>`).join('');
 
   const W = [...D.watch.values()];
-  $('#a-watch').innerHTML = W.length ? W.map(w => `<div class="it" style="display:flex;gap:10px;justify-content:space-between;align-items:start"><div><b>${esc(w.name)}</b><span>${esc(w.reason)}</span></div><button class="btn" data-unwatch="${esc(w.id)}" type="button">Retirer</button></div>`).join('')
-    : '<div class="empty" style="padding:12px 14px">Personne sur la liste. Ajoutez un nom ci-dessous : chaque poste sera prévenu à la saisie.</div>';
+  $('#a-watch').innerHTML = W.length ? W.map(w => `<div class="it"><div><b>${esc(w.name)}</b><span>${esc(w.reason)}</span></div><button class="btn" data-unwatch="${esc(w.id)}" type="button">Retirer</button></div>`).join('')
+    : '<div class="empty">Personne sur la liste. Ajoutez un nom ci-dessous : chaque poste sera prévenu à la saisie.</div>';
 
   const demoCount = ['entries','alerts','watch','sites'].reduce((n, c) => n + [...D[c].values()].filter(x => x.demo).length, 0);
   const clr = $('#a-clear');
@@ -1023,12 +1155,17 @@ function journalRows(){
 }
 function renderJournal(){
   const R = journalRows();
-  $('#a-journal').innerHTML = R.length ? R.map(e => `<tr><td class="mono nw">${TT(e.in)}</td><td class="mono nw">${e.out ? TT(e.out) : '<span class="pill info">sur site</span>'}</td>
+  // N° de passage : même calcul que sur le téléphone du gardien (rang de l'entrée dans sa journée, par site), rien n'est enregistré
+  const num = new Map(), perDay = {};
+  for (const e of [...view('entries').values()].sort((a, b) => a.in - b.in)) { const k = e.site + '|' + new Date(e.in).toDateString(); perDay[k] = (perDay[k] || 0) + 1; num.set(e.id, perDay[k]); }
+  $('#a-journal').innerHTML = R.length ? R.map(e => `<tr${e.out ? '' : ' class="here"'}><td class="mono nw">${TT(e.in)}</td>
+    <td class="nw">${num.has(e.id) ? `<span class="no" aria-label="${num.get(e.id)}e entrée du jour sur ce site">N°&#8239;${num.get(e.id)}</span>` : '—'}</td>
+    <td class="mono nw">${e.out ? TT(e.out) : '<span class="pill info">Sur site</span>'}</td>
     <td><b>${esc(e.name)}</b>${e.phone ? `<span class="sub mono">${esc(e.phone)}</span>` : ''}</td>
     <td>${esc(e.idType)}<span class="sub mono">${esc(e.idNum)}</span></td>
     <td>${esc(detail(e))}${e.plate ? `<span class="sub mono">Véhicule ${esc(e.plate)}</span>` : ''}</td>
     <td class="nw">${esc(site(e.site).name)}</td><td class="nw">${esc(e.by)}</td></tr>`).join('')
-    : `<tr><td colspan="7" class="empty">${G.mode === 'loading' ? 'Chargement…' : D.entries.size ? 'Aucun passage ne correspond.' : 'Aucun passage enregistré. Les entrées saisies au poste de garde apparaîtront ici en direct.'}</td></tr>`;
+    : `<tr><td colspan="8" class="empty">${G.mode === 'loading' ? 'Chargement…' : D.entries.size ? 'Aucun passage ne correspond.' : 'Aucun passage enregistré. Les entrées saisies au poste de garde apparaîtront ici en direct.'}</td></tr>`;
 }
 /* Listes de sites (téléphone et journal), reconstruites seulement quand les sites changent. */
 let sitesSig = '';
