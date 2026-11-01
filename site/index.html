@@ -349,6 +349,107 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 /* - */
 
 /* ===== Lot 2 : rondes, version ordinateur, colonne d'explication et accueil démo ===== */
+/* Barre du haut : sur téléphone, marque et connexion sur une ligne, vues sur la suivante, mode à la dernière */
+.top.u-mur .wrap{gap:10px 14px;padding-block:10px}
+.u-mur .brand small{line-height:1.25}
+.top.u-mur #mode-tag{min-height:36px;display:inline-flex;align-items:center;padding:4px 10px;border-radius:4px;font-size:15px}
+.top.u-mur #acct-btn.primary{background:var(--papier);color:var(--encre);border-color:var(--encre)}
+.top.u-mur #acct-btn.primary:hover{background:var(--mur)}
+@media (max-width: 640px){
+  .top.u-mur .brand{order:0}
+  .top.u-mur #acct-btn{order:1}
+  .top.u-mur .seg{order:2;flex:1 1 100%}
+  .top.u-mur .seg button{flex:1 1 0;padding-inline:8px}
+  .top.u-mur #mode-tag{order:3}
+  .top.u-mur #mode-switch{order:4;margin-left:auto}
+  .u-mur .brand small,.top.u-mur .seg-plus{display:none}
+  .top.u-mur .wrap{column-gap:8px}
+  .top.u-mur #mode-tag{padding-inline:6px}
+  .top.u-mur #mode-switch{padding-inline:10px}
+}
+
+/* Accueil de la démo : titre et phrase courte, puis le téléphone, puis le reste.
+   Sur ordinateur, le téléphone occupe la colonne de droite sur toute la hauteur. */
+#v-guard.u-mur{row-gap:28px}
+.u-mur .explain{gap:24px}
+.u-mur .explain-intro{gap:14px}
+.u-mur .explain h1{font-size:clamp(27px,3.6vw,42px);line-height:1.12;max-width:22ch}
+.u-mur .explain .lead{font-size:18px;line-height:1.5;color:var(--encre);max-width:52ch}
+.u-mur .explain p{font-size:16px;line-height:1.5}
+.u-mur .explain h2{font-family:var(--f-texte);font-size:18px;font-weight:700;letter-spacing:0;margin:0 0 10px}
+.u-mur #mode-note{color:var(--encre);border-top:2px solid var(--encre);padding-top:12px}
+.u-mur #mode-note b{font-weight:700}
+.u-mur .cloud-cta{background:var(--papier);border:0;border-top:3px solid var(--encre);border-radius:0;padding:16px;gap:10px}
+.u-mur .cloud-cta > b{font-size:18px}
+.u-mur .cloud-cta p{color:var(--encre-2);font-size:16px}
+.u-mur .cloud-cta .btns{gap:10px}
+.u-mur .cloud-cta .btn{min-height:48px}
+.u-mur .ajoute ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--filet)}
+.u-mur .ajoute li{padding:12px 0;border-bottom:1px solid var(--filet);font-size:16px;line-height:1.45;color:var(--encre-2)}
+.u-mur .ajoute li b{display:block;color:var(--encre);font-size:16px}
+.u-mur .field-inline{gap:8px}
+.u-mur .field-inline .lbl{font-size:16px;font-weight:700;color:var(--encre)}
+.u-mur .field-inline select{max-width:420px}
+.u-mur .explain .try{gap:12px}
+.u-mur .explain .try li{grid-template-columns:28px 1fr;gap:10px;font-size:16px;line-height:1.45}
+.u-mur .explain .try .n{width:auto;height:auto;background:none;color:var(--portail);font-family:var(--f-pochoir);font-size:22px;line-height:1.05;border-radius:0;display:block;text-align:left}
+@media (min-width: 941px){
+  #v-guard.u-mur{grid-template-rows:auto 1fr}
+  #v-guard.u-mur > .phone{grid-column:2;grid-row:1 / span 2}
+  #v-guard.u-mur > .explain-more{grid-column:1}
+}
+@media (max-width: 940px){
+  #v-guard.u-mur{padding-block:20px 40px;row-gap:24px}
+  .u-mur .explain{max-width:none}
+  .u-mur .explain .lead{font-size:16px}
+  .u-mur .explain-more{max-width:640px}
+}
+@media (max-width: 460px){
+  .u-mur .explain h1{font-size:26px}
+  .u-mur .cloud-cta .btns .btn{flex:1 1 100%}
+}
+
+/* Rondes : colonnes fixes (heure du dernier passage | point et état | bouton), l'état change la ligne */
+.u-mur .rd-titre{font-family:var(--f-texte);font-size:21px;font-weight:700;letter-spacing:0}
+.u-mur .rd-note{margin:0;font-size:15px;line-height:1.45;color:var(--encre-2)}
+.u-mur .cp-h b.pochoir{font-size:19px;font-weight:400;color:var(--portail)}
+.u-mur .cp-h > span:last-child{font-weight:700;display:flex;align-items:baseline;gap:5px}
+.u-mur .cp{grid-template-columns:62px minmax(0,1fr) auto;gap:6px;min-height:72px;padding:8px 10px;border-bottom:1px solid var(--filet);align-items:center}
+.u-mur .cp .h{font-size:15px;line-height:1.15}
+.u-mur .cp .h .pochoir{display:block;font-size:19px;color:var(--portail)}
+.u-mur .cp .h small{display:block;font-size:15px;color:var(--encre-2)}
+.u-mur .cp .h .vide{font-size:19px;color:#6E7068}
+.u-mur .cp .pt{min-width:0}
+.u-mur .cp .pt b{display:block;font-size:16px;line-height:1.25;overflow-wrap:anywhere}
+.u-mur .cp .pt span{display:block;font-size:15px;line-height:1.35;color:var(--encre-2)}
+.u-mur .cp-ok .etat{color:var(--portail)}
+.u-mur .cp-late{background:var(--ocre-clair)}
+.u-mur .cp-late .h .pochoir{color:var(--ocre-encre)}
+.u-mur .cp-late .pt .etat{color:var(--ocre-encre);font-weight:700}
+.u-mur .cp .pt .prochain{color:var(--encre);font-weight:700}
+.u-mur .cp .btn{min-width:96px}
+
+/* Version ordinateur d'un compte connecté : trois colonnes de travail, plus de maquette de téléphone */
+body.app-mode #v-guard.u-mur{padding-left:max(16px, calc((100vw - 1400px)/2));padding-right:max(16px, calc((100vw - 1400px)/2))}
+body.app-mode .u-mur .phone{box-shadow:none;background:var(--mur)}
+@media (min-width: 1000px){
+  body.app-mode .u-mur .phone{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.9fr);min-height:0}
+  body.app-mode .u-mur .ph-status{padding:12px 20px;border-bottom-width:8px}
+  body.app-mode .u-mur .ph-status .row{gap:20px}
+  body.app-mode .u-mur .ph-screen{max-height:calc(100vh - 190px);border-right:2px solid var(--encre);padding:20px}
+  body.app-mode .u-mur .ph-screen#s-round{border-right:0}
+  body.app-mode .u-mur .ph-toast{bottom:20px;right:20px}
+  /* Le formulaire, toujours visible, porte la seule plaque noire de l'écran */
+  body.app-mode .u-mur #s-reg .big-btn{background:var(--papier);color:var(--encre);border:2px solid var(--encre)}
+  body.app-mode .u-mur #s-reg .big-btn:hover{background:var(--mur)}
+  body.app-mode .u-mur .cp .btn.primary{background:var(--papier);color:var(--encre);border-color:var(--encre)}
+  body.app-mode .u-mur .cp .btn.primary:hover{background:var(--mur)}
+}
+@media (min-width: 1000px) and (max-width: 1320px){
+  body.app-mode .u-mur .cp{grid-template-columns:56px minmax(0,1fr) auto;padding-inline:8px}
+  body.app-mode .u-mur .cp .btn{min-width:0}
+  body.app-mode .u-mur .counts b{font-size:52px}
+}
 /* (fin de la zone) */
 /* - */
 /* - */
@@ -367,7 +468,7 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
     </div>
     <div class="seg" role="group" aria-label="Choisir la vue">
       <button id="m-guard" aria-pressed="true">Poste de garde</button>
-      <button id="m-admin" aria-pressed="false">Tableau de bord gérant</button>
+      <button id="m-admin" aria-pressed="false">Tableau de bord<span class="seg-plus"> gérant</span></button>
     </div>
     <span class="pill info" id="mode-tag">Connexion…</span>
     <button class="btn" id="mode-switch" type="button" hidden></button>
@@ -377,28 +478,10 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 <main>
 <!-- ============ VUE GARDIEN ============ -->
 <section id="v-guard" class="wrap guard u-mur">
-  <div class="explain">
-    <span class="eyebrow">Au poste de garde · téléphone Android</span>
+  <!-- Accueil de la démo en deux parties : sur téléphone, le titre, puis le registre, puis le reste ; sur ordinateur, le téléphone à droite. -->
+  <div class="explain explain-intro">
     <h1>Le cahier de passage, sur le téléphone du gardien</h1>
-    <p id="mode-note"></p>
-    <p>Le gardien enregistre chaque visiteur en moins de 30 secondes, photographie la pièce d'identité, marque les sorties et scanne les points de ronde. Tout fonctionne sans réseau et se synchronise dès que la connexion revient.</p>
-    <div class="field-inline">
-      <label class="eyebrow" for="site-pick">Site affiché dans le téléphone</label>
-      <select id="site-pick" class="search">
-        <option value="kiyo">Immeuble Kiyo · Gombe (bureaux)</option>
-        <option value="mwinda">Hôtel Mwinda · Limete (fiche de police)</option>
-      </select>
-    </div>
-    <div>
-      <span class="eyebrow">À essayer</span>
-      <ol class="try" style="margin-top:10px">
-        <li><span class="n">1</span><span>Touchez <b>Nouvelle entrée</b>, puis <b>Lire la pièce</b> pour remplir le formulaire automatiquement.</span></li>
-        <li><span class="n">2</span><span>Touchez le bouton <b>En ligne</b> pour simuler une coupure. Les saisies restent sur le téléphone, même si on ferme la page, et partent dès que le réseau revient.</span></li>
-        <li><span class="n">3</span><span>Saisissez un nom de la liste de surveillance (par exemple <code>Serge Mbala</code>) pour voir l'alerte.</span></li>
-        <li><span class="n">4</span><span>Ouvrez <b>Tableau de bord gérant</b> sur un autre appareil : les saisies y arrivent en direct.</span></li>
-        <li><span class="n">5</span><span>Touchez <b>Passer en mode test</b>, en haut, pour repartir d'un registre vide et enregistrer vos propres visiteurs.</span></li>
-      </ol>
-    </div>
+    <p class="lead">Le gardien enregistre chaque visiteur, photographie la pièce d'identité, marque les sorties et scanne les points de ronde. Sans réseau, les saisies attendent sur le téléphone et partent au retour de la connexion.</p>
   </div>
 
   <div class="phone" id="phone">
@@ -475,8 +558,8 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
     </div>
 
     <div class="ph-screen" id="s-round" hidden>
-      <h2 style="font-size:20px">Rondes</h2>
-      <p style="margin:0;color:var(--muted);font-size:13.5px">Un QR code est collé à chaque point. Le gardien le scanne en passant ; le gérant voit l'heure exacte. Une ronde est due toutes les 2 heures.</p>
+      <h2 class="rd-titre">Rondes</h2>
+      <p class="rd-note">Un QR code est collé à chaque point de ronde. Scannez-le en passant : l'heure s'enregistre et le gérant la voit. Repassez à chaque point toutes les 2 heures.</p>
       <div class="ledger" id="round-list"></div>
     </div>
 
@@ -487,6 +570,36 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
       <button data-tab="form" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.8"/></svg>Entrée</button>
       <button data-tab="round" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM18 14h2M14 20h2" stroke="currentColor" stroke-width="1.8"/></svg>Rondes</button>
     </nav>
+  </div>
+
+  <div class="explain explain-more">
+    <p id="mode-note"></p>
+    <div class="ajoute">
+      <h2>Ce qu'un cahier ne fait pas</h2>
+      <ul>
+        <li><b>Liste de surveillance sur chaque poste.</b> Le poste est alerté dès qu'un visiteur signalé par le gérant est saisi.</li>
+        <li><b>Sonnerie de l'habitant.</b> Il reçoit un lien secret et répond « Laisser entrer » ou « Refuser » ; la réponse s'affiche au poste.</li>
+        <li><b>Rondes prouvées.</b> Chaque point scanné garde son heure ; le gérant voit les retards.</li>
+        <li><b>Fiche de police des hôtels.</b> Chambre, nuitées, nationalité et provenance dans la même saisie.</li>
+      </ul>
+    </div>
+    <div class="field-inline">
+      <label class="lbl" for="site-pick">Site affiché dans le téléphone</label>
+      <select id="site-pick" class="search">
+        <option value="kiyo">Immeuble Kiyo · Gombe (bureaux)</option>
+        <option value="mwinda">Hôtel Mwinda · Limete (fiche de police)</option>
+      </select>
+    </div>
+    <div class="essai">
+      <h2>À essayer dans la démo</h2>
+      <ol class="try">
+        <li><span class="n">1</span><span>Touchez <b>Nouvelle entrée</b>, puis <b>Lire la pièce</b> pour remplir le formulaire automatiquement.</span></li>
+        <li><span class="n">2</span><span>Touchez le bouton <b>En ligne</b> pour simuler une coupure. Les saisies restent sur le téléphone, même si on ferme la page, et partent dès que le réseau revient.</span></li>
+        <li><span class="n">3</span><span>Saisissez un nom de la liste de surveillance (par exemple <code>Serge Mbala</code>) pour voir l'alerte.</span></li>
+        <li><span class="n">4</span><span>Ouvrez <b>Tableau de bord gérant</b> sur un autre appareil : les saisies y arrivent en direct.</span></li>
+        <li><span class="n">5</span><span>Touchez <b>Passer en mode test</b>, en haut, pour repartir d'un registre vide et enregistrer vos propres visiteurs.</span></li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -757,10 +870,18 @@ function renderPhone(){
   $('#reg-out').innerHTML = out.length ? out.map(e => row(e, '')).join('') : '<div class="empty">Aucune sortie enregistrée aujourd\'hui.</div>';
 
   const st = siteState(s.id, view('sites'));
-  $('#round-list').innerHTML = st.cps.map((c, i) => {
-    const pill = !c.last ? '<span class="pill info">Pas encore scanné</span>' : minsSince(c.last) > ROUND_EVERY ? '<span class="pill warn">En retard</span>' : '<span class="pill ok">À jour</span>';
-    return `<div class="cp"><div><b>${esc(c.name)}</b><span>Dernier passage : ${c.last ? TT(c.last) + ' · ' + since(c.last) : 'aucun'} </span>${pill}</div>
-      <button class="btn primary" data-scan="${i}" type="button">Scanner</button></div>`;
+  // Rondes : colonnes fixes (heure du dernier passage, point, bouton) ; l'état change la ligne. Une seule plaque noire : le prochain point dû dans l'ordre du parcours.
+  const cpState = c => !c.last ? 'new' : minsSince(c.last) > ROUND_EVERY ? 'late' : 'ok';
+  const dueIdx = st.cps.findIndex(c => cpState(c) !== 'ok');
+  const okN = st.cps.filter(c => cpState(c) === 'ok').length;
+  $('#round-list').innerHTML = !st.cps.length ? '<div class="empty">Aucun point de ronde sur ce site. Le gérant les ajoute dans son tableau de bord.</div>'
+    : `<h3 class="reg-h cp-h"><span>Points de ronde</span><span><b class="pochoir">${okN}</b> sur <b class="pochoir">${st.cps.length}</b> à jour</span></h3>` + st.cps.map((c, i) => {
+    const k = cpState(c);
+    const etat = k === 'new' ? 'Pas encore scanné' : k === 'late' ? `En retard · ${since(c.last)}` : `À jour · ${since(c.last)}`;
+    const quand = c.last ? `<span class="pochoir">${T(c.last)}</span>${c.last < dayStart() ? `<small>${new Date(c.last).toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit'})}</small>` : ''}` : '<span class="vide" aria-label="Aucun passage">—</span>';
+    return `<div class="cp cp-${k}${i === dueIdx ? ' cp-due' : ''}"><div class="h">${quand}</div>
+      <div class="pt"><b>${esc(c.name)}</b><span class="etat">${etat}</span>${i === dueIdx ? '<span class="prochain">Prochain point</span>' : ''}</div>
+      <button class="btn${i === dueIdx ? ' primary' : ''}" data-scan="${i}" type="button" aria-label="Scanner ${esc(c.name)}">Scanner</button></div>`;
   }).join('');
 
   renderResidentPicker();
