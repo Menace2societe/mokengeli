@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<title>Mokengeli · Standard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:390px;height:844px;overflow:hidden}
+body{background:#F3F4F6;color:#111827;font:16px/1.4 Inter,system-ui,sans-serif;display:flex;flex-direction:column}
+header{background:#fff;padding:14px 16px;border-bottom:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:center}
+header b{font-size:19px;display:block}header small{color:#6B7280;font-size:15px}
+.pill{background:#FEF3C7;color:#92400E;font-size:14px;font-weight:600;border-radius:999px;padding:4px 10px}
+.k{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+.k div{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:12px}
+.k b{font-size:30px;display:block}.k span{color:#6B7280;font-size:15px}
+.btn{margin:0 16px;height:54px;background:#2563EB;color:#fff;border-radius:12px;display:grid;place-items:center;font-weight:600;font-size:17px}
+.s{margin:12px 16px;height:48px;border:1px solid #D1D5DB;border-radius:10px;background:#fff;padding:0 14px;display:flex;align-items:center;color:#6B7280}
+.list{flex:1;overflow:hidden;margin:0 16px;background:#fff;border:1px solid #E5E7EB;border-radius:12px}
+.list h3{font-size:15px;padding:12px 14px;border-bottom:1px solid #E5E7EB}
+.it{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid #F3F4F6;gap:8px}
+.it b{display:block;font-size:16px}.it span{color:#6B7280;font-size:15px}
+.it a{border:1px solid #D1D5DB;border-radius:8px;padding:10px 12px;font-weight:600;font-size:15px}
+nav{display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-top:1px solid #E5E7EB;height:64px;margin-top:12px}
+nav a{display:grid;place-items:center;color:#6B7280;font-size:15px;font-weight:600}nav a.on{color:#2563EB}
+</style></head><body>
+<header><div><b>Immeuble Kiyo</b><small>Gombe</small></div><span class="pill">Hors ligne · 2</span></header>
+<div class="k"><div><b>7</b><span>sur le site</span></div><div><b>23</b><span>entrées aujourd'hui</span></div></div>
+<div class="btn">+ Nouvelle entrée</div>
+<div class="s">Chercher un nom…</div>
+<div class="list"><h3>Présents (exemple)</h3>
+<div class="it"><div><b>Christelle Nsimba Mavungu</b><span>14:32 · Cabinet Lukusa</span></div><a>Sortie</a></div>
+<div class="it"><div><b>Olivier Kabongo T.</b><span>14:18 · en attente d'envoi</span></div><a>Sortie</a></div>
+<div class="it"><div><b>Esther Mwamba Kasongo</b><span>13:55 · Livraison</span></div><a>Sortie</a></div>
+<div class="it"><div><b>Jean-Claude Habimana</b><span>13:20 · M. Kalonji</span></div><a>Sortie</a></div>
+</div>
+<nav><a class="on">Registre</a><a>Entrée</a><a>Rondes</a></nav>
+</body></html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<title>Mokengeli · Le mur et le pochoir</title>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:390px;height:844px;overflow:hidden}
+body{background:#E9EAE4;color:#161616;font:16px/1.4 'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:column}
+.st{font-family:'Saira Stencil One',Impact,sans-serif;font-weight:400;letter-spacing:.02em}
+header{background:#1E5A3C;color:#fff;padding:14px 16px 16px;background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.10) 0 2px,transparent 2px 22px)}
+header .r{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+header b{font-size:22px;line-height:1.15;display:block}
+header small{font-size:15px;opacity:.9}
+.net{background:#C98F2A;color:#161616;font-weight:700;font-size:14px;border-radius:6px;padding:6px 10px;white-space:nowrap}
+.soub{height:10px;background:#C98F2A}
+.counts{display:grid;grid-template-columns:1fr 1fr;padding:16px 16px 6px;gap:8px}
+.counts div{border-left:4px solid #161616;padding-left:10px}
+.counts .st{font-size:58px;line-height:.95;display:block}
+.counts span{font-size:15px;font-weight:700}
+.main{padding:12px 16px 10px}
+.btn1{display:flex;align-items:center;justify-content:center;gap:10px;height:60px;background:#161616;color:#fff;font-size:19px;font-weight:700;border-radius:8px}
+.btn1 i{font-style:normal;font-size:26px;line-height:1}
+.q{margin:12px 16px 0;height:50px;border:2px solid #9A9C93;border-radius:8px;background:#fff;padding:0 14px;display:flex;align-items:center;color:#56584F;font-size:16px}
+h2{font-size:15px;font-weight:700;padding:16px 16px 6px;display:flex;justify-content:space-between}
+h2 em{font-style:normal;background:#fff;border:1px dashed #56584F;border-radius:4px;padding:0 6px;font-size:14px;font-weight:400}
+.reg{flex:1;overflow:hidden;background:#fff;margin:0 16px;border-top:3px solid #161616}
+.row{display:grid;grid-template-columns:46px 64px minmax(0,1fr) 76px;align-items:center;gap:6px;min-height:68px;border-bottom:1px solid #D4D5CE;padding:0 8px 0 4px}
+.t{font-variant-numeric:tabular-nums;font-size:15px;font-weight:700}
+.n{font-size:19px;color:#1E5A3C}
+.who b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who span{display:block;font-size:15px;color:#4A4C44;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.out{height:48px;border:2px solid #161616;border-radius:8px;display:grid;place-items:center;font-weight:700;font-size:15px}
+.wait .who span{color:#7A4F00;font-weight:700}
+.gone{color:#8A8C84}.gone .n{color:#8A8C84}.gone .who span{color:#8A8C84}
+nav{display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-top:2px solid #161616;height:68px}
+nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#4A4C44}
+nav a.on{color:#161616;box-shadow:inset 0 4px 0 #1E5A3C}
+nav svg{width:24px;height:24px}
+</style></head><body>
+<header><div class="r"><div><b>Immeuble Kiyo</b><small>Gombe · Jean-Paul Ilunga</small></div><span class="net">Hors ligne · 2 à envoyer</span></div></header>
+<div class="soub"></div>
+<div class="counts"><div><span class="st">7</span><span>sur le site</span></div><div><span class="st">23</span><span>entrées aujourd'hui</span></div></div>
+<div class="main"><div class="btn1"><i>+</i> Nouvelle entrée</div></div>
+<div class="q">Chercher un nom ou une plaque</div>
+<h2><span>Présents sur le site</span><em>exemple</em></h2>
+<div class="reg">
+ <div class="row"><span class="t">14:32</span><span class="n st">N°0137</span><span class="who"><b>Christelle Nsimba Mavungu</b><span>chez Cabinet Lukusa · 3e</span></span><span class="out">Sortie</span></div>
+ <div class="row wait"><span class="t">14:18</span><span class="n st">N°0136</span><span class="who"><b>Olivier Kabongo T.</b><span>En attente d'envoi</span></span><span class="out">Sortie</span></div>
+ <div class="row"><span class="t">13:55</span><span class="n st">N°0135</span><span class="who"><b>Esther Mwamba Kasongo</b><span>Livraison · Pharmacie</span></span><span class="out">Sortie</span></div>
+ <div class="row"><span class="t">13:20</span><span class="n st">N°0134</span><span class="who"><b>Jean-Claude Habimana</b><span>chez M. Kalonji · 5e</span></span><span class="out">Sortie</span></div>
+ <div class="row gone"><span class="t">12:47</span><span class="n st">N°0133</span><span class="who"><b>Gédéon Mutombo</b><span>Sorti à 13:40</span></span><span></span></div>
+</div>
+<nav><a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h14v16H5zM9 9h6M9 13h6"/></svg>Registre</a><a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Entrée</a><a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2z"/></svg>Rondes</a></nav>
+</body></html>

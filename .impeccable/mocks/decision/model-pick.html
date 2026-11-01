@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<title>Mokengeli · Le badge contre la pièce</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:390px;height:844px;overflow:hidden}
+body{background:#E7EAEE;color:#14181C;font:16px/1.4 'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:column}
+header{background:#fff;padding:14px 16px;border-bottom:2px solid #14181C;display:flex;justify-content:space-between;align-items:center;gap:10px}
+header b{font-size:21px;display:block}
+header small{font-size:15px;color:#4B535C}
+.net{font-weight:700;font-size:14px;border:2px solid #14181C;border-radius:999px;padding:5px 10px;white-space:nowrap}
+.bar{display:flex;justify-content:space-between;align-items:baseline;padding:14px 16px 8px}
+.bar b{font-family:'Archivo Narrow',sans-serif;font-size:34px;line-height:1}
+.bar span{font-size:15px;font-weight:700;color:#4B535C}
+.legend{display:flex;gap:14px;padding:0 16px 10px;font-size:15px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.board{flex:1;overflow:hidden;padding:4px 16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-content:start}
+.badge{background:#fff;border-radius:10px;border:2px solid #14181C;padding:22px 12px 12px;position:relative;min-height:150px}
+.badge:before{content:"";position:absolute;top:8px;left:50%;width:30px;height:8px;margin-left:-15px;border-radius:4px;background:#E7EAEE;border:2px solid #14181C}
+.badge .top{height:8px;margin:-2px -12px 10px;}
+.badge .num{font-family:'Archivo Narrow',sans-serif;font-size:40px;font-weight:700;line-height:1}
+.badge b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge span{display:block;font-size:15px;color:#4B535C}
+.v .top{background:#2B59C3}.l .top{background:#E4572E}
+.wait{border-style:dashed}
+.foot{padding:12px 16px 10px;background:#E7EAEE}
+.btn1{height:60px;background:#2B59C3;color:#fff;border-radius:10px;display:grid;place-items:center;font-size:19px;font-weight:700}
+nav{display:grid;grid-template-columns:repeat(3,1fr);background:#fff;border-top:2px solid #14181C;height:66px}
+nav a{display:grid;place-items:center;font-size:15px;font-weight:700;color:#4B535C}
+nav a.on{color:#2B59C3}
+</style></head><body>
+<header><div><b>Immeuble Kiyo</b><small>Gombe · Jean-Paul Ilunga</small></div><span class="net">Hors ligne · 2</span></header>
+<div class="bar"><b>7 badges sortis</b><span>23 entrées aujourd'hui · exemple</span></div>
+<div class="legend"><span><i style="background:#2B59C3"></i>Visite</span><span><i style="background:#E4572E"></i>Livraison</span></div>
+<div class="board">
+ <div class="badge v"><div class="top"></div><div class="num">07</div><b>Christelle Nsimba</b><span>Cabinet Lukusa · 3e</span><span>depuis 14:32</span></div>
+ <div class="badge v wait"><div class="top"></div><div class="num">04</div><b>Olivier Kabongo</b><span>M. Kalonji · 5e</span><span>pas encore envoyé</span></div>
+ <div class="badge l"><div class="top"></div><div class="num">11</div><b>Esther Mwamba</b><span>Pharmacie</span><span>depuis 13:55</span></div>
+ <div class="badge v"><div class="top"></div><div class="num">02</div><b>Jean-Claude Habimana</b><span>M. Kalonji · 5e</span><span>depuis 13:20</span></div>
+</div>
+<div class="foot"><div class="btn1">+ Nouvelle entrée</div></div>
+<nav><a class="on">Badges</a><a>Entrée</a><a>Rondes</a></nav>
+</body></html>
