@@ -344,6 +344,85 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 @media (max-width: 460px){ .u-mur .phone{border:0;border-radius:0} #v-guard.u-mur{padding-left:0;padding-right:0} .u-mur .explain{padding:0 16px} }
 
 /* ===== Lot 1 : formulaire d'entrée, alerte, sonnerie ===== */
+.u-mur{ --champ-bord:#8E9087; --champ-indice:#5D5F56; }
+/* Formulaire d'entrée : papier blanc posé sur le mur, champs à bord net */
+.u-mur #s-form .f-title{font-family:var(--f-texte);font-size:22px;font-weight:700;line-height:1.2;color:var(--encre);padding-bottom:10px;border-bottom:2px solid var(--encre)}
+.u-mur form.entry{gap:16px}
+.u-mur .fld{gap:6px}
+.u-mur .fld label{font-size:15px;font-weight:700;color:var(--encre);line-height:1.3}
+.u-mur .fld .req{font-weight:400;color:var(--encre-2)}
+.u-mur .fld input,.u-mur .fld select{min-height:50px;padding:10px 12px;border:2px solid var(--champ-bord);border-radius:8px;background:var(--papier);color:var(--encre);font-size:16px}
+.u-mur .fld input::placeholder{color:var(--champ-indice);opacity:1}
+.u-mur .fld input:focus,.u-mur .fld select:focus{border-color:var(--encre)}
+.u-mur .fld select{appearance:none;-webkit-appearance:none;padding-right:38px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23161616' stroke-width='2.2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.u-mur .two{gap:12px}
+.u-mur .two > .fld{min-width:0}
+.u-mur .host-row{gap:8px}
+.u-mur .host-row .btn{min-height:50px;gap:8px}
+
+/* Photo de la pièce : un seul geste, la photo ; la lecture automatique reste secondaire */
+.u-mur .photo{border:2px solid var(--encre);border-radius:8px;background:var(--papier);padding:12px;gap:14px;align-items:flex-start}
+.u-mur .photo .thumb{width:96px;height:66px;border-radius:4px;background:var(--mur);border:2px dashed var(--champ-bord);color:var(--encre-2)}
+.u-mur .photo .thumb:has(img){border-style:solid;border-color:var(--encre)}
+.u-mur .photo .pa{flex:1;gap:8px}
+.u-mur .photo .pa-t{font-size:15px;font-weight:700;color:var(--encre)}
+.u-mur .photo input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip-path:inset(50%)}
+.u-mur .photo .pa-shot{display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.u-mur .photo input[type=file]:focus-visible + .pa-shot{outline:3px solid var(--ocre);outline-offset:2px}
+.u-mur .photo #f-read{border-style:dashed;border-color:var(--encre-2);color:var(--encre)}
+
+/* Fiche de police (hôtels) : le numéro de chambre et les nuitées au pochoir */
+.u-mur #f-hotel{border:0;border-top:3px solid var(--encre);border-radius:0;background:var(--papier);padding:4px 12px 14px;gap:14px}
+.u-mur #f-hotel legend{float:left;width:100%;padding:10px 0 0;font-size:17px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--encre)}
+.u-mur #f-hotel legend + *{clear:both}
+.u-mur #f-room,.u-mur #f-nights{font-family:var(--f-pochoir);font-size:24px;letter-spacing:.04em;font-variant-numeric:tabular-nums;padding-block:6px}
+
+/* Erreur de saisie : le problème et la solution, en rouge sur papier */
+.u-mur #f-err{display:flex;gap:10px;align-items:flex-start;background:var(--danger-clair);border:2px solid var(--danger);border-radius:8px;padding:12px 14px;color:#8A1C16;font-size:15px;font-weight:700;line-height:1.35}
+
+/* Alerte liste de surveillance : plaque peinte rouge pleine, le moment le plus grave du poste */
+.u-mur .warnbox{background:var(--danger);color:#FFFFFF;border:0;border-radius:8px;outline:2px solid #FFFFFF;outline-offset:-8px;padding:20px 20px 20px;gap:10px}
+.u-mur .warnbox b{display:flex;align-items:center;gap:10px;color:#FFFFFF;font-family:var(--f-texte);font-size:24px;font-weight:700;line-height:1.15}
+.u-mur .warnbox b svg{flex:none}
+.u-mur .warnbox p{font-size:16px;line-height:1.4;color:#FFFFFF}
+.u-mur .warnbox .consigne{font-weight:700;padding:10px 0;border-block:2px solid rgba(255,255,255,.7)}
+.u-mur .warnbox .btns{display:grid;grid-template-columns:1fr;gap:10px;margin-top:4px}
+.u-mur .warnbox .btn{min-height:52px;font-size:16px;width:100%}
+.u-mur .warnbox #f-refuse{background:#FFFFFF;border-color:#FFFFFF;color:var(--danger)}
+.u-mur .warnbox #f-refuse:hover{background:var(--danger-clair)}
+.u-mur .warnbox #f-force{background:transparent;border-color:#FFFFFF;color:#FFFFFF}
+.u-mur .warnbox #f-force:hover{background:#8F1E18}
+.u-mur .warnbox :focus-visible{outline-color:#FFFFFF}
+/* Pendant l'alerte, la décision se prend sur la plaque : le bouton Enregistrer s'efface */
+.u-mur #f-warn:not([hidden]) ~ .big-btn[type=submit]{display:none}
+
+.u-mur form.entry .big-btn{margin-top:4px}
+.u-mur .f-cancel{width:100%}
+
+/* Sonner l'habitant */
+.u-mur.modal{background:rgba(22,22,22,.62);padding:16px}
+.u-mur.modal .box{background:var(--papier);border:2px solid var(--encre);border-radius:8px;padding:20px 18px 18px;gap:14px;box-shadow:none}
+.u-mur #ring-title{font-family:var(--f-texte);font-size:21px;font-weight:700;line-height:1.2;color:var(--encre);padding-bottom:10px;border-bottom:2px solid var(--encre)}
+.u-mur .ring-status{border-radius:8px;padding:14px 16px;font-size:17px;line-height:1.3;gap:12px;border:2px solid transparent}
+.u-mur .ring-status.pending{background:var(--ocre-clair);border-color:var(--ocre);color:var(--ocre-encre)}
+.u-mur .ring-status.accepted{background:var(--portail);border-color:var(--portail);color:#FFFFFF}
+.u-mur .ring-status.refused{background:var(--danger);border-color:var(--danger);color:#FFFFFF}
+.u-mur .ring-dot{width:14px;height:14px;border-radius:2px}
+.u-mur .ring-status:not(.pending) .ring-dot{display:none}
+.u-mur #ring-help{margin:0;font-size:15px;line-height:1.4;color:var(--encre-2)}
+.u-mur #ring-help:empty{display:none}
+.u-mur .ring-links{gap:8px}
+.u-mur .ring-links .btn{flex:1 1 0;min-width:96px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:var(--encre)}
+.u-mur .ring-links a.wa{background:var(--portail);border-color:var(--portail);color:#FFFFFF}
+.u-mur .ring-links a.wa:hover{background:var(--portail-fonce)}
+.u-mur .ring-sim{border:2px dashed var(--champ-bord);border-radius:8px;background:var(--mur);padding:12px;gap:10px}
+.u-mur .ring-sim p{font-size:15px;color:var(--encre-2)}
+.u-mur.modal .btns{gap:10px}
+.u-mur.modal .btns .btn{flex:1 1 auto;min-height:52px}
+@media (prefers-reduced-motion: reduce){ .u-mur .ring-status.pending .ring-dot{animation:none} }
+
+/* Message du téléphone : au-dessus de la barre du bas */
+.u-mur .ph-toast{left:16px;right:16px;bottom:80px;border:2px solid var(--encre);line-height:1.35}
 /* (fin de la zone) */
 /* - */
 /* - */
@@ -508,30 +587,31 @@ body.app-mode .u-mur .phone{box-shadow:none;background:var(--mur)}
     </div>
 
     <div class="ph-screen" id="s-form" hidden>
-      <h2 style="font-size:20px">Nouvelle entrée</h2>
+      <h2 class="f-title">Nouvelle entrée</h2>
       <form class="entry" id="entry-form" novalidate>
         <div class="photo">
           <div class="thumb" id="ph-thumb"><svg width="28" height="20" viewBox="0 0 28 20" aria-hidden="true"><rect x="1" y="1" width="26" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M14 7h9M14 11h9M5 15h18" stroke="currentColor" stroke-width="1.5"/></svg></div>
           <div class="pa">
-            <label for="f-photo" style="font-size:13px;font-weight:700">Photo de la pièce</label>
+            <span class="pa-t">Pièce d'identité</span>
             <input type="file" id="f-photo" accept="image/*" capture="environment">
-            <button type="button" class="btn primary" id="f-read">Lire la pièce (démo)</button>
+            <label for="f-photo" class="btn pa-shot"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>Photographier</label>
+            <button type="button" class="btn" id="f-read">Lire la pièce (démo)</button>
           </div>
         </div>
-        <div class="fld"><label for="f-name">Nom complet *</label><input id="f-name" autocomplete="off" placeholder="Ex. Christelle Nsimba Mavungu"></div>
+        <div class="fld"><label for="f-name">Nom complet <span class="req">obligatoire</span></label><input id="f-name" autocomplete="off" placeholder="Ex. Christelle Nsimba Mavungu"></div>
         <div class="two">
           <div class="fld"><label for="f-idtype">Pièce</label>
             <select id="f-idtype"><option>Carte d'électeur</option><option>Passeport</option><option>Permis de conduire</option><option>Carte de service</option><option>Carte d'étudiant</option></select></div>
-          <div class="fld"><label for="f-idnum">N° de pièce *</label><input id="f-idnum" autocomplete="off"></div>
+          <div class="fld"><label for="f-idnum">N° de pièce <span class="req">obligatoire</span></label><input id="f-idnum" autocomplete="off"></div>
         </div>
         <div class="two">
           <div class="fld"><label for="f-phone">Téléphone</label><input id="f-phone" inputmode="tel" placeholder="+243 …"></div>
-          <div class="fld"><label for="f-plate">Plaque véhicule</label><input id="f-plate" placeholder="Facultatif"></div>
+          <div class="fld"><label for="f-plate">Plaque du véhicule</label><input id="f-plate" placeholder="Facultatif"></div>
         </div>
         <div class="fld"><label for="f-motif">Motif</label>
           <select id="f-motif"><option>Visite personnelle</option><option>Rendez-vous professionnel</option><option>Livraison</option><option>Prestataire / technicien</option><option>Client hôtel</option></select></div>
         <div class="fld"><label for="f-host">Habitant ou bureau visité</label>
-          <div class="host-row"><input id="f-host" list="res-list" autocomplete="off" placeholder="Choisir ou écrire un nom"><button class="btn" type="button" id="f-ring" title="Prévenir l'habitant qu'un visiteur l'attend"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Sonner</button></div>
+          <div class="host-row"><input id="f-host" list="res-list" autocomplete="off" placeholder="Choisir ou écrire un nom"><button class="btn" type="button" id="f-ring" title="Prévenir l'habitant qu'un visiteur l'attend"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Sonner</button></div>
           <datalist id="res-list"></datalist>
         </div>
         <fieldset id="f-hotel" hidden>
@@ -545,15 +625,15 @@ body.app-mode .u-mur .phone{box-shadow:none;background:var(--mur)}
             <div class="fld"><label for="f-origin">Provenance</label><input id="f-origin" placeholder="Ville"></div>
           </div>
         </fieldset>
-        <div class="err" id="f-err" hidden></div>
-        <div class="warnbox" id="f-warn" hidden>
-          <b>Personne signalée</b>
+        <div class="err" id="f-err" role="alert" hidden></div>
+        <div class="warnbox" id="f-warn" role="alert" hidden>
+          <b><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 10v4.5M12 17v.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Personne signalée</b>
           <p id="f-warn-txt"></p>
-          <p>Ne laissez pas entrer sans l'accord du superviseur.</p>
+          <p class="consigne">Ne laissez pas entrer sans l'accord du superviseur.</p>
           <div class="btns"><button type="button" class="btn danger" id="f-refuse">Refuser l'entrée</button><button type="button" class="btn" id="f-force">Enregistrer quand même</button></div>
         </div>
         <button class="big-btn" type="submit">Enregistrer l'entrée</button>
-        <button class="btn" type="button" data-tab="reg">Annuler</button>
+        <button class="btn f-cancel" type="button" data-tab="reg">Annuler</button>
       </form>
     </div>
 
@@ -563,7 +643,7 @@ body.app-mode .u-mur .phone{box-shadow:none;background:var(--mur)}
       <div class="ledger" id="round-list"></div>
     </div>
 
-    <div class="ph-toast" id="ph-toast" hidden></div>
+    <div class="ph-toast" id="ph-toast" role="status" aria-live="polite" hidden></div>
 
     <nav class="ph-nav" aria-label="Navigation du téléphone">
       <button data-tab="reg" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h12a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.8"/></svg>Registre</button>
@@ -689,9 +769,9 @@ body.app-mode .u-mur .phone{box-shadow:none;background:var(--mur)}
 <div class="toast" id="toast" hidden></div>
 <div class="modal u-mur" id="ring-modal" hidden>
   <div class="box ring-box" role="dialog" aria-modal="true" aria-labelledby="ring-title">
-    <h2 id="ring-title" style="font-size:19px">Sonner l'habitant</h2>
-    <div class="ring-status pending" id="ring-status"><span class="ring-dot"></span><span id="ring-status-txt">En attente de réponse…</span></div>
-    <p id="ring-help" style="margin:0;color:var(--muted);font-size:13.5px"></p>
+    <h2 id="ring-title">Sonner l'habitant</h2>
+    <div class="ring-status pending" id="ring-status" role="status" aria-live="polite"><span class="ring-dot"></span><span id="ring-status-txt">En attente de réponse…</span></div>
+    <p id="ring-help"></p>
     <div class="ring-links" id="ring-links"></div>
     <div class="ring-sim" id="ring-sim" hidden>
       <p>Démonstration : simulez la réponse de l'habitant.</p>
@@ -973,7 +1053,7 @@ const raiseAlert = text => write('alerts', uid(), {level:'crit', text, site:G.si
 $('#entry-form').addEventListener('submit', e => {
   e.preventDefault();
   const d = readForm();
-  if (!d.name || !d.idNum) { $('#f-err').textContent = 'Le nom et le numéro de pièce sont obligatoires.'; $('#f-err').hidden = false; return; }
+  if (!d.name || !d.idNum) { $('#f-err').textContent = 'Il manque le nom ou le numéro de pièce. Remplissez ces deux champs, ou touchez « Lire la pièce ».'; $('#f-err').hidden = false; return; }
   $('#f-err').hidden = true;
   const hit = watchHit(d.name);
   if (hit) {
