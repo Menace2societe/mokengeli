@@ -227,9 +227,109 @@ body.app-mode .phone{max-width:none;height:auto;min-height:calc(100vh - 140px);b
   .demo-tag{display:none}
 }
 @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+
+/* Univers « Le mur et le pochoir » : mur chaulé, portail vert, soubassement ocre, numéros au pochoir.
+   Activé par la classe .u-mur sur chaque espace refait ; les espaces sans la classe gardent l'ancien style. */
+@font-face{font-family:'Atkinson Hyperlegible';src:url(fonts/atkinson-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Atkinson Hyperlegible';src:url(fonts/atkinson-700.woff2) format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Saira Stencil One';src:url(fonts/saira-stencil.woff2) format('woff2');font-weight:400;font-display:swap}
+.u-mur{
+  --mur:#E9EAE4; --mur-creux:#DCDDD6; --papier:#FFFFFF; --encre:#161616; --encre-2:#45473F; --filet:#C4C5BC;
+  --portail:#1E5A3C; --portail-fonce:#15422B; --portail-clair:#DCE8E0; --ocre:#C98F2A; --ocre-encre:#6B4600; --ocre-clair:#F3E4C4;
+  --danger:#B3261E; --danger-clair:#F7DCD8;
+  --f-pochoir:'Saira Stencil One','Atkinson Hyperlegible',sans-serif;
+  --f-texte:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;
+  /* Les anciens noms pointent vers le monde, pour que les éléments pas encore refaits restent lisibles dedans */
+  --bg:var(--mur); --surface:var(--papier); --sunk:var(--mur-creux); --ink:var(--encre); --muted:var(--encre-2); --line:var(--filet);
+  --accent:var(--portail); --accent-soft:var(--portail-clair); --on-accent:#FFFFFF;
+  --ok:var(--portail); --ok-soft:var(--portail-clair); --warn:var(--ocre-encre); --warn-soft:var(--ocre-clair); --crit:var(--danger); --crit-soft:var(--danger-clair);
+  --f-display:var(--f-texte); --f-body:var(--f-texte); --f-mono:var(--f-texte); --r:8px;
+  color-scheme:light; color:var(--encre); font-family:var(--f-texte); font-size:16px; line-height:1.4;
+  caret-color:var(--portail);
+}
+.u-mur ::selection{background:var(--ocre);color:var(--encre)}
+.u-mur :focus-visible{outline:3px solid var(--ocre);outline-offset:2px}
+.u-mur .pochoir{font-family:var(--f-pochoir);font-weight:400;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.u-mur .eyebrow{font-size:15px;text-transform:none;letter-spacing:0;color:var(--encre-2)}
+.u-mur .btn{min-height:48px;border:2px solid var(--encre);background:var(--papier);color:var(--encre);border-radius:8px;padding:8px 14px;font-weight:700;font-size:15px}
+.u-mur .btn:hover{background:var(--mur)}
+.u-mur .btn.primary{background:var(--encre);border-color:var(--encre);color:#FFFFFF}
+.u-mur .btn.primary:hover{background:#000}
+.u-mur .btn.danger{background:var(--danger);border-color:var(--danger);color:#FFFFFF}
+.u-mur .btn:disabled{opacity:.5;cursor:not-allowed}
+.u-mur input,.u-mur select,.u-mur textarea{font-size:16px}
+.u-mur .pill{border-radius:4px;font-size:15px;padding:2px 8px}
+.u-mur .pill.info{background:var(--portail-clair);color:var(--portail)}
+
+/* Barre du haut */
+.top.u-mur{background:var(--papier);border-bottom:2px solid var(--encre)}
+.u-mur .brand b{font-family:var(--f-texte);font-weight:700;font-size:20px;letter-spacing:0}
+.u-mur .brand small{font-size:15px;color:var(--encre-2)}
+.u-mur .seg{background:var(--mur);border:2px solid var(--encre);border-radius:8px;padding:2px}
+.u-mur .seg button{min-height:44px;border-radius:5px;font-size:15px;color:var(--encre-2)}
+.u-mur .seg button[aria-pressed="true"]{background:var(--portail);color:#FFFFFF}
+
+/* Poste de garde */
+#v-guard.u-mur{background:var(--mur);max-width:none;padding-left:max(16px, calc((100vw - 1180px)/2));padding-right:max(16px, calc((100vw - 1180px)/2))}
+body:has(#v-guard.u-mur:not([hidden])){background:var(--mur)}
+.u-mur .explain h1{font-family:var(--f-texte);font-weight:700;letter-spacing:-.01em}
+.u-mur .explain p{color:var(--encre-2)}
+.u-mur .try .n{border-radius:4px;background:var(--encre);color:#FFFFFF;font-family:var(--f-pochoir);font-weight:400;font-size:16px}
+.u-mur .try code{font-family:var(--f-texte);font-size:15px;background:var(--papier);border-color:var(--filet)}
+.u-mur .search{min-height:50px;border:2px solid #8E9087;border-radius:8px;background:var(--papier);padding:10px 14px;font-size:16px;color:var(--encre)}
+.u-mur .search::placeholder{color:#5D5F56}
+.u-mur .search:focus{border-color:var(--encre);outline:none}
+
+.u-mur .phone{background:var(--mur);border-color:#141414;box-shadow:0 24px 48px -20px rgba(22,22,22,.45)}
+.u-mur .ph-status{background-color:var(--portail);background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.12) 0 2px,transparent 2px 22px);color:#FFFFFF;padding:14px 16px;gap:4px;border-bottom:10px solid var(--ocre)}
+.u-mur .ph-status b{font-family:var(--f-texte);font-size:21px;font-weight:700;line-height:1.2}
+.u-mur .ph-status small{font-size:15px;opacity:1;color:#E4EDE7}
+.u-mur .net{min-height:40px;background:var(--papier);color:var(--portail);border:0;border-radius:6px;padding:6px 10px;font-size:15px}
+.u-mur .net i{background:var(--portail)}
+.u-mur .net.off{background:var(--ocre);color:var(--encre)}
+.u-mur .net.off i{background:var(--encre);border-radius:1px}
+.u-mur .ph-screen{padding:16px 16px 20px;gap:14px}
+.u-mur .ph-screen > *{flex-shrink:0}
+@media (max-width: 767px){ .top.u-mur{position:static} }
+
+.u-mur .counts{gap:0 24px;border-bottom:2px solid var(--encre);padding-bottom:12px}
+.u-mur .count{background:none;border:0;border-radius:0;padding:0 12px 0 0}
+.u-mur .count + .count{padding-left:0}
+.u-mur .count b{font-family:var(--f-pochoir);font-weight:400;font-size:60px;line-height:.95;font-variant-numeric:tabular-nums}
+.u-mur .count span{font-size:15px;font-weight:700;color:var(--encre)}
+.u-mur .big-btn{min-height:60px;border-radius:8px;background:var(--encre);color:#FFFFFF;font-size:19px}
+.u-mur .big-btn:hover{background:#000}
+
+.u-mur .ledger{background:var(--papier);border:0;border-top:3px solid var(--encre);border-radius:0}
+.u-mur .ledger .reg-h,.u-mur details.ledger summary{font-family:var(--f-texte);font-size:16px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--encre);padding:10px 12px;border-bottom:1px solid var(--filet);min-height:48px;display:flex;align-items:center;justify-content:space-between}
+.u-mur details.ledger summary{justify-content:flex-start;gap:0;list-style:none}
+.u-mur details.ledger summary::-webkit-details-marker{display:none}
+.u-mur details.ledger summary::after{content:"";width:9px;height:9px;margin-left:auto;margin-right:4px;border-right:2px solid var(--encre);border-bottom:2px solid var(--encre);transform:rotate(45deg) translateY(-3px);transition:transform .2s cubic-bezier(.16,1,.3,1)}
+.u-mur details.ledger[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.u-mur .lrow{grid-template-columns:72px 54px minmax(0,1fr) auto;gap:4px;min-height:68px;border-bottom:1px solid var(--filet)}
+.u-mur .lrow .t{border-right:0;padding:10px 0 10px 10px;font-family:var(--f-texte);font-size:15px;font-weight:700;align-self:center}
+.u-mur .lrow .t small{font-size:15px;font-weight:400;color:var(--encre-2);white-space:nowrap}
+.u-mur .lrow .no{font-family:var(--f-pochoir);font-size:19px;color:var(--portail);white-space:nowrap;font-variant-numeric:tabular-nums}
+.u-mur .lrow .who{padding:10px 6px}
+.u-mur .lrow .who b{font-size:16px}
+.u-mur .lrow .who span{font-size:15px;color:var(--encre-2)}
+.u-mur .lrow .who .attente{color:var(--ocre-encre);font-weight:700}
+.u-mur .lrow.wait{background:var(--ocre-clair)}
+.u-mur .lrow.wait .who span.attente{color:var(--ocre-encre)}
+.u-mur .lrow.gone,.u-mur .lrow.gone .no,.u-mur .lrow.gone .who span{color:#6E7068}
+.u-mur .lrow .act{padding-right:10px}
+.u-mur .empty{font-size:15px;color:var(--encre-2);padding:16px 12px}
+
+.u-mur .ph-nav{border-top:2px solid var(--encre);background:var(--papier)}
+.u-mur .ph-nav button{min-height:64px;font-size:15px;color:var(--encre-2);box-shadow:inset 0 4px 0 transparent}
+.u-mur .ph-nav button[aria-current="true"]{color:var(--encre);box-shadow:inset 0 4px 0 var(--portail)}
+.u-mur .ph-nav svg{width:24px;height:24px}
+.u-mur .ph-toast{background:var(--encre);color:#FFFFFF;border-radius:8px;font-size:15px;padding:12px 14px}
+body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
+@media (max-width: 460px){ .u-mur .phone{border:0;border-radius:0} #v-guard.u-mur{padding-left:0;padding-right:0} .u-mur .explain{padding:0 16px} }
 </style>
 
-<header class="top">
+<header class="top u-mur">
   <div class="wrap">
     <div class="brand">
       <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" fill="var(--accent)"/><path d="M10 9h14v16H10z" fill="none" stroke="var(--on-accent)" stroke-width="2"/><path d="M13 9v16" stroke="var(--on-accent)" stroke-width="2"/><path d="M16 14h5M16 18h5M16 22h3" stroke="var(--on-accent)" stroke-width="1.6"/></svg>
@@ -246,7 +346,7 @@ body.app-mode .phone{max-width:none;height:auto;min-height:calc(100vh - 140px);b
 
 <main>
 <!-- ============ VUE GARDIEN ============ -->
-<section id="v-guard" class="wrap guard">
+<section id="v-guard" class="wrap guard u-mur">
   <div class="explain">
     <span class="eyebrow">Au poste de garde · téléphone Android</span>
     <h1>Le cahier de passage, sur le téléphone du gardien</h1>
@@ -283,9 +383,9 @@ body.app-mode .phone{max-width:none;height:auto;min-height:calc(100vh - 140px);b
         <div class="count"><b id="c-day">0</b><span>entrées aujourd'hui</span></div>
       </div>
       <button class="big-btn" data-tab="form" type="button"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Nouvelle entrée</button>
-      <input type="search" id="reg-q" class="search" placeholder="Chercher un nom…" aria-label="Chercher un nom">
+      <input type="search" id="reg-q" class="search" placeholder="Chercher un nom ou un n° de pièce" aria-label="Chercher un nom ou un numéro de pièce">
       <div class="ledger">
-        <h3><span>Présents sur le site</span><span id="reg-pcount"></span></h3>
+        <h2 class="reg-h"><span>Présents sur le site</span><span id="reg-pcount"></span></h2>
         <div id="reg-present"></div>
       </div>
       <details class="ledger" id="reg-out-wrap">
@@ -444,7 +544,7 @@ body.app-mode .phone{max-width:none;height:auto;min-height:calc(100vh - 140px);b
 </main>
 
 <div class="toast" id="toast" hidden></div>
-<div class="modal" id="ring-modal" hidden>
+<div class="modal u-mur" id="ring-modal" hidden>
   <div class="box ring-box" role="dialog" aria-modal="true" aria-labelledby="ring-title">
     <h2 id="ring-title" style="font-size:19px">Sonner l'habitant</h2>
     <div class="ring-status pending" id="ring-status"><span class="ring-dot"></span><span id="ring-status-txt">En attente de réponse…</span></div>
@@ -613,8 +713,12 @@ function renderPhone(){
   $('#c-day').textContent = mine.filter(e => e.in >= dayStart()).length;
   $('#reg-pcount').textContent = present.length;
   $('#reg-ocount').textContent = out.length;
-  const row = (e, act) => `<div class="lrow"><div class="t">${TT(e.in)}${e.out ? `<small>→ ${T(e.out)}</small>` : ''}</div>
-    <div class="who"><b>${esc(e.name)}</b><span>${esc(detail(e))}</span>${e._pending ? '<span class="pill warn">en attente d\'envoi</span>' : ''}</div>
+  // N° de passage : rang de l'entrée dans sa journée, calculé à l'affichage (rien n'est enregistré)
+  const num = new Map(), perDay = {};
+  for (const e of [...mine].sort((a, b) => a.in - b.in)) { const d = new Date(e.in).toDateString(); perDay[d] = (perDay[d] || 0) + 1; num.set(e.id, perDay[d]); }
+  const row = (e, act) => `<div class="lrow${e.out ? ' gone' : ''}${e._pending ? ' wait' : ''}"><div class="t">${TT(e.in)}${e.out ? `<small>→ ${T(e.out)}</small>` : ''}</div>
+    <div class="no" aria-label="${num.get(e.id)}e entrée du jour">N°&#8239;${num.get(e.id)}</div>
+    <div class="who"><b>${esc(e.name)}</b><span>${esc(detail(e))}</span>${e._pending ? '<span class="attente">En attente d\'envoi</span>' : ''}</div>
     <div class="act">${act}</div></div>`;
   $('#reg-present').innerHTML = G.mode === 'loading' ? '<div class="empty">Chargement du registre…</div>'
     : !SITES.length ? `<div class="empty">Aucun site n'est encore créé. ${G.user?.role === 'gerant' ? 'Ajoutez votre premier site dans « Mon compte ».' : 'Le gérant doit ajouter les sites dans son compte.'}</div>`

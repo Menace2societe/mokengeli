@@ -24,4 +24,6 @@ const out = path.join(__dirname, 'site');
 fs.mkdirSync(out, {recursive: true});
 fs.writeFileSync(path.join(out, 'index.html'), head + page + '\n<script type="module" src="cloud.js"></script>\n</body>\n</html>\n');
 fs.copyFileSync(path.join(__dirname, 'cloud.js'), path.join(out, 'cloud.js'));
-console.log('site/index.html et site/cloud.js générés');
+// Polices auto-hébergées (licence OFL) : rien n'est chargé depuis Google, utile sur un réseau faible
+fs.cpSync(path.join(__dirname, 'fonts'), path.join(out, 'fonts'), {recursive: true});
+console.log('site/index.html, site/cloud.js et site/fonts/ générés');
