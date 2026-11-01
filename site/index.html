@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Mokengeli : registre numérique des visiteurs et des rondes pour les sociétés de gardiennage et les hôtels.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='1' width='32' height='32' rx='8' fill='%231D46C8'/%3E%3Cpath d='M10 9h14v16H10zM13 9v16' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='1' width='32' height='32' rx='8' fill='%231E5A3C'/%3E%3Cpath d='M10 9h14v16H10zM13 9v16' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
 <style>
 :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -15,29 +15,26 @@ img{max-width:100%}
 <body>
 <title>Mokengeli Registre</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 /* Layout : barre de mode en haut ; vue "Poste de garde" = explication + téléphone ; vue "Gérant" = tableau de bord en grille */
 :root{
   --bg:#EDF0F3; --surface:#FFFFFF; --sunk:#F4F6F8; --ink:#15212C; --muted:#5B6976; --line:#D6DDE4;
-  --accent:#1D46C8; --accent-soft:#E3E9FB; --on-accent:#FFFFFF;
+  --accent:#1E5A3C; --accent-soft:#DCE8E0; --on-accent:#FFFFFF;
   --ok:#1C7A4C; --ok-soft:#DDF1E6; --warn:#985A00; --warn-soft:#FBEED6; --crit:#BF2A2A; --crit-soft:#FBE2E0;
   --margin:#E07272; --frame:#0E161D; --shadow:0 18px 40px rgba(16,30,44,.16);
-  --f-display:'Archivo', 'Arial Narrow', Arial, sans-serif;
+  --f-display:'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --f-body:'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --f-mono:'JetBrains Mono', ui-monospace, Consolas, monospace;
+  --f-mono:'Atkinson Hyperlegible', system-ui, sans-serif;
   --r:10px;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#0D1318; --surface:#151E27; --sunk:#111920; --ink:#E5EBF1; --muted:#93A1AE; --line:#26323D;
-  --accent:#7E9DFF; --accent-soft:#1D2A4D; --on-accent:#0D1318;
+  --accent:#8CC7A5; --accent-soft:#173326; --on-accent:#0D1318;
   --ok:#4CC38A; --ok-soft:#153325; --warn:#F0AA40; --warn-soft:#3A2A10; --crit:#FF6F6A; --crit-soft:#401A1A;
   --margin:#B45858; --frame:#2A3743; --shadow:0 18px 40px rgba(0,0,0,.45); color-scheme:dark }}
 :root[data-theme="dark"]{
   --bg:#0D1318; --surface:#151E27; --sunk:#111920; --ink:#E5EBF1; --muted:#93A1AE; --line:#26323D;
-  --accent:#7E9DFF; --accent-soft:#1D2A4D; --on-accent:#0D1318;
+  --accent:#8CC7A5; --accent-soft:#173326; --on-accent:#0D1318;
   --ok:#4CC38A; --ok-soft:#153325; --warn:#F0AA40; --warn-soft:#3A2A10; --crit:#FF6F6A; --crit-soft:#401A1A;
   --margin:#B45858; --frame:#2A3743; --shadow:0 18px 40px rgba(0,0,0,.45); color-scheme:dark }
 
@@ -340,6 +337,7 @@ body:has(#v-guard.u-mur:not([hidden])){background:var(--mur)}
 .u-mur .ph-nav button[aria-current="true"]{color:var(--encre);box-shadow:inset 0 4px 0 var(--portail)}
 .u-mur .ph-nav svg{width:24px;height:24px}
 .u-mur .ph-toast{background:var(--encre);color:#FFFFFF;border-radius:8px;font-size:15px;padding:12px 14px}
+.toast.u-mur{font-size:15px;border-radius:8px;padding:12px 16px}
 body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 @media (max-width: 460px){ .u-mur .phone{border:0;border-radius:0} #v-guard.u-mur{padding-left:0;padding-right:0} .u-mur .explain{padding:0 16px} }
 
@@ -423,6 +421,7 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 
 /* Message du téléphone : au-dessus de la barre du bas */
 .u-mur .ph-toast{left:16px;right:16px;bottom:80px;border:2px solid var(--encre);line-height:1.35}
+.toast.u-mur{font-size:15px;border-radius:8px;padding:12px 16px}
 /* (fin de la zone) */
 /* - */
 /* - */
@@ -894,7 +893,7 @@ body:has(#v-admin.u-mur:not([hidden])){background:var(--mur)}
 </section>
 </main>
 
-<div class="toast" id="toast" hidden></div>
+<div class="toast u-mur" id="toast" role="status" aria-live="polite" hidden></div>
 <div class="modal u-mur" id="ring-modal" hidden>
   <div class="box ring-box" role="dialog" aria-modal="true" aria-labelledby="ring-title">
     <h2 id="ring-title">Sonner l'habitant</h2>
