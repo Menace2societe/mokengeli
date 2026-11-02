@@ -89,7 +89,8 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .u-mur .acct-tabs button:first-child,.u-mur .acct-tabs button[hidden] + button{border-left:0}
 .u-mur .acct-tabs button:hover{background:var(--mur)}
 .u-mur .acct-tabs button[aria-selected="true"]{background:var(--portail);color:#FFFFFF}
-.u-mur .acct-tabs button:focus-visible{outline-offset:-5px;outline-color:var(--ocre)}
+.u-mur .acct-tabs button:focus-visible{outline:3px solid var(--encre);outline-offset:-6px;box-shadow:none}
+.u-mur .acct-tabs button[aria-selected="true"]:focus-visible{outline-color:#FFFFFF}
 
 .u-mur .acct-form{display:flex;flex-direction:column;gap:14px}
 .u-mur .acct-form .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -99,7 +100,7 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .u-mur .box.acct .fld input,.u-mur .box.acct .fld select{width:100%;min-height:50px;padding:10px 12px;border:2px solid var(--champ);border-radius:6px;background:var(--papier);color:var(--encre);font-family:var(--f-texte);font-size:16px}
 .u-mur .box.acct .fld input::placeholder{color:var(--indice);opacity:1}
 .u-mur .box.acct .fld input:hover,.u-mur .box.acct .fld select:hover{border-color:var(--encre-2)}
-.u-mur .box.acct .fld input:focus,.u-mur .box.acct .fld select:focus{border-color:var(--encre);outline:3px solid var(--ocre);outline-offset:1px}
+.u-mur .box.acct .fld input:focus,.u-mur .box.acct .fld select:focus{border-color:var(--encre);outline:3px solid var(--encre);outline-offset:2px;box-shadow:0 0 0 2px var(--papier)}
 .u-mur .box.acct .fld input:disabled,.u-mur .box.acct .fld select:disabled{background:var(--mur);color:var(--encre-2)}
 .u-mur #j-code{font-family:var(--f-texte);font-weight:700;font-size:22px;letter-spacing:.14em;font-variant-numeric:tabular-nums;padding-block:6px}
 .u-mur #j-code::placeholder{font-family:var(--f-texte);font-size:16px;letter-spacing:0}
@@ -355,7 +356,7 @@ $('#f-join').addEventListener('submit', async e => {
   } catch (err) { msg('#auth-msg', errText(err)); }
   finally { busy(f, false); }
 });
-// Affichage seulement : le code est lu en majuscules au pochoir pendant la saisie (il est de toute façon mis en majuscules à l'envoi).
+// Affichage seulement : le code est affiché en majuscules pendant la saisie (il est de toute façon mis en majuscules à l'envoi).
 $('#j-code').addEventListener('input', e => { const i = e.target, p = i.selectionStart; i.value = i.value.toUpperCase(); i.setSelectionRange(p, p); });
 
 /* ---------- Session ---------- */

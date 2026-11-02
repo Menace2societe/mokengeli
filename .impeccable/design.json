@@ -1,0 +1,583 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T00:00:00Z",
+  "title": "Design System: Mokengeli",
+  "extensions": {
+    "colorMeta": {
+      "mur": {
+        "role": "neutral",
+        "displayName": "Mur chaulé",
+        "canonical": "#E9EAE4",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252523",
+          "#42423f",
+          "#61625d",
+          "#82837e",
+          "#a5a5a1",
+          "#c9c9c6",
+          "#eeefec"
+        ]
+      },
+      "mur-creux": {
+        "role": "neutral",
+        "displayName": "Mur en creux",
+        "canonical": "#DCDDD6",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252522",
+          "#42423e",
+          "#61625c",
+          "#82837d",
+          "#a5a6a0",
+          "#c9cac5",
+          "#eeefeb"
+        ]
+      },
+      "papier": {
+        "role": "neutral",
+        "displayName": "Papier",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "encre": {
+        "role": "neutral",
+        "displayName": "Encre",
+        "canonical": "#161616",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "encre-2": {
+        "role": "neutral",
+        "displayName": "Encre seconde",
+        "canonical": "#45473F",
+        "tonalRamp": [
+          "#0b0c09",
+          "#242621",
+          "#41433d",
+          "#60625a",
+          "#81837b",
+          "#a4a69f",
+          "#c8cac4",
+          "#eeefea"
+        ]
+      },
+      "filet": {
+        "role": "neutral",
+        "displayName": "Filet",
+        "canonical": "#C4C5BC",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252521",
+          "#42433d",
+          "#61625b",
+          "#82837b",
+          "#a5a69f",
+          "#c9cac4",
+          "#eeefea"
+        ]
+      },
+      "champ-bord": {
+        "role": "neutral",
+        "displayName": "Bord de champ",
+        "canonical": "#8E9087",
+        "tonalRamp": [
+          "#0b0c09",
+          "#252621",
+          "#41433d",
+          "#60625a",
+          "#82837b",
+          "#a4a69f",
+          "#c8cac4",
+          "#eeefea"
+        ]
+      },
+      "champ-indice": {
+        "role": "neutral",
+        "displayName": "Indice de champ",
+        "canonical": "#5D5F56",
+        "tonalRamp": [
+          "#0b0c08",
+          "#252621",
+          "#41433c",
+          "#60625a",
+          "#81837b",
+          "#a4a69e",
+          "#c8cac3",
+          "#eeefea"
+        ]
+      },
+      "gris-sorti": {
+        "role": "neutral",
+        "displayName": "Gris sorti",
+        "canonical": "#6E7068",
+        "tonalRamp": [
+          "#0b0c09",
+          "#252621",
+          "#41433d",
+          "#60625b",
+          "#81837c",
+          "#a4a69f",
+          "#c8cac4",
+          "#eeefeb"
+        ]
+      },
+      "portail": {
+        "role": "primary",
+        "displayName": "Vert portail",
+        "canonical": "#1E5A3C",
+        "tonalRamp": [
+          "#001005",
+          "#0a2c1b",
+          "#214c35",
+          "#396e51",
+          "#5b9071",
+          "#84b196",
+          "#aed4bd",
+          "#daf7e5"
+        ]
+      },
+      "portail-fonce": {
+        "role": "primary",
+        "displayName": "Vert portail foncé",
+        "canonical": "#15422B",
+        "tonalRamp": [
+          "#010f06",
+          "#122b1d",
+          "#2a4a38",
+          "#436c54",
+          "#648d75",
+          "#8baf99",
+          "#b4d2bf",
+          "#def5e6"
+        ]
+      },
+      "portail-clair": {
+        "role": "primary",
+        "displayName": "Vert portail pâle",
+        "canonical": "#DCE8E0",
+        "tonalRamp": [
+          "#080c0a",
+          "#212723",
+          "#3d443f",
+          "#5a645e",
+          "#7b857f",
+          "#9fa8a2",
+          "#c4cbc6",
+          "#eaf0ec"
+        ]
+      },
+      "portail-legende": {
+        "role": "primary",
+        "displayName": "Légende portail",
+        "canonical": "#E4EDE7",
+        "tonalRamp": [
+          "#090c0a",
+          "#222623",
+          "#3e4440",
+          "#5c635f",
+          "#7d847f",
+          "#a0a7a3",
+          "#c5cbc7",
+          "#ebf0ed"
+        ]
+      },
+      "ocre": {
+        "role": "secondary",
+        "displayName": "Ocre de soubassement",
+        "canonical": "#C98F2A",
+        "tonalRamp": [
+          "#190500",
+          "#3b1d00",
+          "#603800",
+          "#875500",
+          "#ab7715",
+          "#ca9c57",
+          "#e8c28c",
+          "#ffeabf"
+        ]
+      },
+      "ocre-encre": {
+        "role": "secondary",
+        "displayName": "Encre ocre",
+        "canonical": "#6B4600",
+        "tonalRamp": [
+          "#160700",
+          "#352000",
+          "#583c0f",
+          "#7d5a24",
+          "#a07b47",
+          "#bf9f73",
+          "#e0c4a0",
+          "#ffebcf"
+        ]
+      },
+      "ocre-clair": {
+        "role": "secondary",
+        "displayName": "Ocre pâle",
+        "canonical": "#F3E4C4",
+        "tonalRamp": [
+          "#0f0a02",
+          "#2b2414",
+          "#4a412c",
+          "#6c6046",
+          "#8e8166",
+          "#afa48c",
+          "#d1c8b5",
+          "#f5eede"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Rouge peint",
+        "canonical": "#B3261E",
+        "tonalRamp": [
+          "#230000",
+          "#4b0403",
+          "#771d16",
+          "#a5362c",
+          "#cc594c",
+          "#e98577",
+          "#ffb0a3",
+          "#ffdbd1"
+        ]
+      },
+      "danger-clair": {
+        "role": "tertiary",
+        "displayName": "Rouge pâle",
+        "canonical": "#F7DCD8",
+        "tonalRamp": [
+          "#110908",
+          "#2e2220",
+          "#4e3d3b",
+          "#715b58",
+          "#937c79",
+          "#b4a09d",
+          "#d6c5c2",
+          "#f8ebe9"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "pochoir-compteur": {
+        "displayName": "Pochoir compteur",
+        "purpose": "« Sur le site » et « entrées aujourd'hui » au poste ; 52 px de 1000 à 1320 px."
+      },
+      "pochoir-indicateur": {
+        "displayName": "Pochoir indicateur",
+        "purpose": "Les quatre indicateurs du gérant ; 46 px au téléphone."
+      },
+      "pochoir-numero": {
+        "displayName": "Pochoir numéro",
+        "purpose": "N° de passage, heures et compte des rondes."
+      },
+      "pochoir-etape": {
+        "displayName": "Pochoir étape",
+        "purpose": "Numéros 1 à 5 de « À essayer dans la démo »."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "Titre de l'accueil démo ; 26 px sous 460 px."
+      },
+      "titre-gerant": {
+        "displayName": "Titre gérant",
+        "purpose": "Nom de la société dans le bandeau du gérant."
+      },
+      "titre-alerte": {
+        "displayName": "Titre alerte",
+        "purpose": "« Personne signalée » sur la plaque rouge ; titres des fenêtres de compte."
+      },
+      "titre": {
+        "displayName": "Titre",
+        "purpose": "Nom du site dans le bandeau, titres d'écran et de fenêtre."
+      },
+      "titre-panneau": {
+        "displayName": "Titre panneau",
+        "purpose": "En-têtes des panneaux du gérant."
+      },
+      "titre-section": {
+        "displayName": "Titre section",
+        "purpose": "Intertitres de l'explication, des encarts et des sections de compte."
+      },
+      "chapeau": {
+        "displayName": "Chapeau",
+        "purpose": "Phrase d'accueil de la démo ; 16 px sous 940 px."
+      },
+      "corps": {
+        "displayName": "Corps",
+        "purpose": "Texte courant, noms, valeurs des champs."
+      },
+      "libelle": {
+        "displayName": "Libellé",
+        "purpose": "Libellés de champs, mots sous les compteurs, en-têtes de tableau, pastilles."
+      },
+      "legende": {
+        "displayName": "Légende",
+        "purpose": "Texte secondaire en encre seconde."
+      },
+      "bouton": {
+        "displayName": "Bouton",
+        "purpose": "Boutons contour, danger et vert portail."
+      },
+      "bouton-plaque": {
+        "displayName": "Bouton plaque",
+        "purpose": "La plaque noire unique de l'écran."
+      }
+    },
+    "shadows": [
+      {
+        "name": "onglet-actif",
+        "value": "inset 0 4px 0 #1E5A3C",
+        "purpose": "Trait vert de 4 px en haut de l'onglet actif de la barre du bas ; un trait plein, pas une ombre."
+      },
+      {
+        "name": "filet-indicateurs",
+        "value": "inset 1px 0 0 #C4C5BC",
+        "purpose": "Séparation entre les cases d'indicateurs du gérant."
+      },
+      {
+        "name": "voile-fenetre",
+        "value": "rgba(22,22,22,.62)",
+        "purpose": "Fond des fenêtres (sonnerie, export, compte) ; aucune ombre sous la fenêtre elle-même."
+      }
+    ],
+    "motion": [
+      {
+        "name": "chevron-sortis",
+        "value": "transform .2s cubic-bezier(.16,1,.3,1)",
+        "purpose": "Rotation du chevron de « Sortis aujourd'hui » à l'ouverture."
+      },
+      {
+        "name": "sonnerie-attente",
+        "value": "ringpulse 1.2s ease-in-out infinite (opacité 1 → .35, échelle 1 → .7)",
+        "purpose": "Carré qui pulse pendant l'attente de la réponse de l'habitant ; coupé sous prefers-reduced-motion."
+      },
+      {
+        "name": "chargement-habitant",
+        "value": "rotation 360° en .9s linear infinite",
+        "purpose": "Anneau de chargement de la page de l'habitant (filet, haut en vert portail) ; coupé sous prefers-reduced-motion."
+      },
+      {
+        "name": "message",
+        "value": "opacity .2s",
+        "purpose": "Apparition du message du téléphone."
+      },
+      {
+        "name": "focus",
+        "value": "outline 3px solid #161616, offset 2px, liseré papier 2px (box-shadow 0 0 0 2px #FFFFFF)",
+        "purpose": "Focus clavier de tout élément du monde ; blanc sur la plaque rouge et sur l'onglet actif des comptes."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compte-etroit",
+        "value": "400px",
+        "purpose": "Fenêtres de compte : marges réduites, champs sur une colonne, titre 22 px."
+      },
+      {
+        "name": "telephone-plein",
+        "value": "460px",
+        "purpose": "La maquette de téléphone perd son cadre et touche les bords ; titre démo 26 px."
+      },
+      {
+        "name": "gerant-telephone",
+        "value": "600px",
+        "purpose": "Tableau du gérant bord à bord, tableaux à défilement latéral, indicateurs 46 px."
+      },
+      {
+        "name": "barre-deux-lignes",
+        "value": "640px",
+        "purpose": "Barre du haut sur deux lignes, libellés courts."
+      },
+      {
+        "name": "barre-statique",
+        "value": "767px",
+        "purpose": "La barre du haut cesse d'être collante."
+      },
+      {
+        "name": "deux-colonnes",
+        "value": "940px",
+        "purpose": "Au-dessus : téléphone à droite de l'explication, panneaux du gérant en deux colonnes ; en dessous, une colonne."
+      },
+      {
+        "name": "poste-ordinateur",
+        "value": "1000px",
+        "purpose": "Compte connecté : le téléphone devient trois colonnes de travail, barre du bas masquée."
+      },
+      {
+        "name": "poste-ordinateur-serre",
+        "value": "1320px",
+        "purpose": "Entre 1000 et 1320 px : compteurs 52 px, colonnes de ronde resserrées."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bandeau portail et soubassement",
+      "kind": "custom",
+      "refersTo": "bandeau-portail",
+      "description": "Tête de chaque espace : vert portail à nervures sur bande ocre de 10 px, avec l'état du réseau à droite.",
+      "html": "<div class=\"ds-gate\"><div class=\"ds-gate-row\"><b>Immeuble Kiyo · Gombe</b><button class=\"ds-net\" type=\"button\"><i></i>En ligne</button></div><div class=\"ds-gate-row\"><small>Gardien : Jean-Paul Ilunga</small><small>11:25</small></div></div>",
+      "css": ".ds-gate { background-color: #1E5A3C; background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 2px, transparent 2px 22px); color: #FFFFFF; padding: 14px 16px; border-bottom: 10px solid #C98F2A; display: flex; flex-direction: column; gap: 4px; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-gate-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; } .ds-gate b { font-size: 21px; font-weight: 700; line-height: 1.2; } .ds-gate small { font-size: 15px; color: #E4EDE7; } .ds-net { min-height: 40px; display: flex; align-items: center; gap: 6px; background: #FFFFFF; color: #1E5A3C; border: 0; border-radius: 6px; padding: 6px 10px; font: 700 15px/1.2 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; } .ds-net i { width: 8px; height: 8px; border-radius: 50%; background: #1E5A3C; } .ds-net:hover { background: #E9EAE4; } .ds-net:focus-visible { outline: 3px solid #C98F2A; outline-offset: 2px; }"
+    },
+    {
+      "name": "État réseau hors ligne",
+      "kind": "chip",
+      "refersTo": "etat-reseau-hors-ligne",
+      "description": "La plaque réseau devient ocre et compte les saisies en attente.",
+      "html": "<button class=\"ds-net-off\" type=\"button\"><i></i>Hors ligne · 1 en attente</button>",
+      "css": ".ds-net-off { min-height: 40px; display: inline-flex; align-items: center; gap: 6px; background: #C98F2A; color: #161616; border: 0; border-radius: 6px; padding: 6px 10px; font: 700 15px/1.2 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; } .ds-net-off i { width: 8px; height: 8px; border-radius: 1px; background: #161616; } .ds-net-off:focus-visible { outline: 3px solid #C98F2A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Compteurs au pochoir",
+      "kind": "custom",
+      "refersTo": "compteur",
+      "description": "Deux chiffres pochoir géants tenus par un filet noir à gauche.",
+      "html": "<div class=\"ds-counts\"><div class=\"ds-count\"><b>2</b><span>sur le site</span></div><div class=\"ds-count\"><b>3</b><span>entrées aujourd'hui</span></div></div>",
+      "css": ".ds-counts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; border-bottom: 2px solid #161616; padding-bottom: 12px; background: #E9EAE4; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-count { border-left: 4px solid #161616; padding: 2px 0 2px 12px; } .ds-count b { display: block; font-family: 'Saira Stencil One', 'Atkinson Hyperlegible', sans-serif; font-weight: 400; font-size: 60px; line-height: .95; letter-spacing: .02em; font-variant-numeric: tabular-nums; color: #161616; } .ds-count span { font-size: 15px; font-weight: 700; color: #161616; }"
+    },
+    {
+      "name": "Plaque noire",
+      "kind": "button",
+      "refersTo": "bouton-plaque",
+      "description": "L'action principale, une seule par écran.",
+      "html": "<button class=\"ds-plaque\" type=\"button\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M10 3v14M3 10h14\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>Nouvelle entrée</button>",
+      "css": ".ds-plaque { width: 100%; min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 8px; background: #161616; color: #FFFFFF; font: 700 19px/1.2 'Atkinson Hyperlegible', system-ui, sans-serif; padding: 14px; cursor: pointer; transition: background .2s; } .ds-plaque:hover { background: #000000; } .ds-plaque:focus-visible { outline: 3px solid #C98F2A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Bouton contour",
+      "kind": "button",
+      "refersTo": "bouton-contour",
+      "description": "Le bouton par défaut : Sortie, Retirer, Exporter, Annuler.",
+      "html": "<button class=\"ds-btn\" type=\"button\">Sortie</button>",
+      "css": ".ds-btn { min-height: 48px; border: 2px solid #161616; background: #FFFFFF; color: #161616; border-radius: 8px; padding: 8px 14px; font: 700 15px/1.2 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; } .ds-btn:hover { background: #E9EAE4; } .ds-btn:focus-visible { outline: 3px solid #C98F2A; outline-offset: 2px; } .ds-btn:disabled { opacity: .5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Champ",
+      "kind": "input",
+      "refersTo": "champ",
+      "description": "Champ de saisie du formulaire d'entrée, libellé au-dessus.",
+      "html": "<div class=\"ds-fld\"><label for=\"ds-n\">Nom complet <span>obligatoire</span></label><input id=\"ds-n\" placeholder=\"Ex. Christelle Nsimba Mavungu\"></div>",
+      "css": ".ds-fld { display: flex; flex-direction: column; gap: 6px; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-fld label { font-size: 15px; font-weight: 700; line-height: 1.3; color: #161616; } .ds-fld label span { font-weight: 400; color: #45473F; } .ds-fld input { min-height: 50px; padding: 10px 12px; border: 2px solid #8E9087; border-radius: 8px; background: #FFFFFF; color: #161616; font: 400 16px 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-fld input::placeholder { color: #5D5F56; opacity: 1; } .ds-fld input:focus { border-color: #161616; } .ds-fld input:focus-visible { outline: 3px solid #C98F2A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Registre en colonnes fixes",
+      "kind": "custom",
+      "refersTo": "ligne-registre",
+      "description": "Lignes heure | N° de passage au pochoir | nom et chez qui | Sortie ; l'état change la ligne, pas la grille.",
+      "html": "<div class=\"ds-ledger\"><h2>Présents sur le site <span class=\"ds-ex\">exemple</span></h2><div class=\"ds-row\"><div class=\"ds-t\">09:50</div><div class=\"ds-no\">N°&#8239;3</div><div class=\"ds-who\"><b>Aimée Kalonji</b><span>Visite personnelle</span></div><button class=\"ds-out\" type=\"button\">Sortie</button></div><div class=\"ds-row ds-wait\"><div class=\"ds-t\">09:45</div><div class=\"ds-no\">N°&#8239;2</div><div class=\"ds-who\"><b>Didier Mfumu</b><span>Prestataire</span><span class=\"ds-att\">En attente d'envoi</span></div><button class=\"ds-out\" type=\"button\">Sortie</button></div><div class=\"ds-row ds-gone\"><div class=\"ds-t\">07:48<small>→ 08:50</small></div><div class=\"ds-no\">N°&#8239;1</div><div class=\"ds-who\"><b>Patrick Mukendi</b><span>Rendez-vous professionnel</span></div><div></div></div></div>",
+      "css": ".ds-ledger { background: #FFFFFF; border-top: 3px solid #161616; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; color: #161616; } .ds-ledger h2 { margin: 0; display: flex; align-items: center; min-height: 48px; padding: 10px 12px; font-size: 16px; font-weight: 700; border-bottom: 1px solid #C4C5BC; } .ds-ex { margin-left: 6px; font-size: 15px; font-weight: 400; color: #45473F; background: #FFFFFF; border: 1px dashed #45473F; border-radius: 4px; padding: 0 6px; } .ds-row { display: grid; grid-template-columns: 72px 54px minmax(0,1fr) auto; gap: 4px; align-items: center; min-height: 68px; border-bottom: 1px solid #C4C5BC; } .ds-t { padding: 10px 0 10px 10px; font-size: 15px; font-weight: 700; } .ds-t small { display: block; font-weight: 400; color: #45473F; font-size: 15px; white-space: nowrap; } .ds-no { font-family: 'Saira Stencil One', 'Atkinson Hyperlegible', sans-serif; font-size: 19px; color: #1E5A3C; white-space: nowrap; font-variant-numeric: tabular-nums; } .ds-who { padding: 10px 6px; min-width: 0; } .ds-who b { display: block; font-size: 16px; } .ds-who span { display: block; font-size: 15px; color: #45473F; } .ds-who .ds-att { color: #6B4600; font-weight: 700; } .ds-wait { background: #F3E4C4; } .ds-gone, .ds-gone .ds-no, .ds-gone .ds-who span { color: #6E7068; } .ds-out { margin-right: 10px; min-height: 48px; border: 2px solid #161616; background: #FFFFFF; color: #161616; border-radius: 8px; padding: 8px 14px; font: 700 15px 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; } .ds-out:hover { background: #E9EAE4; } .ds-out:focus-visible { outline: 3px solid #C98F2A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Plaque rouge d'alerte",
+      "kind": "custom",
+      "refersTo": "alerte-surveillance",
+      "description": "Alerte de la liste de surveillance : rouge plein, consigne entre deux filets, décision sur la plaque.",
+      "html": "<div class=\"ds-warn\" role=\"alert\"><b><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3 2 20h20z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linejoin=\"round\"/><path d=\"M12 10v4.5M12 17v.5\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>Personne signalée</b><p>Serge Mbala Nkosi : accès interdit.</p><p class=\"ds-consigne\">Ne laissez pas entrer sans l'accord du superviseur.</p><button class=\"ds-refuse\" type=\"button\">Refuser l'entrée</button><button class=\"ds-force\" type=\"button\">Enregistrer quand même</button></div>",
+      "css": ".ds-warn { display: flex; flex-direction: column; gap: 10px; background: #B3261E; color: #FFFFFF; border-radius: 8px; padding: 20px; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-warn b { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 700; line-height: 1.15; } .ds-warn p { margin: 0; font-size: 16px; line-height: 1.4; } .ds-consigne { font-weight: 700; padding: 10px 0; border-block: 2px solid rgba(255,255,255,.7); } .ds-warn button { min-height: 52px; width: 100%; border-radius: 8px; font: 700 16px 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; } .ds-refuse { background: #FFFFFF; border: 2px solid #FFFFFF; color: #B3261E; } .ds-refuse:hover { background: #F7DCD8; } .ds-force { background: transparent; border: 2px solid #FFFFFF; color: #FFFFFF; } .ds-force:hover { background: #8F1E18; } .ds-warn button:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 2px; }"
+    },
+    {
+      "name": "Indicateurs du gérant",
+      "kind": "card",
+      "refersTo": "indicateur-gerant",
+      "description": "Une seule bande papier, chiffres pochoir, filets entre les cases ; la couleur suit l'état.",
+      "html": "<div class=\"ds-kpis\"><div class=\"ds-kpi\"><b>7</b><span>entrées aujourd'hui</span></div><div class=\"ds-kpi\"><b>4</b><span>visiteurs encore sur site</span></div><div class=\"ds-kpi ds-warnk\"><b>2</b><span>alertes à traiter</span></div></div>",
+      "css": ".ds-kpis { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); background: #FFFFFF; border-top: 3px solid #161616; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-kpi { display: flex; flex-direction: column; gap: 4px; padding: 14px 20px 16px; } .ds-kpi + .ds-kpi { box-shadow: inset 1px 0 0 #C4C5BC; } .ds-kpi b { font-family: 'Saira Stencil One', 'Atkinson Hyperlegible', sans-serif; font-weight: 400; font-size: 56px; line-height: .95; letter-spacing: .02em; color: #161616; font-variant-numeric: tabular-nums; } .ds-kpi span { font-size: 15px; font-weight: 700; color: #161616; } .ds-warnk b { color: #6B4600; }"
+    },
+    {
+      "name": "Barre du bas",
+      "kind": "nav",
+      "refersTo": "barre-du-bas",
+      "description": "Trois onglets au téléphone ; l'actif passe à l'encre avec un trait vert de 4 px en haut.",
+      "html": "<nav class=\"ds-nav\"><button type=\"button\" aria-current=\"true\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 3h12a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M9 8h6M9 12h6M9 16h4\" stroke=\"currentColor\" stroke-width=\"1.8\"/></svg>Registre</button><button type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M12 8v8M8 12h8\" stroke=\"currentColor\" stroke-width=\"1.8\"/></svg>Entrée</button><button type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"/></svg>Rondes</button></nav>",
+      "css": ".ds-nav { display: grid; grid-template-columns: repeat(3, 1fr); background: #FFFFFF; border-top: 2px solid #161616; font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-nav button { min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 0; background: none; font-size: 15px; font-weight: 700; color: #45473F; box-shadow: inset 0 4px 0 transparent; cursor: pointer; } .ds-nav svg { width: 24px; height: 24px; } .ds-nav button:hover { color: #161616; } .ds-nav button[aria-current=\"true\"] { color: #161616; box-shadow: inset 0 4px 0 #1E5A3C; } .ds-nav button:focus-visible { outline: 3px solid #C98F2A; outline-offset: -3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Le mur et le pochoir",
+    "overview": "Le poste de garde parle comme le mur d'une parcelle à Kinshasa. Le fond est un mur chaulé gris-blanc. En haut, un bandeau vert portail rappelle la tôle peinte, avec ses nervures fines. Il repose sur une bande ocre de soubassement. Tout le reste est écrit à l'encre noire, et les chiffres qui comptent sont peints au pochoir, comme le numéro d'une parcelle lisible depuis la rue. Le gardien voit d'un coup d'œil combien de personnes sont sur le site, si ses saisies sont parties, et retrouve chacun par son numéro de passage.\n\nL'écran est dense mais calme : une colonne au téléphone, des lignes de registre à colonnes fixes plutôt que des cartes, des filets d'encre plutôt que des cadres. L'état change la ligne (fond ocre pâle pour « en attente d'envoi », gris pour « sorti »), jamais la grille. Une seule plaque noire pleine par écran porte l'action principale. Le rouge est réservé au danger : l'alerte de la liste de surveillance est une plaque peinte rouge pleine, le moment le plus grave du poste.\n\nLe monde refuse le registre SaaS bleu à cartes et pastilles arrondies, et le tableau de sécurité sombre. Il n'y a ni ombre, ni dégradé décoratif, ni libellé en majuscules espacées. Le seul motif est la nervure du portail, qui est une matière du monde et non un décor.\n\n**Périmètre.** Le monde s'applique par la classe `u-mur` sur la barre du haut, la vue du gardien (`#v-guard`), le tableau de bord du gérant (`#v-admin`), le message flottant, la fenêtre de sonnerie, la fenêtre d'export, les fenêtres de compte et la page de l'habitant injectées par `cloud.js`. Les anciens noms de variables (`--bg`, `--ink`, `--accent`, `--ok`, `--warn`, `--crit`…) sont redirigés vers les tokens du monde à l'intérieur de `.u-mur`, pour que les éléments pas encore refaits restent lisibles. L'ancienne palette bleu-gris et son mode sombre restent déclarés sur `:root` mais ne s'appliquent plus aux espaces refaits ; le monde force `color-scheme: light` et n'a pas de mode sombre.",
+    "keyCharacteristics": [
+      "Mur chaulé en fond, papier blanc pour ce qu'on lit et remplit, encre noire pour le texte.",
+      "Bandeau portail vert à nervures sur soubassement ocre de 10 px : la même tête au poste, au tableau du gérant et sur la page de l'habitant.",
+      "Police pochoir seulement pour les numéros ; tout le texte en Atkinson Hyperlegible.",
+      "Compteurs géants au pochoir, chacun tenu par un filet noir vertical à gauche.",
+      "Registre en colonnes fixes : heure, N° de passage au pochoir vert, nom et chez qui, bouton Sortie.",
+      "Une seule plaque noire pleine par écran.",
+      "Rouge pour le danger seulement, ocre pour ce qui attend ou demande un coup d'œil, vert portail pour « parti, à jour, vous êtes ici ».",
+      "Plat : aucun ombrage, séparation par filets d'encre de 2 à 4 px."
+    ],
+    "rules": [
+      {
+        "name": "The Rouge Peint Rule",
+        "body": "Le rouge ne marque que le danger : la personne signalée, le refus, l'alerte grave. Une ronde en retard ou un poste inactif est en ocre, jamais en rouge.",
+        "section": "colors"
+      },
+      {
+        "name": "The Trois Voix Rule",
+        "body": "Vert : c'est parti, c'est à jour, vous êtes ici. Ocre : ça attend, jetez un coup d'œil. Rouge : danger. Aucune autre couleur ne porte un état.",
+        "section": "colors"
+      },
+      {
+        "name": "The Soubassement Rule",
+        "body": "Un bandeau vert portail repose toujours sur sa bande ocre ; l'un ne va pas sans l'autre.",
+        "section": "colors"
+      },
+      {
+        "name": "The Pochoir Rule",
+        "body": "Le pochoir est réservé aux numéros que l'on compte ou par lesquels on désigne : compteurs, indicateurs, N° de passage, heures de ronde, numéros d'étape. Jamais un mot, un titre, un nom ou un libellé.",
+        "section": "typography"
+      },
+      {
+        "name": "The Quinze Pixels Rule",
+        "body": "Rien sous 15 px, et aucun libellé en majuscules espacées : la casse de phrase, à espacement normal, partout.",
+        "section": "typography"
+      },
+      {
+        "name": "The Colonnes Fixes Rule",
+        "body": "Une ligne de registre a toujours la même grille (72 px heure, 54 px N°, nom souple, action) ; un point de ronde aussi (62 px heure, point et état, bouton). L'état change le fond ou la couleur de la ligne, jamais ses colonnes.",
+        "section": "layout"
+      },
+      {
+        "name": "The Mur Plat Rule",
+        "body": "Rien ne flotte au-dessus du mur. On sépare par un filet d'encre ou un changement de fond, jamais par une ombre ou un flou.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do poser chaque espace sur le mur chaulé, avec le bandeau vert portail à nervures et son soubassement ocre de 10 px en tête.",
+      "Do écrire tout le texte en Atkinson Hyperlegible, en encre ou en encre seconde, à 15 px au moins.",
+      "Do réserver Saira Stencil One aux numéros : compteurs, indicateurs, N° de passage, heures de ronde.",
+      "Do garder une seule plaque noire pleine par écran, et repasser les autres boutons en contour quand deux vues sont visibles ensemble.",
+      "Do montrer l'état par la ligne (ocre pâle pour l'attente, gris sorti pour la sortie) sans changer les colonnes.",
+      "Do séparer par des filets d'encre (1, 2, 3 ou 4 px) et par le passage du mur au papier.",
+      "Do marquer toute donnée fictive avec l'étiquette « exemple » en pointillé.",
+      "Do garder 48 px de cible tactile au minimum, 60 px pour la plaque noire."
+    ],
+    "donts": [
+      "Don't construire un registre SaaS bleu à cartes et pastilles arrondies, ni un tableau de sécurité sombre.",
+      "Don't utiliser le rouge pour autre chose que le danger ; ce qui attend est en ocre.",
+      "Don't mettre un mot, un titre ou un nom au pochoir.",
+      "Don't ajouter d'ombre, de flou ou de dégradé décoratif ; les nervures du portail sont le seul motif.",
+      "Don't écrire des libellés en majuscules espacées, ni du texte sous 15 px.",
+      "Don't donner à chaque visiteur sa propre carte : une ligne de registre, une grille.",
+      "Don't utiliser l'ocre pour du texte ; son texte est l'encre ocre."
+    ]
+  }
+}
