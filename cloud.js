@@ -78,7 +78,7 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 
 /* Fenêtres de compte : connexion, création de société, code d'invitation, mot de passe oublié, Mon compte */
 .modal.u-mur{background:rgba(22,22,22,.62);padding:12px}
-.u-mur .box.acct{max-width:520px;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;background:var(--papier);color:var(--encre);border:2px solid var(--encre);border-top:10px solid var(--portail);border-radius:8px;padding:20px 20px 16px;gap:16px;box-shadow:0 18px 40px -16px rgba(22,22,22,.5)}
+.u-mur .box.acct{max-width:520px;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;background:var(--papier);color:var(--encre);border:2px solid var(--encre);border-radius:8px;padding:20px 20px 16px;gap:16px;box-shadow:none}
 .u-mur .box.acct > *{flex-shrink:0}
 .u-mur .box.acct h2{font-family:var(--f-texte);font-size:24px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
 .u-mur .box.acct h3{font-family:var(--f-texte);font-size:18px;font-weight:700}
@@ -101,7 +101,7 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .u-mur .box.acct .fld input:hover,.u-mur .box.acct .fld select:hover{border-color:var(--encre-2)}
 .u-mur .box.acct .fld input:focus,.u-mur .box.acct .fld select:focus{border-color:var(--encre);outline:3px solid var(--ocre);outline-offset:1px}
 .u-mur .box.acct .fld input:disabled,.u-mur .box.acct .fld select:disabled{background:var(--mur);color:var(--encre-2)}
-.u-mur #j-code{font-family:var(--f-pochoir);font-size:24px;letter-spacing:.14em;padding-block:6px}
+.u-mur #j-code{font-family:var(--f-texte);font-weight:700;font-size:22px;letter-spacing:.14em;font-variant-numeric:tabular-nums;padding-block:6px}
 .u-mur #j-code::placeholder{font-family:var(--f-texte);font-size:16px;letter-spacing:0}
 .u-mur .acct-form .big-btn{margin-top:4px}
 .u-mur .acct-form .big-btn:disabled{background:var(--encre-2);cursor:progress}
@@ -123,7 +123,7 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .u-mur .acct-row span{display:block;font-size:15px;color:var(--encre-2);overflow-wrap:anywhere}
 .u-mur .acct-row .btn{flex:none}
 .u-mur .acct-link{display:block;font-size:15px;color:var(--encre);word-break:break-all;background:var(--mur);border-radius:6px;padding:10px 12px}
-.u-mur .code-big{font-family:var(--f-pochoir);font-weight:400;font-size:44px;line-height:1;letter-spacing:.14em;font-variant-numeric:tabular-nums;color:var(--portail);background:var(--mur);border:2px solid var(--encre);border-radius:6px;padding:16px 12px 14px;text-align:center}
+.u-mur .code-big{font-family:var(--f-texte);font-weight:700;font-size:40px;line-height:1;letter-spacing:.14em;font-variant-numeric:tabular-nums;color:var(--portail);background:var(--mur);border:2px solid var(--encre);border-radius:6px;padding:16px 12px 14px;text-align:center}
 .u-mur .acct-actions{display:flex;gap:8px;flex-wrap:wrap}
 
 /* Bloc « Utiliser Mokengeli pour de vrai » : mise en page seule (spécificité nulle), le style vient de mokengeli.html */
@@ -135,7 +135,7 @@ document.head.insertAdjacentHTML('beforeend', `<style>
   .u-mur .box.acct{padding:16px 14px 14px}
   .u-mur .box.acct h2{font-size:22px}
   .u-mur .acct-form .two{grid-template-columns:1fr}
-  .u-mur .code-big{font-size:38px}
+  .u-mur .code-big{font-size:34px}
 }
 
 /* Page de l'habitant (lien Laisser entrer / Refuser, sans compte) */
@@ -175,7 +175,7 @@ $('#mode-switch').insertAdjacentHTML('afterend', '<button class="btn primary" id
 $('#mode-note').insertAdjacentHTML('afterend', `<div class="cloud-cta" id="cloud-cta">
   <b>Utiliser Mokengeli pour de vrai</b>
   <p>Créez le compte de votre société : vos gardiens rejoignent l'équipe avec un code, et chaque saisie arrive en direct sur votre tableau de bord.</p>
-  <div class="btns"><button class="btn primary" type="button" data-open="org">Créer ma société</button><button class="btn" type="button" data-open="join">J'ai un code d'invitation</button><button class="btn" type="button" data-open="login">Se connecter</button></div>
+  <div class="btns"><button class="btn" type="button" data-open="org">Créer ma société</button><button class="btn" type="button" data-open="join">J'ai un code d'invitation</button><button class="btn" type="button" data-open="login">Se connecter</button></div>
 </div>`);
 
 document.body.insertAdjacentHTML('beforeend', `
@@ -529,7 +529,7 @@ function renderMe(){
     </div>
     <div class="acct-sec">
       <h3>Sites (${currentSites().length})</h3>
-      <div>${currentSites().map(s => `<div class="acct-row"><div><b>${esc(s.name)}</b><span>${esc(s.commune || '')}${s.guard ? ' · ' + esc(s.guard) : ''} · ${s.cps.length} point(s) de ronde</span></div><button class="btn" type="button" data-delsite="${esc(s.id)}">Supprimer</button></div>`).join('') || '<p class="acct-help">Aucun site pour le moment.</p>'}</div>
+      <div>${currentSites().map(s => `<div class="acct-row"><div><b>${esc(s.name)}</b><span>${esc(s.commune || '')}${s.guard ? ' · ' + esc(s.guard) : ''} · ${s.cps.length} point${s.cps.length > 1 ? 's' : ''} de ronde</span></div><button class="btn" type="button" data-delsite="${esc(s.id)}">Supprimer</button></div>`).join('') || '<p class="acct-help">Aucun site pour le moment.</p>'}</div>
       <form class="acct-form" id="me-site-f">
         <div class="two"><div class="fld"><label for="ms-name">Nom du site</label><input id="ms-name" placeholder="ex. Hôtel Mwinda"></div>
         <div class="fld"><label for="ms-commune">Commune</label><input id="ms-commune" placeholder="ex. Limete"></div></div>
