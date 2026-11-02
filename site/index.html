@@ -1437,7 +1437,7 @@ function renderAll(){
   const tag = $('#mode-tag'), cloud = G.mode === 'cloud';
   document.body.classList.toggle('app-mode', cloud);
   document.body.classList.toggle('mode-demo', G.mode === 'demo');
-  tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : cloud ? `Connecté · ${G.org?.name || 'ma société'}` : G.mode === 'demo' ? 'Mode démo : exemples' : G.mode === 'local' ? 'Mode test : vos données sur cet appareil' : 'Connexion…';
+  tag.textContent = G.mode === 'live' ? 'Données partagées en direct' : cloud ? `Connecté · ${G.org?.name || 'ma société'}` : G.mode === 'demo' ? 'Mode démo : exemples' : G.mode === 'local' ? 'Mode test' : 'Connexion…';
   tag.className = 'pill ' + (G.mode === 'live' || cloud ? 'ok' : G.mode === 'demo' ? 'warn' : 'info');
   const guardOnly = cloud && G.user?.role === 'gardien';
   $('#m-admin').hidden = guardOnly;
