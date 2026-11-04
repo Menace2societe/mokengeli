@@ -1,0 +1,133 @@
+{
+  "title": "Mokengeli : choisir l'univers du poste de garde",
+  "question": "Le tirage a désigné « Le mur et le pochoir ». Gardez-la, prenez une autre piste, ou relancez.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "Le mur et le pochoir",
+      "kicker": "THE ROLL",
+      "lineage": "Numéros de parcelle peints au pochoir sur les murs crépis et les portails peints de Kinshasa",
+      "thesis": "Le poste de garde parle comme le mur de la parcelle : un numéro peint, lisible depuis la rue.",
+      "palette": ["#E9EAE4", "#1E5A3C", "#C98F2A", "#161616", "#C42B1C"],
+      "materials": ["mur crépi chaulé", "tôle de portail peinte", "pochoir noir"],
+      "viewport": "Bandeau vert portail avec le site et son numéro au pochoir ; deux chiffres géants (sur le site, entrées) ; un seul bouton Nouvelle entrée ; liste des présents, chaque passage numéroté N° 0137 au pochoir.",
+      "risk": "Une police pochoir mal dosée devient décor : elle est réservée aux numéros, jamais au texte courant.",
+      "raised": [
+        {"from": "signals-instruments-split-flap-concourse", "raise": "Le registre garde des colonnes fixes (heure, numéro, nom, chez qui) ; l'état change la ligne, jamais la grille."},
+        {"from": "brand-identity-canon-saville-catalog-sleeve", "raise": "Chaque passage reçoit un numéro de suite, le seul titre de sa ligne, comme un bon numéroté."},
+        {"from": "rw-timetable-slide-rack", "raise": "Une seule plaque inversée par écran : le bouton principal ; le reste se hiérarchise par la graisse, pas par la taille."},
+        {"from": "pop-culture-shelf-character-goods-catalog", "raise": "Les visiteurs sortis passent en gris au lieu de disparaître."}
+      ],
+      "html": ".impeccable/mocks/decision/assigned.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "model-pick",
+      "kind": "pick",
+      "label": "Le badge contre la pièce",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Le badge visiteur numéroté remis au portail contre la pièce d'identité, et le tableau à crochets du poste",
+      "thesis": "Chaque visiteur présent est un badge accroché au tableau du poste ; sa sortie le rend.",
+      "palette": ["#E7EAEE", "#FFFFFF", "#2B59C3", "#E4572E", "#14181C"],
+      "materials": ["plastique de badge", "contreplaqué du tableau", "trou de lanière"],
+      "viewport": "En-tête du site ; tableau des présents en badges numérotés (la couleur dit le motif) ; bouton Nouvelle entrée en bas, à portée du pouce.",
+      "risk": "La piste la plus évidente de ma liste ; une grille de badges ressemble vite à des cartes identiques si les couleurs ne portent pas de sens.",
+      "html": ".impeccable/mocks/decision/model-pick.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "ch-splitflap", "kind": "challenger", "catalogId": "signals-instruments-split-flap-concourse",
+      "label": "Tableau des départs", "verdict": "declined",
+      "lineage": "Tableau à palettes d'une gare",
+      "thesis": "Les présents comme un tableau des départs qui claque.",
+      "palette": ["#111111", "#FFFFFF", "#F2A900", "#B3261E"],
+      "materials": ["palettes noires", "cadre acier"],
+      "viewport": "Liste des présents en lignes à palettes sur fond noir.",
+      "case": "Peu connu des gardiens à Kinshasa ; fond noir illisible au soleil sur petit écran.",
+      "risk": "Costume d'un objet étranger au poste.",
+      "kept": "Colonnes fixes ; l'état change la ligne sans casser la grille.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse-hero.webp"
+    },
+    {
+      "id": "ch-saville", "kind": "challenger", "catalogId": "brand-identity-canon-saville-catalog-sleeve",
+      "label": "Catalogue numéroté", "verdict": "declined",
+      "lineage": "Identité de label de disques, tout numéroté",
+      "thesis": "Chaque objet a un numéro ; les noms deviennent des codes.",
+      "palette": ["#0E0E0E", "#FFFFFF", "#E2B33C", "#3A7BD5"],
+      "materials": ["pochette noire mate", "filets blancs"],
+      "viewport": "Index numéroté sur noir, un seul tracé.",
+      "case": "Remplacer les noms par des codes gêne le gardien qui cherche une personne.",
+      "risk": "Énigmatique là où il faut être direct.",
+      "kept": "Le numéro de passage comme seul titre de la ligne.",
+      "hero": "https://impeccable.style/worlds/cards/brand-identity-canon-saville-catalog-sleeve-hero.webp"
+    },
+    {
+      "id": "ch-timetable", "kind": "challenger", "catalogId": "rw-timetable-slide-rack",
+      "label": "Horaire sur table lumineuse", "verdict": "declined",
+      "lineage": "Indicateur horaire de poche sur verre teinté",
+      "thesis": "Une seule taille de texte ; le rang vient de la graisse et du renversement.",
+      "palette": ["#D9A72B", "#2E3A40", "#F3EFE3", "#D2401E", "#1E6B47"],
+      "materials": ["verre teinté", "papier ivoire"],
+      "viewport": "Lames inclinées de 11° qui défilent de côté.",
+      "case": "L'inclinaison et le défilement de côté gênent la saisie rapide d'une main.",
+      "risk": "Trop d'effet pour un écran de travail.",
+      "kept": "Une seule plaque inversée par écran : l'action principale.",
+      "hero": "https://impeccable.style/worlds/cards/rw-timetable-slide-rack-hero.webp"
+    },
+    {
+      "id": "ch-crouwel", "kind": "challenger", "catalogId": "crouwel-grid-specimen",
+      "label": "Grille de construction", "verdict": "declined",
+      "lineage": "Spécimen typographique sur grille visible",
+      "thesis": "La grille visible est l'ossature de l'écran.",
+      "palette": ["#FFFFFF", "#9DB8E8", "#E3342F", "#111111"],
+      "materials": ["papier millimétré", "lettres construites"],
+      "viewport": "Lettres monumentales bâties case par case.",
+      "case": "Lettres construites difficiles à lire ; rien du quotidien du poste.",
+      "risk": "Exercice de graphiste.",
+      "kept": "La mise en page se recompose par cases entières, sans demi-colonnes.",
+      "hero": "https://impeccable.style/worlds/cards/crouwel-grid-specimen-hero.webp"
+    },
+    {
+      "id": "ch-metro", "kind": "challenger", "catalogId": "digital-design-canon-metro-typographic-tiles",
+      "label": "Tuiles plates", "verdict": "declined",
+      "lineage": "Écran à tuiles et grandes minuscules",
+      "thesis": "Le texte et la couleur font l'interface, sans cadre.",
+      "palette": ["#000000", "#00A3E0", "#E3008C", "#FFFFFF"],
+      "materials": ["aplats", "tuiles carrées"],
+      "viewport": "Panorama de tuiles sur fond noir.",
+      "case": "Fond noir et titres coupés : mauvaise lecture au soleil ; tuiles identiques.",
+      "risk": "Des cartes identiques, ce que vous voulez quitter.",
+      "kept": "Aucun cadre ni ombre inutile : le texte porte l'écran.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-metro-typographic-tiles-hero.webp"
+    },
+    {
+      "id": "ch-mascots", "kind": "challenger", "catalogId": "pop-culture-shelf-character-goods-catalog",
+      "label": "Catalogue de mascottes", "verdict": "declined",
+      "lineage": "Page de catalogue de personnages",
+      "thesis": "Chaque visiteur comme une mascotte classée.",
+      "palette": ["#FCE4EC", "#E3F2FD", "#FFF3C4", "#FF6F61"],
+      "materials": ["pastels", "contours blancs"],
+      "viewport": "Grille pastel de portraits.",
+      "case": "Ton enfantin, contraire à un poste de sécurité.",
+      "risk": "Manque de sérieux.",
+      "kept": "Ce qui est terminé passe en gris au lieu de disparaître.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-character-goods-catalog-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "Le standard des applis de gestion",
+    "thesis": "Ce que font les registres de visiteurs du marché, exécuté proprement.",
+    "palette": ["#FFFFFF", "#F3F4F6", "#111827", "#2563EB"],
+    "materials": ["grille nette", "listes et pastilles"],
+    "viewport": "En-tête blanc, compteurs, bouton bleu, liste des présents.",
+    "risk": "Impossible à distinguer d'une autre appli : c'est voulu.",
+    "html": ".impeccable/mocks/decision/canon.html",
+    "htmlFrame": "390x844"
+  },
+  "steer": true
+}
