@@ -1305,6 +1305,8 @@ $('#ring-close').addEventListener('click', () => {
   $('#ring-modal').hidden = true;
   if (RING.cur?.status === 'refused') { RING.stop?.(); RING.stop = null; RING.cur = null; resetForm(); setTab('reg'); phToast('Visite refusée par l\'habitant.'); }
 });
+$('#ring-modal').addEventListener('click', e => { if (e.target === e.currentTarget) $('#ring-close').click(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#ring-modal').hidden) $('#ring-close').click(); });
 $('#ring-enter').addEventListener('click', () => { $('#ring-modal').hidden = true; RING.stop?.(); RING.stop = null; $('#entry-form').requestSubmit(); });
 
 /* ---------- Tableau de bord ---------- */
