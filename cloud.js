@@ -246,7 +246,7 @@ document.body.insertAdjacentHTML('beforeend', `
 
 const S = {user: null, profile: null, org: null, unsubs: [], signingUp: false, setup: false, team: []};
 
-function msg(id, text, kind = 'err'){ const m = $(id); m.textContent = text; m.className = 'acct-msg ' + kind; m.hidden = !text; }
+function msg(id, text, kind = 'err'){ const m = $(id); m.textContent = text; m.className = 'acct-msg ' + kind; m.hidden = !text; if (text) m.scrollIntoView({block: 'nearest'}); }
 function busy(form, on){ form.querySelectorAll('button,input,select').forEach(el => el.disabled = on); }
 
 function openAuth(tab = 'login'){
@@ -456,16 +456,25 @@ async function showRingAnswer(id){
     const ref = doc(db, 'rings', id);
     const snap = await getDoc(ref);
     if (!snap.exists()) { paint(null); return; }
-    let r = snap.data(); paint(r);
+    let r = snap.data(), sending = false; paint(r);
+    // Le décompte et l'expiration se mettent à jour sans recharger la page.
+    const tick = setInterval(() => { if (sending) return; if (r.status !== 'pending') { clearInterval(tick); return; } paint(r); }, 20000);
     body.addEventListener('click', async e => {
-      const b = e.target.closest('[data-answer]'); if (!b) return;
+      const b = e.target.closest('[data-answer]'); if (!b || sending) return;
+      if (Date.now() - (r.createdAt || 0) >= 30 * 60000) { paint(r); return; }
+      sending = true;
       body.querySelectorAll('button').forEach(x => x.disabled = true);
       try { await updateDoc(ref, {status: b.dataset.answer, answeredAt: Date.now()}); r = {...r, status: b.dataset.answer}; paint(r); }
       catch (err) {
+        // Refus de la base : la demande a expiré ou a déjà reçu une réponse. On relit et on affiche son état réel.
+        if (err?.code === 'permission-denied') {
+          try { const again = await getDoc(ref); if (again.exists()) { r = again.data(); if (r.status !== 'pending' || Date.now() - (r.createdAt || 0) >= 30 * 60000) { r = {...r, createdAt: r.status === 'pending' ? 0 : r.createdAt}; paint(r); sending = false; return; } } } catch {}
+        }
         body.querySelector('.acct-msg')?.remove();
-        body.querySelector('.ra-in').insertAdjacentHTML('beforeend', `<div class="acct-msg err" role="alert">${esc(errText(err))}</div>`);
+        body.querySelector('.ra-in').insertAdjacentHTML('beforeend', `<div class="acct-msg err" role="alert">${err?.code === 'permission-denied' ? "Votre réponse n'a pas pu être enregistrée. Si la personne attend encore, appelez le poste de garde." : esc(errText(err))}</div>`);
         body.querySelectorAll('button').forEach(x => x.disabled = false);
       }
+      sending = false;
     });
   } catch (err) { body.innerHTML = `<div class="ra-in">${raState('late', 'La demande ne peut pas être affichée.', esc(errText(err)), 'bad')}</div>`; }
 }
