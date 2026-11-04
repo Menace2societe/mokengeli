@@ -520,6 +520,8 @@ body.app-mode .u-mur .phone{border:2px solid var(--encre);border-radius:8px}
 /* Version ordinateur d'un compte connecté : trois colonnes de travail, plus de maquette de téléphone */
 body.app-mode #v-guard.u-mur{padding-left:max(16px, calc((100vw - 1400px)/2));padding-right:max(16px, calc((100vw - 1400px)/2))}
 body.app-mode .u-mur .phone{box-shadow:none;background:var(--mur)}
+/* Compte connecté sur téléphone : le poste occupe tout l'écran, sans cadre ni marges */
+@media (max-width: 640px){ body.app-mode #v-guard.u-mur{padding:0} body.app-mode .u-mur .phone{border:0;border-radius:0} }
 @media (min-width: 1000px){
   body.app-mode .u-mur .phone{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.9fr);min-height:0}
   body.app-mode .u-mur .ph-status{padding:12px 20px;border-bottom-width:8px}
