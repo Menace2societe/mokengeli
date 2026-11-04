@@ -1,0 +1,5 @@
+# Mokengeli est hébergé sur Vercel (vercel.json) depuis le 25/10/2026.
+# L'ancien site Netlify reste relié au dépôt : cette commande lui fait ignorer chaque push et chaque PR,
+# pour ne plus consommer de crédits Netlify. Pour couper le lien tout à fait, déconnecter le dépôt dans Netlify.
+[build]
+  ignore = "exit 0"
